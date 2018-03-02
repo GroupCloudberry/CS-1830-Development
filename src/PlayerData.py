@@ -8,7 +8,6 @@ class PlayerData:
         sql_command = "CREATE TABLE IF NOT EXISTS players (" \
                       "id integer PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, high_score INTEGER DEFAULT 0," \
                       "currency INTEGER DEFAULT 0, lives INTEGER DEFAULT 3)"
-
         self.connection.execute(sql_command)
         self.connection.commit()
 
