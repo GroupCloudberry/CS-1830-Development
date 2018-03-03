@@ -4,7 +4,7 @@ from enum import Enum
 
 class PlayerFields(Enum):
     ID = "id"
-    PLAYER_NAME = "name"
+    NAME = "name"
     LEVEL = "level"
     HIGH_SCORE = "high_score"
     CURRENCY = "currency"
@@ -37,19 +37,20 @@ class PlayerData:
         cursor.execute(sql_command)
         return cursor.fetchone() is not None
 
-    def add_player(self, player_name, level, score, currency, lives):
+    def add_player(self, name, level, high_score, currency, lives):
         sql_command = "INSERT INTO " + PlayerData.TABLE + "[(name, level, high_score, currency, lives)]" \
-                      "VALUES (" + ", ".join(["'{}'".format(player_name), level, score, currency, lives]) + ");"
+                      "VALUES (" + ", ".join(["'{}'".format(name), level, high_score, currency, lives]) + ");"
         cursor = self.connection.cursor()
         cursor.execute(sql_command)
         self.connection.commit()
         return cursor.lastrowid
 
-    def update_player(self, key, level, high_score, currency, lives):
+    def update_player(self, key, name, level, high_score, currency, lives):
         if not self.id_exists(key):
             raise IdNotFoundError
-        sql_command = "UPDATE " + self.TABLE + " SET level = " + level + ", high_score = " + high_score + \
-                      ", currency = " + currency + ", lives = " + lives + " WHERE id = " + key
+        sql_command = "UPDATE " + self.TABLE + " SET name = " + "'{}'".format(name) + \
+                      ", level = " + level + ", high_score = " + high_score + ", currency = " + currency + \
+                      ", lives = " + lives + " WHERE id = " + key
         self.connection.execute(sql_command)
         self.connection.commit()
 
