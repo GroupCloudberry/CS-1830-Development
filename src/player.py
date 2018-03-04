@@ -3,6 +3,12 @@ from player_attributes import PlayerAttributes
 
 class Player:
 
+    """
+    The Player object represents the player sprite and provides a means of manipulating player
+    attributes. An instance of the PlayerAttributes object is used to store attributes, which
+    can be synchronised with the database using the latter's sync_to_db() method.
+    """
+
     def __init__(self, attributes: PlayerAttributes):
         """
         To create a new player, create a PlayerAttributes object using
