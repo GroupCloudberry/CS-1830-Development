@@ -19,5 +19,6 @@ class Player:
         player.level = attributes.level
         player.currency = attributes.currency
         player.lives = attributes.lives
+        player.db_attributes = attributes
         return player
 
