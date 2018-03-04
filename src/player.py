@@ -47,7 +47,3 @@ class Player:
     def gain_life(self, lives=1):
         self.attributes.lives += lives
         self.attributes.sync_to_db()
-
-    @staticmethod
-    def from_db(key):
-        return Player(PlayerAttributes.load(key))
