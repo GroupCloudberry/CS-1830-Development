@@ -54,7 +54,7 @@ class PlayerData:
         self.connection.execute(sql_command)
         self.connection.commit()
 
-    def retrieve(self, key, fields):
+    def retrieve_by_id(self, key, fields):
         if not self.id_exists(key):
             raise IdNotFoundError
         sql_command = "SELECT " + fields + " from " + self.TABLE + " WHERE id = " + key
@@ -62,11 +62,20 @@ class PlayerData:
         cursor.execute(sql_command)
         return cursor.fetchone()
 
-    def get_field(self, key, field):
-        return self.retrieve(key, field)[0]
+    def get_field_by_id(self, key, field):
+        return self.retrieve_by_id(key, field)[0]
 
-    def get_all(self, key):
-        return self.retrieve(key, "*")
+    def get_all_by_id(self, key):
+        return self.retrieve_by_id(key, "*")
+
+    def get_ids_by_name(self, name):
+        ids = []
+        sql_command = "SELECT id FROM " + PlayerData.TABLE + " WHERE name = " + name
+        cursor = self.connection.cursor()
+        cursor.execute(sql_command)
+        for row in list(cursor):
+            ids.append(row[0])
+        return ids
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
