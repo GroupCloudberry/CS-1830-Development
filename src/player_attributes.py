@@ -1,7 +1,7 @@
 from player_data import PlayerData, PlayerFields
 
 
-class Player:
+class PlayerAttributes:
 
     DEFAULT_LEVEL = 1
     DEFAULT_LIVES = 3
@@ -14,7 +14,7 @@ class Player:
         self.currency = None
         self.lives = None
 
-        self.db = PlayerData(Player.DATABASE_NAME)
+        self.db = PlayerData(PlayerAttributes.DATABASE_NAME)
         self.id = None
 
     def rename(self, name):
@@ -64,16 +64,17 @@ class Player:
 
     @staticmethod
     def create(name, high_score, currency):
-        player = Player()
-        player.set_params(name, Player.DEFAULT_LEVEL, high_score, currency, Player.DEFAULT_LIVES)
-        player.add_to_db()
-        return player
+        attr = PlayerAttributes()
+        attr.set_params(name, PlayerAttributes.DEFAULT_LEVEL, high_score, currency, PlayerAttributes.DEFAULT_LIVES)
+        attr.add_to_db()
+        return attr
 
     @staticmethod
     def load(key):
-        player = Player()
-        player.set_params(player.db.get_field(key, PlayerFields.NAME), player.db.get_field(key, PlayerFields.LEVEL),
-                          player.db.get_field(key, PlayerFields.HIGH_SCORE),
-                          player.db.get_field(key, PlayerFields.CURRENCY),
-                          player.db.get_field(key, PlayerFields.LIVES), key)
-        return player
+        attr = PlayerAttributes()
+        attr.set_params(attr.db.get_field(key, PlayerFields.NAME),
+                               attr.db.get_field(key, PlayerFields.LEVEL),
+                          attr.db.get_field(key, PlayerFields.HIGH_SCORE),
+                          attr.db.get_field(key, PlayerFields.CURRENCY),
+                          attr.db.get_field(key, PlayerFields.LIVES), key)
+        return attr
