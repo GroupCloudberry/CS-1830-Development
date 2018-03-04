@@ -10,6 +10,11 @@ class Player:
     The fields name, level, high_score, currency, and lives are available as instance variables
     of PlayerAttributes. They can be updated by assigning a new value to them and calling the
     sync_to_db() method on the PlayerAttributes instance.
+    
+    As the player's current score for a level does not need to be written to the database unless
+    it is a high score, the Player object's current_score instance variable is used to store this
+    instead. To keep the database record's high_score field up to date, you should call the
+    high_score() method at the end of each level.
     """
 
     def __init__(self, attributes: PlayerAttributes):
@@ -23,7 +28,7 @@ class Player:
         from the database. If the key is not known, PlayerAttributes.get_ids_with_name(name) can
         return a list of keys/ids matching a given name.
         """
-        self.score = 0
+        self.current_score = 0
         self.attributes = attributes
 
     def rename(self, name):
@@ -35,8 +40,8 @@ class Player:
         self.attributes.sync_to_db()
 
     def high_score(self):
-        if self.score > self.attributes.high_score:
-            self.attributes.high_score = self.score
+        if self.current_score > self.attributes.high_score:
+            self.attributes.high_score = self.current_score
             self.attributes.sync_to_db()
             return True
         return False
