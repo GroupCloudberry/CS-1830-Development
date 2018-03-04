@@ -1,10 +1,11 @@
-from PlayerData import PlayerData, PlayerFields
+from player_data import PlayerData, PlayerFields
 
 
 class Player:
 
     DEFAULT_LEVEL = 1
     DEFAULT_LIVES = 3
+    DATABASE_NAME = "players.db"
 
     def __init__(self):
         self.name = None
@@ -13,7 +14,7 @@ class Player:
         self.currency = None
         self.lives = None
 
-        self.db = PlayerData()
+        self.db = PlayerData(Player.DATABASE_NAME)
         self.id = None
 
     def rename(self, name):
@@ -54,6 +55,12 @@ class Player:
         self.currency = currency
         self.lives = lives
         self.id = key
+
+    def close(self):
+        self.db.close()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
     @staticmethod
     def create(name, high_score, currency):

@@ -19,8 +19,8 @@ class PlayerData:
 
     TABLE = "players"
 
-    def __init__(self):
-        self.connection = sqlite3.connect('playerdata.db')
+    def __init__(self, db_name):
+        self.connection = sqlite3.connect(db_name)
         sql_command = "CREATE TABLE IF NOT EXISTS " + PlayerData.TABLE + " (" \
                       "id integer PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, level INTEGER DEFAULT 1," \
                       "high_score INTEGER DEFAULT 0," \
@@ -67,3 +67,6 @@ class PlayerData:
 
     def get_all(self, key):
         return self.retrieve(key, "*")
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
