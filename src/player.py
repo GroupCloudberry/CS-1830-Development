@@ -5,8 +5,11 @@ class Player:
 
     """
     The Player object represents the player sprite and provides a means of manipulating player
-    attributes. An instance of the PlayerAttributes object is used to store attributes, which
-    can be synchronised with the database using the latter's sync_to_db() method.
+    attributes, using an instance of the PlayerAttributes object to store them.
+
+    The fields name, level, high_score, currency, and lives are available as instance variables
+    of PlayerAttributes. They can be updated by assigning a new value to them and calling the
+    sync_to_db() method on the PlayerAttributes instance.
     """
 
     def __init__(self, attributes: PlayerAttributes):
