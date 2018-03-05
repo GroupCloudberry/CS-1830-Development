@@ -1,5 +1,6 @@
 import sys, collections
 from enum import Enum, unique
+from game_interface import GameInterface
 
 try:
     import simplegui
@@ -27,7 +28,8 @@ class MainMenu:
             self.selected_menu_item = (self.selected_menu_item - 1) % 4
         elif key == simplegui.KEY_MAP['return']:
             if self.selected_menu_item == MenuItems.START.value:
-                self.window.frame.set_draw_handler(self.window.draw_game_interface)
+                game = GameInterface(self.window)
+                self.window.frame.set_draw_handler(game.draw)
             if self.selected_menu_item == MenuItems.EXIT.value:
                 print("Player exited game.")
                 sys.exit()
