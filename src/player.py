@@ -10,7 +10,7 @@ class Player:
     The fields name, level, high_score, currency, and lives are available as instance variables
     of PlayerAttributes. They can be updated by assigning a new value to them and calling the
     sync_to_db() method on the PlayerAttributes instance.
-    
+
     As the player's current score for a level does not need to be written to the database unless
     it is a high score, the Player object's current_score instance variable is used to store this
     instead. To keep the database record's high_score field up to date, you should call the

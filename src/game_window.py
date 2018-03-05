@@ -1,3 +1,5 @@
+from main_menu import MainMenu
+
 try:
     import simplegui
 except ImportError:
@@ -12,7 +14,12 @@ class GameWindow:
     def __init__(self):
         self.frame = simplegui.create_frame("CS1830 Group Cloudberry", GameWindow.WIDTH, GameWindow.HEIGHT)
 
+    def draw_game_interface(self, canvas):
+        pass
+
     def start(self):
+        main_menu = MainMenu(self)
+        self.frame.set_draw_handler(main_menu.draw)
         self.frame.start()
 
 
