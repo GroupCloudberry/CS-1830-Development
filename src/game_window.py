@@ -21,7 +21,7 @@ class GameWindow:
         self.game_interface = GameInterface(self)
 
     def start(self):
-        self.frame.set_draw_handler(self.death_menu.draw)
+        self.frame.set_draw_handler(self.main_menu.draw)
         self.frame.start()
 
 
