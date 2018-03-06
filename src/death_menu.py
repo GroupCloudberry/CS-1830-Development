@@ -1,8 +1,6 @@
 import collections
 from enum import Enum, unique
 
-from main_menu import MainMenu
-
 try:
     import simplegui
 except ImportError:
@@ -15,7 +13,7 @@ class DeathMenuItems(Enum):
     MAIN_MENU = 1
 
 
-class Death:
+class DeathMenu:
     def __init__(self, window):
         self.window = window
         self.selected_menu_item = 0
@@ -29,8 +27,7 @@ class Death:
             if self.selected_menu_item == DeathMenuItems.RESTART.value:
                 pass
             elif self.selected_menu_item == DeathMenuItems.MAIN_MENU.value:
-                menu = MainMenu(self.window)
-                self.window.frame.set_draw_handler(menu.draw)
+                self.window.frame.set_draw_handler(self.window.main_menu.draw)
 
     def draw(self, canvas):
         self.window.frame.set_keydown_handler(self.menu_key_down)
