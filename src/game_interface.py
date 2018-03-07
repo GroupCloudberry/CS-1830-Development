@@ -1,5 +1,8 @@
 from transition_clock import TransitionClock
-import simpleguitk
+try:
+    import simplegui
+except ImportError:
+    import simpleguitk as simplegui
 
 
 BALL_RADIUS = 10
