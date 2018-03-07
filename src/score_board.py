@@ -1,3 +1,4 @@
+import gc
 try:
     import simplegui
 except ImportError:
@@ -13,7 +14,10 @@ class ScoreBoard:
         self.box_reveal = 0.0
 
     def key_down(self, key):
-        pass
+        if key == simplegui.KEY_MAP["escape"]:
+            self.window.scoreboard = ScoreBoard(self.window)
+            self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
+            gc.collect()
 
     def draw_boxes(self, canvas):
         box1_x = 75
