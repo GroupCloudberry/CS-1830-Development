@@ -1,14 +1,10 @@
 from transition_clock import TransitionClock
-<<<<<<< HEAD
 from vector import Vector
-import simpleguitk as simplegui
-=======
+
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
->>>>>>> 204bc6bbe73fe6860b2116f8f63c258537bb41ea
-
 
 BALL_RADIUS = 10
 tyre1_pos = [70, 300]
