@@ -24,7 +24,7 @@ class DeathMenu:
         self.box2_reveal = 0.0
         self.menu_reveal = 0.0
 
-    def menu_key_down(self, key):
+    def key_down(self, key):
         if key == simplegui.KEY_MAP["down"]:
             self.selected_menu_item = (self.selected_menu_item + 1) % 2
         elif key == simplegui.KEY_MAP["up"]:
@@ -37,7 +37,7 @@ class DeathMenu:
 
     def draw_canvas(self, canvas):
         self.transition_clock.tick()
-        self.window.frame.set_keydown_handler(self.menu_key_down)
+        self.window.frame.set_keydown_handler(self.key_down)
 
         self.draw_boxes(canvas)
         self.draw_menu(canvas)

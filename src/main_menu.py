@@ -21,7 +21,7 @@ class MainMenu:
         self.selected_menu_item = 0
         self.window = window
 
-    def menu_key_down(self, key):
+    def key_down(self, key):
         if key == simplegui.KEY_MAP['down']:
             self.selected_menu_item = (self.selected_menu_item + 1) % 4
         elif key == simplegui.KEY_MAP['up']:
@@ -34,7 +34,7 @@ class MainMenu:
                 sys.exit()
 
     def draw_canvas(self, canvas):
-        self.window.frame.set_keydown_handler(self.menu_key_down)
+        self.window.frame.set_keydown_handler(self.key_down)
         canvas.draw_text("BerryDrive", (75, 175), 90, "White")
         menu_items = collections.OrderedDict([(item, "White") for item in MainMenuItems])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Orange"
