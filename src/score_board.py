@@ -9,8 +9,8 @@ except ImportError:
 
 @unique
 class ScoreBoardMenuItems(Enum):
-    DELETE_ALL = {"index": 0, "label": "Delete all"}
-    MAIN_MENU = {"index": 1, "label": "Return to Main Menu"}
+    DELETE_ALL = {"index": 0, "label": "Delete all players"}
+    MAIN_MENU = {"index": 1, "label": "[ESC] Back to Main Menu"}
     
 
 class ScoreBoard:
@@ -20,9 +20,10 @@ class ScoreBoard:
         self.selected_menu_item = 1
 
         self.box_reveal = 0.0
+        self.menu_reveal = -(self.window.__class__.WIDTH * 2)
 
     def exit(self):
-        # Have a new ScoreBoard object be created in order to run the animation again on next load
+        # New ScoreBoard object created to run the animation again on next load
         self.window.scoreboard = ScoreBoard(self.window)
         self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
@@ -52,11 +53,13 @@ class ScoreBoard:
         menu_items = collections.OrderedDict([(item, "White") for item in ScoreBoardMenuItems])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Yellow"
         for index, item in enumerate(ScoreBoardMenuItems):
-            canvas.draw_text(item.value["label"], (75, 475 + (50 * index)), 35, menu_items[item])
+            canvas.draw_text(item.value["label"], (75 - self.menu_reveal, 480 + (40 * index)), 30, menu_items[item])
 
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:
             self.box_reveal += 0.1
+        elif self.menu_reveal < 0:
+            self.menu_reveal = 0
 
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
