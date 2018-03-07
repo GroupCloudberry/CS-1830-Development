@@ -100,8 +100,8 @@ class GameInterface:
                              (self.right_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
                              (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 0,
                             box_colour_right, box_colour_right)
-        self.left_cover_x -= 15
-        self.right_cover_x += 15
+        self.left_cover_x -= 25
+        self.right_cover_x += 25
 
 
 class Keyboard:
