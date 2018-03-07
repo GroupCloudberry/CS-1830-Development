@@ -21,11 +21,12 @@ class MainMenu:
         self.selected_menu_item = 0
         self.window = window
 
+    # noinspection PyTypeChecker
     def key_down(self, key):
         if key == simplegui.KEY_MAP['down']:
-            self.selected_menu_item = (self.selected_menu_item + 1) % 4
+            self.selected_menu_item = (self.selected_menu_item + 1) % len(MainMenuItems)
         elif key == simplegui.KEY_MAP['up']:
-            self.selected_menu_item = (self.selected_menu_item - 1) % 4
+            self.selected_menu_item = (self.selected_menu_item - 1) % len(MainMenuItems)
         elif key == simplegui.KEY_MAP['return']:
             if self.selected_menu_item == MainMenuItems.START.value["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
