@@ -1,23 +1,42 @@
-import gc
+import collections
+from enum import Enum, unique
+
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
 
 
+@unique
+class ScoreBoardMenuItems(Enum):
+    DELETE_ALL = {"index": 0, "label": "Delete all"}
+    MAIN_MENU = {"index": 1, "label": "Return to Main Menu"}
+    
+
 class ScoreBoard:
 
     def __init__(self, window):
         self.window = window
-        self.selected_item = 0
+        self.selected_menu_item = 1
 
         self.box_reveal = 0.0
 
+    def exit(self):
+        # Have a new ScoreBoard object be created in order to run the animation again on next load
+        self.window.scoreboard = ScoreBoard(self.window)
+        self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
+
+    # noinspection PyTypeChecker
     def key_down(self, key):
         if key == simplegui.KEY_MAP["escape"]:
-            self.window.scoreboard = ScoreBoard(self.window)
-            self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
-            gc.collect()
+            self.exit()
+        elif key == simplegui.KEY_MAP["down"]:
+            self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems)
+        elif key == simplegui.KEY_MAP["up"]:
+            self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems)
+        elif key == simplegui.KEY_MAP["return"]:
+            if self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU.value["index"]:
+                self.exit()
 
     def draw_boxes(self, canvas):
         box1_x = 75
@@ -26,8 +45,14 @@ class ScoreBoard:
         box1_height = 75
         canvas.draw_polygon([(box1_x, box1_y), (box1_x, box1_y + box1_height),
                              (box1_x + box1_width, box1_y + box1_height),
-                             (box1_x + box1_width, box1_y)], 0, "Black", "White")
+                             (box1_x + box1_width, box1_y)], 0, "Black", "Yellow")
         canvas.draw_text("Scoreboard", (box1_x + 20, box1_y + 67), 50, "Black")
+    
+    def draw_menu(self, canvas):
+        menu_items = collections.OrderedDict([(item, "White") for item in ScoreBoardMenuItems])
+        menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Yellow"
+        for index, item in enumerate(ScoreBoardMenuItems):
+            canvas.draw_text(item.value["label"], (75, 475 + (50 * index)), 35, menu_items[item])
 
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:
@@ -36,4 +61,6 @@ class ScoreBoard:
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_boxes(canvas)
+        self.draw_menu(canvas)
         self.reveal()
+
