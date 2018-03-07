@@ -8,8 +8,8 @@ except ImportError:
 
 class GameWindow:
 
-    WIDTH = 700
-    HEIGHT = 500
+    WIDTH = 800
+    HEIGHT = 600
 
     def __init__(self):
         self.frame = simplegui.create_frame("CS1830 Group Cloudberry", GameWindow.WIDTH, GameWindow.HEIGHT)
@@ -23,3 +23,4 @@ class GameWindow:
 if __name__ =="__main__":
     window = GameWindow()
     window.start()
+

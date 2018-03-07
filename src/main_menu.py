@@ -42,7 +42,7 @@ class MainMenu:
                                               (MainMenuItems.OPTIONS, "White"), (MainMenuItems.EXIT, "White")])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Orange"
 
-        canvas.draw_text("Game Name", (50, 150), 90, "White")
+        canvas.draw_text("BerryDrive", (50, 150), 90, "White")
         canvas.draw_text("Start", (50, 300), 40, menu_items[MainMenuItems.START])
         canvas.draw_text("Scoreboard", (50, 350), 40, menu_items[MainMenuItems.SCOREBOARD])
         canvas.draw_text("Options", (50, 400), 40, menu_items[MainMenuItems.OPTIONS])
