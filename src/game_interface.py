@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+from transition_clock import TransitionClock
 import simpleguitk
 
 
@@ -9,14 +9,6 @@ tyre2_pos = [170, 300]
 gravity = -0.1
 velocity = 8
 vel = [0,  velocity]
-=======
-from transition_clock import TransitionClock
-
-try:
-    import simplegui
-except ImportError:
-    import simpleguitk as simplegui
->>>>>>> 4be6ec60fe2d8cd0fa3d31cb0a2c75d614b3d966
 
 
 class GameInterface:
@@ -28,7 +20,6 @@ class GameInterface:
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
     def draw(self, canvas):
-<<<<<<< HEAD
         global velocity
 
         #Constructing the road
@@ -73,9 +64,8 @@ class GameInterface:
         car_body_pos = [car_body_point1,car_body_point2,car_body_point3,car_body_point4,car_body_point5,car_body_point6,car_body_point7,car_body_point8]
 
         canvas.draw_polygon(car_body_pos, 1, 'white', 'white')
-=======
         self.transition_clock.tick()
-        canvas.draw_text("For actual game content.", (50, 150), 25, "White")
+        
         if self.left_cover_x > - self.window.__class__.WIDTH / 2:
             self.reveal(canvas)
 
@@ -93,4 +83,3 @@ class GameInterface:
                             box_colour_right, box_colour_right)
         self.left_cover_x -= 15
         self.right_cover_x += 15
->>>>>>> 4be6ec60fe2d8cd0fa3d31cb0a2c75d614b3d966
