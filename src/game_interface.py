@@ -1,14 +1,18 @@
 from transition_clock import TransitionClock
-import simpleguitk
+from vector import Vector
+import simpleguitk as simplegui
 
 
 BALL_RADIUS = 10
 tyre1_pos = [70, 300]
 tyre2_pos = [170, 300]
 
+"""
 gravity = -0.1
 velocity = 8
 vel = [0,  velocity]
+"""
+gravity = -0.1
 
 
 class GameInterface:
@@ -24,10 +28,19 @@ class GameInterface:
 
         #Constructing the road
         canvas.draw_line([0, 400], [350, 400], 5, 'white')
+        canvas.draw_line([350, 400], [500, 280], 5, 'white')
+        canvas.draw_line([500,280], [650, 400], 5, 'white')
+        canvas.draw_line([650,400], [800, 400], 5, 'white')
 
 
+        if tyre2_pos[1] <= 375:
+            tyre2_pos[1] += 1
+        if tyre1_pos[1] <= 375:
+            tyre1_pos[1] += 1
+
+
+        """
         vel[1] -= gravity
-
 
         # Update car position
         tyre1_pos[1] += vel[1]
@@ -38,6 +51,8 @@ class GameInterface:
             vel[1] = - vel[1]
         if tyre1_pos[1] >= 375:
             vel[1] = - velocity
+        """
+
 
         canvas.draw_circle(tyre1_pos, 20, 5, "Grey", "white")
         canvas.draw_circle(tyre2_pos, 20, 5, "Grey", "White")
@@ -65,9 +80,10 @@ class GameInterface:
 
         canvas.draw_polygon(car_body_pos, 1, 'white', 'white')
         self.transition_clock.tick()
-        
+
         if self.left_cover_x > - self.window.__class__.WIDTH / 2:
             self.reveal(canvas)
+
 
     def reveal(self, canvas):
         box_colour_left = "Orange"
@@ -83,3 +99,33 @@ class GameInterface:
                             box_colour_right, box_colour_right)
         self.left_cover_x -= 15
         self.right_cover_x += 15
+
+
+class Keyboard:
+    def _init_(self):
+        self.right = False
+        self.left = False
+
+    def keyDown(self, key):
+        if key == simplegui.KEY_MAP['right']:
+            self.right = True
+            self.left = False
+
+    def keyUp(self, key):
+        if key == simplegui.KEY_MAP['left']:
+            self.left = True
+            self.right = False
+
+
+class Interaction:
+    def _init_(self, wheel, keyboard):
+        self.wheel = wheel
+        self.keyboard = keyboard
+
+    def update(self):
+        if self.keyboard.right:
+            self.wheel.vel.add(Vector(1, 0))
+
+        if self.keyboard.left:
+            self.wheel.vel.add(Vector(-1, 0))
+
