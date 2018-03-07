@@ -14,7 +14,7 @@ class GameWindow:
     HEIGHT = 600
 
     def __init__(self):
-        self.frame = simplegui.create_frame("CS1830 Group Cloudberry", GameWindow.WIDTH, GameWindow.HEIGHT)
+        self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", GameWindow.WIDTH, GameWindow.HEIGHT)
 
         self.main_menu = MainMenu(self)
         self.death_menu = DeathMenu(self)
