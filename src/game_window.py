@@ -28,7 +28,6 @@ class GameWindow:
         self.frame.start()
 
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     window = GameWindow()
     window.start()
-

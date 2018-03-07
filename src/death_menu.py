@@ -35,14 +35,6 @@ class DeathMenu:
             elif self.selected_menu_item == DeathMenuItems.MAIN_MENU.value:
                 self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
-    def draw_canvas(self, canvas):
-        self.transition_clock.tick()
-        self.window.frame.set_keydown_handler(self.key_down)
-
-        self.draw_boxes(canvas)
-        self.draw_menu(canvas)
-        self.reveal()
-
     def draw_boxes(self, canvas):
         box1_x = 75
         box1_y = 75
@@ -80,3 +72,11 @@ class DeathMenu:
         else:
             if self.transition_clock.transition(30):
                 self.menu_reveal = 1.0
+
+    def draw_canvas(self, canvas):
+        self.transition_clock.tick()
+        self.window.frame.set_keydown_handler(self.key_down)
+
+        self.draw_boxes(canvas)
+        self.draw_menu(canvas)
+        self.reveal()
