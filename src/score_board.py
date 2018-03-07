@@ -1,6 +1,9 @@
 import collections
 from enum import Enum, unique
 
+from player_attributes import PlayerAttributes
+from player_data import PlayerData
+
 try:
     import simplegui
 except ImportError:
@@ -10,7 +13,7 @@ except ImportError:
 @unique
 class ScoreBoardMenuItems(Enum):
     DELETE_ALL = {"index": 0, "label": "Delete all players"}
-    MAIN_MENU = {"index": 1, "label": "[ESC] Back to Main Menu"}
+    MAIN_MENU = {"index": 1, "label": "Back to Main Menu"}
     
 
 class ScoreBoard:
@@ -21,6 +24,8 @@ class ScoreBoard:
 
         self.box_reveal = 0.0
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
+
+        self.players = []
 
     def exit(self):
         # New ScoreBoard object created to run the animation again on next load
@@ -48,12 +53,18 @@ class ScoreBoard:
                              (box1_x + box1_width, box1_y + box1_height),
                              (box1_x + box1_width, box1_y)], 0, "Black", "Yellow")
         canvas.draw_text("Scoreboard", (box1_x + 20, box1_y + 67), 50, "Black")
-    
+
+    # noinspection PyTypeChecker
     def draw_menu(self, canvas):
         menu_items = collections.OrderedDict([(item, "White") for item in ScoreBoardMenuItems])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Yellow"
         for index, item in enumerate(ScoreBoardMenuItems):
-            canvas.draw_text(item.value["label"], (75 - self.menu_reveal, 480 + (40 * index)), 30, menu_items[item])
+            canvas.draw_text(item.value["label"], (75 - self.menu_reveal, 480 + (42 * index)), 30, menu_items[item])
+
+    def load_players(self):
+        database = PlayerData(PlayerData.TABLE)
+        for key in database.get_all_ids():
+            self.players.append(PlayerAttributes.load(key))
 
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:
@@ -65,5 +76,5 @@ class ScoreBoard:
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_boxes(canvas)
         self.draw_menu(canvas)
+        self.load_players()
         self.reveal()
-

@@ -69,13 +69,16 @@ class PlayerData:
         return self.retrieve_by_id(key, "*")
 
     def get_ids_by_name(self, name):
-        ids = []
         sql_command = "SELECT id FROM " + PlayerData.TABLE + " WHERE name = " + name
         cursor = self.connection.cursor()
         cursor.execute(sql_command)
-        for row in list(cursor):
-            ids.append(row[0])
-        return ids
+        return [row[0] for row in list(cursor)]
+
+    def get_all_ids(self):
+        sql_command = "SELECT id from " + PlayerData.TABLE
+        cursor = self.connection.cursor()
+        cursor.execute(sql_command)
+        return [row[0] for row in list(cursor)]
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
