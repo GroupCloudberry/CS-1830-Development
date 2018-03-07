@@ -32,8 +32,8 @@ class DeathMenu:
     def draw(self, canvas):
         self.window.frame.set_keydown_handler(self.menu_key_down)
 
-        box1_x = 50
-        box1_y = 50
+        box1_x = 75
+        box1_y = 75
         box1_width = 357
         box1_height = 100
         canvas.draw_polygon([(box1_x, box1_y), (box1_x, box1_y + box1_height),
@@ -41,7 +41,7 @@ class DeathMenu:
                              (box1_x + box1_width, box1_y)], 0, "Orange", "Orange")
         canvas.draw_text("You died.", (box1_x + 20, box1_y + 100), 80, "Black")
 
-        box2_x = 50
+        box2_x = 75
         box2_y = box1_y + box1_height + 22
         box2_width = 220
         box2_height = 50
@@ -52,5 +52,5 @@ class DeathMenu:
 
         menu_items = collections.OrderedDict([(DeathMenuItems.RESTART, "White"), (DeathMenuItems.MAIN_MENU, "White")])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Orange"
-        canvas.draw_text("Restart Level", (50, 400), 35, menu_items[DeathMenuItems.RESTART])
-        canvas.draw_text("Back to Main Menu", (50, 440), 35, menu_items[DeathMenuItems.MAIN_MENU])
+        canvas.draw_text("Restart Level", (75, 475), 35, menu_items[DeathMenuItems.RESTART])
+        canvas.draw_text("Back to Main Menu", (75, 525), 35, menu_items[DeathMenuItems.MAIN_MENU])
