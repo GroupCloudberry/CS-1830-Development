@@ -62,8 +62,8 @@ class ScoreBoard:
             canvas.draw_text(item.value["label"], (75 - self.menu_reveal, 480 + (42 * index)), 30, menu_items[item])
 
     def load_players(self):
-        database = PlayerData(PlayerData.TABLE)
-        for key in database.get_all_ids():
+        db = PlayerData(PlayerData.DATABASE_NAME)
+        for key in db.get_all_ids():
             self.players.append(PlayerAttributes.load(key))
 
     def reveal(self):

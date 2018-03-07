@@ -17,6 +17,7 @@ class IdNotFoundError(Exception):
 
 class PlayerData:
 
+    DATABASE_NAME = "players.db"
     TABLE = "players"
 
     def __init__(self, db_name):

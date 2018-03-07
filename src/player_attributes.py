@@ -7,7 +7,6 @@ class PlayerAttributes:
     DEFAULT_SCORE = 0
     DEFAULT_CURRENCY = 0
     DEFAULT_LIVES = 3
-    DATABASE_NAME = "players.db"
 
     def __init__(self):
         self.name = None
@@ -16,7 +15,7 @@ class PlayerAttributes:
         self.currency = None
         self.lives = None
 
-        self.db = PlayerData(PlayerAttributes.DATABASE_NAME)
+        self.db = PlayerData(PlayerData.DATABASE_NAME)
         self.id = None
 
     def add_to_db(self):
