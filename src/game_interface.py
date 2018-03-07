@@ -26,7 +26,7 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
-    def draw(self, canvas):
+    def draw_canvas(self, canvas):
         global velocity
 
         #Constructing the road

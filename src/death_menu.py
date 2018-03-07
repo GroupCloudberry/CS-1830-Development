@@ -33,9 +33,9 @@ class DeathMenu:
             if self.selected_menu_item == DeathMenuItems.RESTART.value:
                 pass
             elif self.selected_menu_item == DeathMenuItems.MAIN_MENU.value:
-                self.window.frame.set_draw_handler(self.window.main_menu.draw)
+                self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
-    def draw(self, canvas):
+    def draw_canvas(self, canvas):
         self.transition_clock.tick()
         self.window.frame.set_keydown_handler(self.menu_key_down)
 
