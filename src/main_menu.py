@@ -20,6 +20,31 @@ class MainMenu:
     def __init__(self, window):
         self.selected_menu_item = 0
         self.window = window
+        self.canvas = None
+
+        self.left_cover_x = -(self.window.__class__.WIDTH / 2)
+        self.right_cover_x = (self.window.__class__.WIDTH / 2) * 2
+
+        self.exiting = False
+
+    def player_exit(self):
+        box_colour = "Black"
+        self.canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
+                                  (self.left_cover_x + self.window.__class__.WIDTH / 2,
+                                   self.window.__class__.HEIGHT),
+                                  (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
+                                 0, box_colour, box_colour)
+        self.canvas.draw_polygon([(self.right_cover_x, 0),
+                                  (self.right_cover_x, self.window.__class__.HEIGHT),
+                                  (self.right_cover_x + self.window.__class__.WIDTH / 2,
+                                   self.window.__class__.HEIGHT),
+                                  (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 0,
+                                 box_colour, box_colour)
+        if self.left_cover_x < 0:
+            self.left_cover_x += 50
+            self.right_cover_x -= 50
+        else:
+            sys.exit()
 
     # noinspection PyTypeChecker
     def key_down(self, key):
@@ -34,13 +59,18 @@ class MainMenu:
                 self.window.frame.set_draw_handler(self.window.scoreboard.draw_canvas)
             elif self.selected_menu_item == MainMenuItems.EXIT.value["index"]:
                 print("Player exited game.")
-                sys.exit()
+                self.exiting = True
 
     # noinspection PyTypeChecker
     def draw_canvas(self, canvas):
+        if self.canvas is None:
+            self.canvas = canvas
         self.window.frame.set_keydown_handler(self.key_down)
         canvas.draw_text("BerryDrive", (75, 175), 90, "White")
         menu_items = collections.OrderedDict([(item, "White") for item in MainMenuItems])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Aqua"
         for index, item in enumerate(MainMenuItems):
             canvas.draw_text(item.value["label"], (75, 375 + (50 * index)), 40, menu_items[item])
+        # Animation: draw panels from edge when exiting
+        if self.exiting:
+            self.player_exit()
