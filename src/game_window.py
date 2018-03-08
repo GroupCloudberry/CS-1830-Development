@@ -22,7 +22,7 @@ class GameWindow:
         self.death_menu = DeathMenu(self)
         self.game_interface = GameInterface(self)
         self.scoreboard = ScoreBoard(self)
-        self.pause = PauseMenu(self)
+        self.pause_menu = PauseMenu(self)
         self.options = None  # WIP
 
     def start(self):
