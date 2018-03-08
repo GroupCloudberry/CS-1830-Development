@@ -115,11 +115,11 @@ class GameInterface:
         canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
-                            0, box_colour_left, box_colour_left)
+                            1, box_colour_left, box_colour_left)
         canvas.draw_polygon([(self.right_cover_x, 0),
                              (self.right_cover_x, self.window.__class__.HEIGHT),
                              (self.right_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
-                             (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 0,
+                             (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
                             box_colour_right, box_colour_right)
         self.left_cover_x -= 25
         self.right_cover_x += 25
