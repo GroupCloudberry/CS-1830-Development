@@ -1,6 +1,7 @@
 from death_menu import DeathMenu
 from game_interface import GameInterface
 from main_menu import MainMenu
+from pause_menu import PauseMenu
 from score_board import ScoreBoard
 
 try:
@@ -22,9 +23,10 @@ class GameWindow:
         self.game_interface = GameInterface(self)
         self.scoreboard = ScoreBoard(self)
         self.options = None  # WIP
+        self.pause = PauseMenu(self)
 
     def start(self):
-        self.frame.set_draw_handler(self.main_menu.draw_canvas)
+        self.frame.set_draw_handler(self.pause.draw_canvas)
         self.frame.start()
 
 

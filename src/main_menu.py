@@ -1,5 +1,4 @@
 import collections
-import sys
 
 try:
     import simplegui
@@ -21,8 +20,8 @@ class MainMenu:
         self.window = window
         self.canvas = None
 
-        self.left_cover_x = -(self.window.__class__.WIDTH / 2)
-        self.right_cover_x = (self.window.__class__.WIDTH / 2) * 2
+        self.left_cover_x = 0
+        self.right_cover_x = self.window.__class__.WIDTH / 2
 
         self.exiting = False
 
@@ -40,10 +39,25 @@ class MainMenu:
                                   (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
                                  box_colour, box_colour)
         if self.left_cover_x < 0:
-            self.left_cover_x += 35
-            self.right_cover_x -= 35
+            self.left_cover_x += 50
+            self.right_cover_x -= 50
         else:
             exit()
+
+    def reveal(self):
+        box_colour = "Teal"
+        self.canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
+                             (self.left_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
+                             (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
+                            1, box_colour, box_colour)
+        self.canvas.draw_polygon([(self.right_cover_x, 0),
+                             (self.right_cover_x, self.window.__class__.HEIGHT),
+                             (self.right_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
+                             (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
+                            box_colour, box_colour)
+        if self.left_cover_x > -(self.window.__class__.WIDTH / 2):
+            self.left_cover_x -= 25
+            self.right_cover_x += 25
 
     # noinspection PyTypeChecker
     def key_down(self, key):
@@ -67,9 +81,9 @@ class MainMenu:
         self.window.frame.set_keydown_handler(self.key_down)
         canvas.draw_text("BerryDrive", (75, 175), 90, "White", "sans-serif")
         menu_items = collections.OrderedDict([(item["index"], "White") for item in MainMenuItems.ITEMS])
-        menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Aqua"
+        menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Teal"
         for index, item in enumerate(MainMenuItems.ITEMS):
             canvas.draw_text(item["label"], (75, 375 + (50 * index)), 40, menu_items[item["index"]], "sans-serif")
-        # Animation: draw panels from edge when exiting
+        self.reveal()
         if self.exiting:
             self.player_exit()

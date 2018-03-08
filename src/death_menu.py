@@ -8,9 +8,10 @@ except ImportError:
     import simpleguitk as simplegui
 
 
-class DeathMenuItems():
+class DeathMenuItems:
     RESTART = 0
     MAIN_MENU = 1
+    ITEMS = [RESTART, MAIN_MENU]
 
 
 class DeathMenu:

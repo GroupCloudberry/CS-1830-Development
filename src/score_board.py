@@ -37,17 +37,13 @@ class ScoreBoard:
 
     # noinspection PyTypeChecker
     def key_down(self, key):
-        if key == simplegui.KEY_MAP["escape"]:
-            self.exit()
-        elif key == simplegui.KEY_MAP["down"]:
+        if key == simplegui.KEY_MAP["down"]:
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems.ITEMS)
         elif key == simplegui.KEY_MAP["up"]:
             self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["next"] or key == simplegui.KEY_MAP["right"]:
+        elif key == simplegui.KEY_MAP["space"]:
             self.page = (self.page + 1) % self.pages
-        elif key == simplegui.KEY_MAP["prior"] or key == simplegui.KEY_MAP["left"]:
-            self.page = (self.page - 1) % self.pages
-        elif key == simplegui.KEY_MAP["return"]:
+        elif key == simplegui.KEY_MAP["right"]:
             if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
                 PlayerAttributes.delete_all_players()
                 self.players = self.load_players()
@@ -65,9 +61,9 @@ class ScoreBoard:
         canvas.draw_text("Scoreboard", (box1_x + 20, box1_y + 67), 50, "Black", "sans-serif")
         # Draw instruction labels
         hint_colour = "White" if self.menu_reveal == 0 else "Black"
-        canvas.draw_text("Use Page Up and Page Down keys", (box1_x + box1_width + 30, box1_y + 35), 20,
+        canvas.draw_text("Use spacebar key to change", (box1_x + box1_width + 30, box1_y + 35), 20,
                          hint_colour, "sans-serif")
-        canvas.draw_text("or left and right arrows to browse", (box1_x + box1_width + 30, box1_y + 35 + 25), 20,
+        canvas.draw_text("pages", (box1_x + box1_width + 30, box1_y + 35 + 25), 20,
                          hint_colour, "sans-serif")
 
     # noinspection PyTypeChecker
@@ -102,7 +98,7 @@ class ScoreBoard:
             self.box_reveal += 0.1
         elif self.menu_reveal < 0:
             self.menu_reveal = 0
-        elif self.players_reveal == False:
+        elif not self.players_reveal:
             self.players_reveal = True
 
     def draw_canvas(self, canvas):
