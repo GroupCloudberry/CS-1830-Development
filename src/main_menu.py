@@ -41,6 +41,6 @@ class MainMenu:
         self.window.frame.set_keydown_handler(self.key_down)
         canvas.draw_text("BerryDrive", (75, 175), 90, "White")
         menu_items = collections.OrderedDict([(item, "White") for item in MainMenuItems])
-        menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Orange"
+        menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Aqua"
         for index, item in enumerate(MainMenuItems):
             canvas.draw_text(item.value["label"], (75, 375 + (50 * index)), 40, menu_items[item])
