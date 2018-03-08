@@ -1,6 +1,4 @@
 import collections
-from enum import Enum, unique
-
 import math
 
 from player_attributes import PlayerAttributes
@@ -12,10 +10,10 @@ except ImportError:
     import simpleguitk as simplegui
 
 
-@unique
-class ScoreBoardMenuItems(Enum):
+class ScoreBoardMenuItems:
     DELETE_ALL = {"index": 0, "label": "Delete all players"}
     MAIN_MENU = {"index": 1, "label": "Back to Main Menu"}
+    ITEMS = [DELETE_ALL, MAIN_MENU]
     
 
 class ScoreBoard:
@@ -42,18 +40,18 @@ class ScoreBoard:
         if key == simplegui.KEY_MAP["escape"]:
             self.exit()
         elif key == simplegui.KEY_MAP["down"]:
-            self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems)
+            self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems.ITEMS)
         elif key == simplegui.KEY_MAP["up"]:
-            self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems)
+            self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems.ITEMS)
         elif key == simplegui.KEY_MAP["next"] or key == simplegui.KEY_MAP["right"]:
             self.page = (self.page + 1) % self.pages
         elif key == simplegui.KEY_MAP["prior"] or key == simplegui.KEY_MAP["left"]:
             self.page = (self.page - 1) % self.pages
         elif key == simplegui.KEY_MAP["return"]:
-            if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL.value["index"]:
+            if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
                 PlayerAttributes.delete_all_players()
                 self.players = self.load_players()
-            elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU.value["index"]:
+            elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:
                 self.exit()
 
     def draw_boxes(self, canvas):
@@ -74,11 +72,11 @@ class ScoreBoard:
 
     # noinspection PyTypeChecker
     def draw_menu(self, canvas):
-        menu_items = collections.OrderedDict([(item, "White") for item in ScoreBoardMenuItems])
+        menu_items = collections.OrderedDict([(item["index"], "White") for item in ScoreBoardMenuItems.ITEMS])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Yellow"
-        for index, item in enumerate(ScoreBoardMenuItems):
-            canvas.draw_text(item.value["label"], (75 - self.menu_reveal, 480 + (42 * index)), 30,
-                             menu_items[item], "sans-serif")
+        for index, item in enumerate(ScoreBoardMenuItems.ITEMS):
+            canvas.draw_text(item["label"], (75 - self.menu_reveal, 480 + (42 * index)), 30,
+                             menu_items[item["index"]], "sans-serif")
 
     @staticmethod
     def load_players():

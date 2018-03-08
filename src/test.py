@@ -1,5 +1,6 @@
 import collections
 import sys
+from enum import Enum, unique
 
 try:
     import simplegui
@@ -7,12 +8,12 @@ except ImportError:
     import simpleguitk as simplegui
 
 
-class MainMenuItems:
+@unique
+class MainMenuItems(Enum):
     START = {"index": 0, "label": "Start"}
     SCOREBOARD = {"index": 1, "label": "Scoreboard"}
     OPTIONS = {"index": 2, "label": "Options"}
     EXIT = {"index": 3, "label": "Exit"}
-    ITEMS = [START, SCOREBOARD, OPTIONS, EXIT]
 
 
 class MainMenu:
@@ -46,30 +47,33 @@ class MainMenu:
             sys.exit()
 
     # noinspection PyTypeChecker
-    def key_down(self, key):
-        if key == simplegui.KEY_MAP['down']:
-            self.selected_menu_item = (self.selected_menu_item + 1) % len(MainMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP['up']:
-            self.selected_menu_item = (self.selected_menu_item - 1) % len(MainMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP['return']:
-            if self.selected_menu_item == MainMenuItems.START["index"]:
-                self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
-            elif self.selected_menu_item == MainMenuItems.SCOREBOARD["index"]:
-                self.window.frame.set_draw_handler(self.window.scoreboard.draw_canvas)
-            elif self.selected_menu_item == MainMenuItems.EXIT["index"]:
-                print("Player exited game.")
-                self.exiting = True
-
-    # noinspection PyTypeChecker
     def draw_canvas(self, canvas):
         if self.canvas is None:
             self.canvas = canvas
-        self.window.frame.set_keydown_handler(self.key_down)
         canvas.draw_text("BerryDrive", (75, 175), 90, "White", "sans-serif")
-        menu_items = collections.OrderedDict([(item["index"], "White") for item in MainMenuItems.ITEMS])
+        menu_items = collections.OrderedDict([(item, "White") for item in MainMenuItems])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Aqua"
-        for index, item in enumerate(MainMenuItems.ITEMS):
-            canvas.draw_text(item["label"], (75, 375 + (50 * index)), 40, menu_items[item["index"]], "sans-serif")
+        for index, item in enumerate(MainMenuItems):
+            canvas.draw_text(item.value["label"], (75, 375 + (50 * index)), 40, menu_items[item], "sans-serif")
         # Animation: draw panels from edge when exiting
         if self.exiting:
             self.player_exit()
+
+
+class GameWindow:
+    WIDTH = 800
+    HEIGHT = 600
+
+    def __init__(self):
+        self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", GameWindow.WIDTH, GameWindow.HEIGHT)
+
+        self.main_menu = MainMenu(self)
+
+    def start(self):
+        self.frame.set_draw_handler(self.main_menu.draw_canvas)
+        self.frame.start()
+
+
+if __name__ == "__main__":
+    window = GameWindow()
+    window.start()

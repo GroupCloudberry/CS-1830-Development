@@ -8,8 +8,7 @@ except ImportError:
     import simpleguitk as simplegui
 
 
-@unique
-class DeathMenuItems(Enum):
+class DeathMenuItems():
     RESTART = 0
     MAIN_MENU = 1
 
@@ -30,9 +29,9 @@ class DeathMenu:
         elif key == simplegui.KEY_MAP["up"]:
             self.selected_menu_item = (self.selected_menu_item - 1) % 2
         elif key == simplegui.KEY_MAP["return"]:
-            if self.selected_menu_item == DeathMenuItems.RESTART.value:
+            if self.selected_menu_item == DeathMenuItems.RESTART:
                 pass
-            elif self.selected_menu_item == DeathMenuItems.MAIN_MENU.value:
+            elif self.selected_menu_item == DeathMenuItems.MAIN_MENU:
                 self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
     def draw_boxes(self, canvas):
