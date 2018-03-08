@@ -22,11 +22,11 @@ class GameWindow:
         self.death_menu = DeathMenu(self)
         self.game_interface = GameInterface(self)
         self.scoreboard = ScoreBoard(self)
-        self.options = None  # WIP
         self.pause = PauseMenu(self)
+        self.options = None  # WIP
 
     def start(self):
-        self.frame.set_draw_handler(self.pause.draw_canvas)
+        self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
 
