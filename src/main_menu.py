@@ -66,11 +66,11 @@ class MainMenu:
         if self.canvas is None:
             self.canvas = canvas
         self.window.frame.set_keydown_handler(self.key_down)
-        canvas.draw_text("BerryDrive", (75, 175), 90, "White")
+        canvas.draw_text("BerryDrive", (75, 175), 90, "White", "sans-serif")
         menu_items = collections.OrderedDict([(item, "White") for item in MainMenuItems])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Aqua"
         for index, item in enumerate(MainMenuItems):
-            canvas.draw_text(item.value["label"], (75, 375 + (50 * index)), 40, menu_items[item])
+            canvas.draw_text(item.value["label"], (75, 375 + (50 * index)), 40, menu_items[item], "sans-serif")
         # Animation: draw panels from edge when exiting
         if self.exiting:
             self.player_exit()
