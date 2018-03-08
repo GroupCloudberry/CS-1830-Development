@@ -41,8 +41,8 @@ class MainMenu:
                                   (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 0,
                                  box_colour, box_colour)
         if self.left_cover_x < 0:
-            self.left_cover_x += 50
-            self.right_cover_x -= 50
+            self.left_cover_x += 35
+            self.right_cover_x -= 35
         else:
             sys.exit()
 
