@@ -1,11 +1,10 @@
 from transition_clock import TransitionClock
 from vector import Vector
-import simpleguitk as simplegui
+
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-
 
 BALL_RADIUS = 10
 tyre1_pos = [70, 300]
@@ -40,7 +39,6 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
-
     def draw(self, canvas):
         global velocity, time, counter
 
@@ -51,6 +49,10 @@ class GameInterface:
         center_dest = (120, 147)
         width_height_dest = (frameWidth, frameHeight)
         canvas.draw_image(image, center_source, width_height_source, center_dest, width_height_dest)
+
+    def draw_canvas(self, canvas):
+        global velocity
+
 
         #Constructing the road
         canvas.draw_line([0, 400], [350, 400], 5, 'white')
@@ -123,8 +125,8 @@ class GameInterface:
                              (self.right_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
                              (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 0,
                             box_colour_right, box_colour_right)
-        self.left_cover_x -= 15
-        self.right_cover_x += 15
+        self.left_cover_x -= 25
+        self.right_cover_x += 25
 
     def nextFrame(self):
         global frameIndex

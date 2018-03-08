@@ -17,6 +17,7 @@ class IdNotFoundError(Exception):
 
 class PlayerData:
 
+    DATABASE_NAME = "players.db"
     TABLE = "players"
 
     def __init__(self, db_name):
@@ -32,14 +33,15 @@ class PlayerData:
         self.connection.close()
 
     def id_exists(self, key):
-        sql_command = "SELECT id FROM " + PlayerData.TABLE + " WHERE id = " + key
+        sql_command = "SELECT id FROM " + PlayerData.TABLE + " WHERE id = " + str(key)
         cursor = self.connection.cursor()
         cursor.execute(sql_command)
         return cursor.fetchone() is not None
 
     def add_player(self, name, level, high_score, currency, lives):
-        sql_command = "INSERT INTO " + PlayerData.TABLE + "[(name, level, high_score, currency, lives)]" \
-                      "VALUES (" + ", ".join(["'{}'".format(name), level, high_score, currency, lives]) + ");"
+        sql_command = "INSERT INTO " + PlayerData.TABLE + " (name, level, high_score, currency, lives)" \
+                      " VALUES (" + ", ".join(["'{}'".format(name), str(level), str(high_score),
+                                              str(currency), str(lives)]) + ");"
         cursor = self.connection.cursor()
         cursor.execute(sql_command)
         self.connection.commit()
@@ -49,15 +51,16 @@ class PlayerData:
         if not self.id_exists(key):
             raise IdNotFoundError
         sql_command = "UPDATE " + self.TABLE + " SET name = " + "'{}'".format(name) + \
-                      ", level = " + level + ", high_score = " + high_score + ", currency = " + currency + \
-                      ", lives = " + lives + " WHERE id = " + key
+                      ", level = " + str(level) + ", high_score = " + str(high_score) + \
+                      ", currency = " + str(currency) + ", lives = " + str(lives) + " WHERE id = " + str(key)
+        print(sql_command)
         self.connection.execute(sql_command)
         self.connection.commit()
 
     def retrieve_by_id(self, key, fields):
         if not self.id_exists(key):
             raise IdNotFoundError
-        sql_command = "SELECT " + fields + " from " + self.TABLE + " WHERE id = " + key
+        sql_command = "SELECT " + fields.value + " from " + self.TABLE + " WHERE id = " + str(key)
         cursor = self.connection.cursor()
         cursor.execute(sql_command)
         return cursor.fetchone()
@@ -65,17 +68,21 @@ class PlayerData:
     def get_field_by_id(self, key, field):
         return self.retrieve_by_id(key, field)[0]
 
+    # noinspection PyTypeChecker
     def get_all_by_id(self, key):
         return self.retrieve_by_id(key, "*")
 
     def get_ids_by_name(self, name):
-        ids = []
         sql_command = "SELECT id FROM " + PlayerData.TABLE + " WHERE name = " + name
         cursor = self.connection.cursor()
         cursor.execute(sql_command)
-        for row in list(cursor):
-            ids.append(row[0])
-        return ids
+        return [row[0] for row in list(cursor)]
+
+    def get_all_ids(self):
+        sql_command = "SELECT id from " + PlayerData.TABLE
+        cursor = self.connection.cursor()
+        cursor.execute(sql_command)
+        return [row[0] for row in list(cursor)]
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()

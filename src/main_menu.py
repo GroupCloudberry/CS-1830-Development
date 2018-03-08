@@ -10,10 +10,10 @@ except ImportError:
 
 @unique
 class MainMenuItems(Enum):
-    START = 0
-    OPTIONS = 1
-    SCOREBOARD = 2
-    EXIT = 3
+    START = {"index": 0, "label": "Start"}
+    SCOREBOARD = {"index": 1, "label": "Scoreboard"}
+    OPTIONS = {"index": 2, "label": "Options"}
+    EXIT = {"index": 3, "label": "Exit"}
 
 
 class MainMenu:
@@ -21,27 +21,26 @@ class MainMenu:
         self.selected_menu_item = 0
         self.window = window
 
-    def menu_key_down(self, key):
+    # noinspection PyTypeChecker
+    def key_down(self, key):
         if key == simplegui.KEY_MAP['down']:
-            self.selected_menu_item = (self.selected_menu_item + 1) % 4
+            self.selected_menu_item = (self.selected_menu_item + 1) % len(MainMenuItems)
         elif key == simplegui.KEY_MAP['up']:
-            self.selected_menu_item = (self.selected_menu_item - 1) % 4
+            self.selected_menu_item = (self.selected_menu_item - 1) % len(MainMenuItems)
         elif key == simplegui.KEY_MAP['return']:
-            if self.selected_menu_item == MainMenuItems.START.value:
-                self.window.frame.set_draw_handler(self.window.game_interface.draw)
-            elif self.selected_menu_item == MainMenuItems.EXIT.value:
+            if self.selected_menu_item == MainMenuItems.START.value["index"]:
+                self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
+            elif self.selected_menu_item == MainMenuItems.SCOREBOARD.value["index"]:
+                self.window.frame.set_draw_handler(self.window.scoreboard.draw_canvas)
+            elif self.selected_menu_item == MainMenuItems.EXIT.value["index"]:
                 print("Player exited game.")
                 sys.exit()
 
-    def draw(self, canvas):
-        self.window.frame.set_keydown_handler(self.menu_key_down)
-
-        menu_items = collections.OrderedDict([(MainMenuItems.START, "White"), (MainMenuItems.SCOREBOARD, "White"),
-                                              (MainMenuItems.OPTIONS, "White"), (MainMenuItems.EXIT, "White")])
-        menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Orange"
-
+    # noinspection PyTypeChecker
+    def draw_canvas(self, canvas):
+        self.window.frame.set_keydown_handler(self.key_down)
         canvas.draw_text("BerryDrive", (75, 175), 90, "White")
-        canvas.draw_text("Start", (75, 375), 40, menu_items[MainMenuItems.START])
-        canvas.draw_text("Scoreboard", (75, 425), 40, menu_items[MainMenuItems.SCOREBOARD])
-        canvas.draw_text("Options", (75, 475), 40, menu_items[MainMenuItems.OPTIONS])
-        canvas.draw_text("Exit", (75, 525), 40, menu_items[MainMenuItems.EXIT])
+        menu_items = collections.OrderedDict([(item, "White") for item in MainMenuItems])
+        menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Orange"
+        for index, item in enumerate(MainMenuItems):
+            canvas.draw_text(item.value["label"], (75, 375 + (50 * index)), 40, menu_items[item])

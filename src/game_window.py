@@ -1,6 +1,7 @@
 from death_menu import DeathMenu
 from game_interface import GameInterface
 from main_menu import MainMenu
+from score_board import ScoreBoard
 
 try:
     import simplegui
@@ -19,16 +20,21 @@ class GameWindow:
         self.main_menu = MainMenu(self)
         self.death_menu = DeathMenu(self)
         self.game_interface = GameInterface(self)
+        self.scoreboard = ScoreBoard(self)
+        self.options = None  # WIP
 
     def start(self):
-        self.frame.set_draw_handler(self.main_menu.draw)
+        self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     window = GameWindow()
     window.start()
+<<<<<<< HEAD
 
     timer = simplegui.create_timer(50, GameInterface(window).nextFrame)
     timer.start()
 
+=======
+>>>>>>> cb03b1249f31a98c088331cf8caf47f9add52857
