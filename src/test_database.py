@@ -28,6 +28,6 @@ class TestDatabase:
 
 if __name__ == "__main__":
     test = TestDatabase()
-    test.populate_table(5)
+    test.populate_table(3)
     test.load_table()
     test.print_table()

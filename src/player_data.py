@@ -68,6 +68,7 @@ class PlayerData:
     def get_field_by_id(self, key, field):
         return self.retrieve_by_id(key, field)[0]
 
+    # noinspection PyTypeChecker
     def get_all_by_id(self, key):
         return self.retrieve_by_id(key, "*")
 

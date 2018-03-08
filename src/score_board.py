@@ -25,7 +25,7 @@ class ScoreBoard:
         self.box_reveal = 0.0
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
 
-        self.players = []
+        self.players = self.load_players()
 
     def exit(self):
         # New ScoreBoard object created to run the animation again on next load
@@ -61,10 +61,16 @@ class ScoreBoard:
         for index, item in enumerate(ScoreBoardMenuItems):
             canvas.draw_text(item.value["label"], (75 - self.menu_reveal, 480 + (42 * index)), 30, menu_items[item])
 
-    def load_players(self):
+    @staticmethod
+    def load_players():
         db = PlayerData(PlayerData.DATABASE_NAME)
-        for key in db.get_all_ids():
-            self.players.append(PlayerAttributes.load(key))
+        return [PlayerAttributes.load(key) for key in db.get_all_ids()]
+
+    def draw_players(self, canvas):
+        for index, player in enumerate(self.players):
+            if index == 7:
+                break
+            canvas.draw_text("{} (Score: {})".format(player.name, player.high_score), (125, 212 + (35 * index)), 25, "White")
 
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:
@@ -76,5 +82,5 @@ class ScoreBoard:
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_boxes(canvas)
         self.draw_menu(canvas)
-        self.load_players()
+        self.draw_players(canvas)
         self.reveal()
