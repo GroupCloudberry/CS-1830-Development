@@ -110,8 +110,8 @@ class GameInterface:
 
 
     def reveal(self, canvas):
-        box_colour_left = "Orange"
-        box_colour_right = "Orange"
+        box_colour_left = "Aqua"
+        box_colour_right = "Aqua"
         canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
