@@ -1,6 +1,8 @@
 import collections
 from enum import Enum, unique
 
+import math
+
 from player_attributes import PlayerAttributes
 from player_data import PlayerData
 
@@ -26,6 +28,7 @@ class ScoreBoard:
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
 
         self.players = self.load_players()
+        self.page = 1
 
     def exit(self):
         # New ScoreBoard object created to run the animation again on next load
@@ -40,6 +43,10 @@ class ScoreBoard:
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems)
         elif key == simplegui.KEY_MAP["up"]:
             self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems)
+        elif key == simplegui.KEY_MAP["next"]:
+            self.page = (self.page + 1) % math.ceil(len(self.players) / 7)
+        elif key == simplegui.KEY_MAP["prior"]:
+            self.page = (self.page - 1) % math.ceil(len(self.players) / 7)
         elif key == simplegui.KEY_MAP["return"]:
             if self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU.value["index"]:
                 self.exit()
@@ -67,10 +74,10 @@ class ScoreBoard:
         return [PlayerAttributes.load(key) for key in db.get_all_ids()]
 
     def draw_players(self, canvas):
-        for index, player in enumerate(self.players):
-            if index == 7:
-                break
-            canvas.draw_text("{} (Score: {})".format(player.name, player.high_score), (125, 212 + (35 * index)), 25, "White")
+        for i in range(7):
+            print(i*self.page)
+            canvas.draw_text("{} (Score: {})".format(self.players[i*self.page].name, self.players[i*self.page].high_score),
+                             (125, 212 + (35 * i)), 25, "White")
 
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:

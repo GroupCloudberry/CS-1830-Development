@@ -31,10 +31,6 @@ class GameWindow:
 if __name__ == "__main__":
     window = GameWindow()
     window.start()
-<<<<<<< HEAD
 
     timer = simplegui.create_timer(50, GameInterface(window).nextFrame)
     timer.start()
-
-=======
->>>>>>> cb03b1249f31a98c088331cf8caf47f9add52857

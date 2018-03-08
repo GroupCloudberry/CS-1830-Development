@@ -39,9 +39,8 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
-    def draw(self, canvas):
-        global velocity, time, counter
-
+    def draw_canvas(self, canvas):
+        global velocity
         x = frameWidth * frameIndex[0] + frameCentreX
         y = frameHeight * frameIndex[1] + frameCentreY
         center_source = (x, y)
@@ -49,9 +48,6 @@ class GameInterface:
         center_dest = (120, 147)
         width_height_dest = (frameWidth, frameHeight)
         canvas.draw_image(image, center_source, width_height_source, center_dest, width_height_dest)
-
-    def draw_canvas(self, canvas):
-        global velocity
 
 
         #Constructing the road
@@ -139,7 +135,6 @@ class GameInterface:
 
     def click(pos):
         pos.nextFrame()
-
 
 
 class Keyboard:
