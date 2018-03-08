@@ -32,18 +32,18 @@ class MainMenu:
                                   (self.left_cover_x + self.window.__class__.WIDTH / 2,
                                    self.window.__class__.HEIGHT),
                                   (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
-                                 0, box_colour, box_colour)
+                                 1, box_colour, box_colour)
         self.canvas.draw_polygon([(self.right_cover_x, 0),
                                   (self.right_cover_x, self.window.__class__.HEIGHT),
                                   (self.right_cover_x + self.window.__class__.WIDTH / 2,
                                    self.window.__class__.HEIGHT),
-                                  (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 0,
+                                  (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
                                  box_colour, box_colour)
         if self.left_cover_x < 0:
             self.left_cover_x += 35
             self.right_cover_x -= 35
         else:
-            sys.exit()
+            exit()
 
     # noinspection PyTypeChecker
     def key_down(self, key):
@@ -51,7 +51,7 @@ class MainMenu:
             self.selected_menu_item = (self.selected_menu_item + 1) % len(MainMenuItems.ITEMS)
         elif key == simplegui.KEY_MAP['up']:
             self.selected_menu_item = (self.selected_menu_item - 1) % len(MainMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP['return']:
+        elif key == simplegui.KEY_MAP['right']:
             if self.selected_menu_item == MainMenuItems.START["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == MainMenuItems.SCOREBOARD["index"]:

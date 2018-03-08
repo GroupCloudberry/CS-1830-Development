@@ -256,3 +256,4 @@ $RECYCLE.BIN/
 # Ignore files generated during tests
 src/players.db
 src/players
+src/test.py
