@@ -1,4 +1,4 @@
-from player_data import PlayerData, PlayerFields
+# from player_data import PlayerData, PlayerFields
 
 
 class PlayerAttributes:
@@ -15,15 +15,17 @@ class PlayerAttributes:
         self.currency = None
         self.lives = None
 
-        self.db = PlayerData(PlayerData.DATABASE_NAME)
-        self.id = None
+        # self.db = PlayerData(PlayerData.DATABASE_NAME)
+        # self.id = None
 
+    """
     def add_to_db(self):
         self.id = self.db.add_player(self.name, self.level, self.high_score, self.currency, self.lives)
         return self.id
 
     def sync_to_db(self):
         self.db.update_player(self.id, self.name, self.level, self.high_score, self.currency, self.lives)
+    """
 
     def set_params(self, name=None, level=None, high_score=None, currency=None, lives=None):
         self.name = name
@@ -32,20 +34,23 @@ class PlayerAttributes:
         self.currency = currency
         self.lives = lives
 
+    """
     def close(self):
         self.db.close()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
+    """
 
     @staticmethod
     def create(name):
         attr = PlayerAttributes()
         attr.set_params(name, PlayerAttributes.DEFAULT_LEVEL, PlayerAttributes.DEFAULT_SCORE,
                         PlayerAttributes.DEFAULT_CURRENCY, PlayerAttributes.DEFAULT_LIVES)
-        attr.add_to_db()
+        # attr.add_to_db()
         return attr
 
+    """
     @staticmethod
     def load(key):
         attr = PlayerAttributes()
@@ -56,7 +61,7 @@ class PlayerAttributes:
                         attr.db.get_field_by_id(key, PlayerFields.LIVES))
         attr.id = key
         return attr
-
+    
     @staticmethod
     def get_ids_with_name(name):
         db = PlayerData(PlayerData.DATABASE_NAME)
@@ -72,3 +77,4 @@ class PlayerAttributes:
             db.delete_all()
         finally:
             db.close()
+    """
