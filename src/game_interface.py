@@ -1,13 +1,10 @@
 from transition_clock import TransitionClock
-<<<<<<< HEAD
 from vector import Vector
 import simpleguitk as simplegui
-=======
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
->>>>>>> 204bc6bbe73fe6860b2116f8f63c258537bb41ea
 
 
 BALL_RADIUS = 10
@@ -20,6 +17,19 @@ velocity = 8
 vel = [0,  velocity]
 """
 gravity = -0.1
+image = simplegui.load_image('https://opengameart.org/sites/default/files/city_background_night.png')
+width = image.get_width()
+height = image.get_height()
+
+columns = 8
+rows = 1
+
+frameWidth = width//columns
+frameHeight = height//rows
+
+frameCentreX = frameWidth//2
+frameCentreY = frameHeight//2
+frameIndex = (0,0)
 
 
 class GameInterface:
@@ -30,8 +40,17 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
+
     def draw(self, canvas):
-        global velocity
+        global velocity, time, counter
+
+        x = frameWidth * frameIndex[0] + frameCentreX
+        y = frameHeight * frameIndex[1] + frameCentreY
+        center_source = (x, y)
+        width_height_source = (frameWidth, frameHeight)
+        center_dest = (120, 147)
+        width_height_dest = (frameWidth, frameHeight)
+        canvas.draw_image(image, center_source, width_height_source, center_dest, width_height_dest)
 
         #Constructing the road
         canvas.draw_line([0, 400], [350, 400], 5, 'white')
@@ -106,6 +125,19 @@ class GameInterface:
                             box_colour_right, box_colour_right)
         self.left_cover_x -= 15
         self.right_cover_x += 15
+
+    def nextFrame(self):
+        global frameIndex
+        i = (frameIndex[0] + 1) % columns
+        if i == 0:
+            j = (frameIndex[1] + 1) % rows
+        else:
+            j = frameIndex[1]
+        frameIndex = (i, j)
+
+    def click(pos):
+        pos.nextFrame()
+
 
 
 class Keyboard:
