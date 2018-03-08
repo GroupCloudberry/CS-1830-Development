@@ -84,5 +84,10 @@ class PlayerData:
         cursor.execute(sql_command)
         return [row[0] for row in list(cursor)]
 
+    def delete_all(self):
+        sql_command = "DROP TABLE " + PlayerData.TABLE
+        self.connection.execute(sql_command)
+        self.connection.commit()
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()

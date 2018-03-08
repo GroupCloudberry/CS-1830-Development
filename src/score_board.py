@@ -24,11 +24,13 @@ class ScoreBoard:
         self.window = window
         self.selected_menu_item = 1
 
-        self.box_reveal = 0.0
+        self.box_reveal = 0.0  # Floating point for incremental reveal
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
+        self.players_reveal = False  # Instantaneous reveal when True
 
         self.players = self.load_players()
-        self.page = 1
+        self.page = 0
+        self.pages = 1 if len(self.players) == 0 else math.ceil(len(self.players) / 7)
 
     def exit(self):
         # New ScoreBoard object created to run the animation again on next load
@@ -43,12 +45,15 @@ class ScoreBoard:
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems)
         elif key == simplegui.KEY_MAP["up"]:
             self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems)
-        elif key == simplegui.KEY_MAP["next"]:
-            self.page = (self.page + 1) % math.ceil(len(self.players) / 7)
-        elif key == simplegui.KEY_MAP["prior"]:
-            self.page = (self.page - 1) % math.ceil(len(self.players) / 7)
+        elif key == simplegui.KEY_MAP["next"] or key == simplegui.KEY_MAP["right"]:
+            self.page = (self.page + 1) % self.pages
+        elif key == simplegui.KEY_MAP["prior"] or key == simplegui.KEY_MAP["left"]:
+            self.page = (self.page - 1) % self.pages
         elif key == simplegui.KEY_MAP["return"]:
-            if self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU.value["index"]:
+            if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL.value["index"]:
+                PlayerAttributes.delete_all_players()
+                self.players = self.load_players()
+            elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU.value["index"]:
                 self.exit()
 
     def draw_boxes(self, canvas):
@@ -60,6 +65,11 @@ class ScoreBoard:
                              (box1_x + box1_width, box1_y + box1_height),
                              (box1_x + box1_width, box1_y)], 0, "Black", "Yellow")
         canvas.draw_text("Scoreboard", (box1_x + 20, box1_y + 67), 50, "Black")
+        # Draw instruction labels
+        hint_colour = "White" if self.menu_reveal == 0 else "Black"
+        canvas.draw_text("Use Page Up and Page Down keys", (box1_x + box1_width + 30, box1_y + 35), 20, hint_colour)
+        canvas.draw_text("or left and right arrows to browse", (box1_x + box1_width + 30, box1_y + 35 + 25), 20,
+                         hint_colour)
 
     # noinspection PyTypeChecker
     def draw_menu(self, canvas):
@@ -74,16 +84,26 @@ class ScoreBoard:
         return [PlayerAttributes.load(key) for key in db.get_all_ids()]
 
     def draw_players(self, canvas):
-        for i in range(7):
-            print(i*self.page)
-            canvas.draw_text("{} (Score: {})".format(self.players[i*self.page].name, self.players[i*self.page].high_score),
-                             (125, 212 + (35 * i)), 25, "White")
+        players_per_page = 7
+        players_already_shown = self.page * players_per_page
+        players_not_yet_shown = len(self.players) - players_already_shown
+        for i in range(min(players_not_yet_shown, players_per_page)):
+            index = i + players_already_shown
+            canvas.draw_text("{}. {} (score: {})".format(self.players[index].id, self.players[index].name,
+                                self.players[index].high_score), (125, 212 + (35 * i)), 25,
+                             "White" if self.players_reveal else "Black")
+        hint_colour = "White" if self.menu_reveal == 0 else "Black"
+        canvas.draw_text("Page {}/{}".format(self.page+1, self.pages), (self.window.__class__.WIDTH - 75 -
+                            self.window.frame.get_canvas_textwidth("Page {}/{} ".format(self.page+1, self.pages), 20),
+                          self.window.__class__.HEIGHT - 75), 20, hint_colour)
 
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:
             self.box_reveal += 0.1
         elif self.menu_reveal < 0:
             self.menu_reveal = 0
+        elif self.players_reveal == False:
+            self.players_reveal = True
 
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)

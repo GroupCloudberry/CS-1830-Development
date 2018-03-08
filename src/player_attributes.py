@@ -59,8 +59,16 @@ class PlayerAttributes:
 
     @staticmethod
     def get_ids_with_name(name):
-        db = PlayerData(PlayerAttributes.DATABASE_NAME)
+        db = PlayerData(PlayerData.DATABASE_NAME)
         try:
             return db.get_ids_by_name(name)
+        finally:
+            db.close()
+
+    @staticmethod
+    def delete_all_players():
+        db = PlayerData(PlayerData.DATABASE_NAME)
+        try:
+            db.delete_all()
         finally:
             db.close()
