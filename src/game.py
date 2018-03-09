@@ -16,13 +16,13 @@ else:
     from scoreboard import ScoreBoard
 
 
-class GameWindow:
+class Game:
 
     WIDTH = 800
     HEIGHT = 600
 
     def __init__(self):
-        self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", GameWindow.WIDTH, GameWindow.HEIGHT)
+        self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", Game.WIDTH, Game.HEIGHT)
 
         self.main_menu = MainMenu(self)
         self.death_menu = DeathMenu(self)
@@ -37,7 +37,7 @@ class GameWindow:
 
 
 if __name__ == "__main__":
-    window = GameWindow()
+    window = Game()
     window.start()
 
     timer = simplegui.create_timer(50, GameInterface(window).nextFrame)
