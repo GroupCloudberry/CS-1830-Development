@@ -1,7 +1,7 @@
 import collections
 import math
 
-from player_attributes import PlayerAttributes
+from player_attributes_sqlite import PlayerAttributesSQLite
 from player_data import PlayerData
 
 try:
@@ -45,7 +45,7 @@ class ScoreBoard:
             self.page = (self.page + 1) % self.pages
         elif key == simplegui.KEY_MAP["right"]:
             if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
-                PlayerAttributes.delete_all_players()
+                PlayerAttributesSQLite.delete_all_players()
                 self.players = self.load_players()
             elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:
                 self.exit()
@@ -77,7 +77,7 @@ class ScoreBoard:
     @staticmethod
     def load_players():
         db = PlayerData(PlayerData.DATABASE_NAME)
-        return [PlayerAttributes.load(key) for key in db.get_all_ids()]
+        return [PlayerAttributesSQLite.load(key) for key in db.get_all_ids()]
 
     def draw_players(self, canvas):
         players_per_page = 7
