@@ -44,6 +44,17 @@ class MainMenu:
         else:
             exit()
 
+    def draw_boxes(self, canvas):
+        box_colour = "Teal"
+        box1_x = 75
+        box1_y = 75
+        box1_width = 443
+        box1_height = 123
+        canvas.draw_polygon([(box1_x, box1_y), (box1_x, box1_y + box1_height),
+                             (box1_x + box1_width, box1_y + box1_height),
+                             (box1_x + box1_width, box1_y)], 0, box_colour, box_colour)
+        canvas.draw_text("BerryDrive", (75 + 23, 185), 90, "White", "sans-serif")
+
     def reveal(self):
         box_colour = "Teal"
         self.canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
@@ -79,7 +90,7 @@ class MainMenu:
         if self.canvas is None:
             self.canvas = canvas
         self.window.frame.set_keydown_handler(self.key_down)
-        canvas.draw_text("BerryDrive", (75, 175), 90, "White", "sans-serif")
+        self.draw_boxes(canvas)
         menu_items = collections.OrderedDict([(item["index"], "White") for item in MainMenuItems.ITEMS])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Teal"
         for index, item in enumerate(MainMenuItems.ITEMS):
