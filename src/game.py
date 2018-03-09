@@ -2,6 +2,7 @@ from death_menu import DeathMenu
 from game_interface import GameInterface
 from main_menu import MainMenu
 from pause_menu import PauseMenu
+from story_screen import StoryScreen
 
 try:
     import simplegui
@@ -25,10 +26,11 @@ class Game:
         self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", Game.WIDTH, Game.HEIGHT)
 
         self.main_menu = MainMenu(self)
+        self.pause_menu = PauseMenu(self)
         self.death_menu = DeathMenu(self)
+        self.story_screen = StoryScreen(self)
         self.game_interface = GameInterface(self)
         self.scoreboard = ScoreBoard(self)
-        self.pause_menu = PauseMenu(self)
         self.options = None  # WIP
 
     def start(self):
