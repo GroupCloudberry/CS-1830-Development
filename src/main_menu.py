@@ -22,6 +22,7 @@ class MainMenu:
 
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
+        self.banner_reveal = 0.0
 
         self.exiting = False
 
@@ -52,8 +53,13 @@ class MainMenu:
         box1_height = 123
         canvas.draw_polygon([(box1_x, box1_y), (box1_x, box1_y + box1_height),
                              (box1_x + box1_width, box1_y + box1_height),
-                             (box1_x + box1_width, box1_y)], 0, box_colour, box_colour)
+                             (box1_x + box1_width, box1_y)], 1, box_colour, box_colour)
         canvas.draw_text("BerryDrive", (75 + 23, 185), 90, "White", "sans-serif")
+        # Reveal slide-out animation
+        canvas.draw_polygon([(box1_x + (box1_width * self.banner_reveal), box1_y),
+                             (box1_x + (box1_width * self.banner_reveal), box1_y + box1_height),
+                             (box1_x + box1_width, box1_y + box1_height),
+                             (box1_x + box1_width, box1_y)], 1, "Black", "Black")
 
     def reveal(self):
         box_colour = "Teal"
@@ -69,6 +75,8 @@ class MainMenu:
         if self.left_cover_x > -(self.window.__class__.WIDTH / 2):
             self.left_cover_x -= 25
             self.right_cover_x += 25
+        elif round(self.banner_reveal, 1) < 1.0:
+            self.banner_reveal += 0.1
 
     # noinspection PyTypeChecker
     def key_down(self, key):

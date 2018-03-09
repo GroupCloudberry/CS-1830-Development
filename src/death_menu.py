@@ -42,7 +42,7 @@ class DeathMenu:
         box1_height = 100
         canvas.draw_polygon([(box1_x, box1_y), (box1_x, box1_y + box1_height),
                              (box1_x + box1_width, box1_y + box1_height),
-                             (box1_x + box1_width, box1_y)], 0, "Black", "Orange")
+                             (box1_x + box1_width, box1_y)], 1, "Black", "Orange")
         canvas.draw_text("You died.", (box1_x + 20, box1_y + 100), 80, "Black", "sans-serif")
 
         box2_x = 75
@@ -51,7 +51,7 @@ class DeathMenu:
         box2_height = 50
         canvas.draw_polygon([(box2_x, box2_y), (box2_x, box2_y + box2_height),
                              (box2_x + box2_width, box2_y + box2_height),
-                             (box2_x + box2_width, box2_y)], 0, "Black", "White")
+                             (box2_x + box2_width, box2_y)], 1, "Black", "White")
         canvas.draw_text("Lives Left: 0", (box2_x + 20, box2_y + 47), 35, "Black", "sans-serif")
 
     def draw_menu(self, canvas):
@@ -59,10 +59,10 @@ class DeathMenu:
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Orange"
         canvas.draw_text("Restart Level", (75, 475), 35, menu_items[DeathMenuItems.RESTART])
         canvas.draw_polygon([(275 * self.menu_reveal, 475), (275 * self.menu_reveal, 475 - 35),
-                             (275, 475 - 35), (275, 475)], 0, "Black", "Black", "sans-serif")
+                             (275, 475 - 35), (275, 475)], 1, "Black", "Black", "sans-serif")
         canvas.draw_text("Back to Main Menu", (75, 525), 35, menu_items[DeathMenuItems.MAIN_MENU])
         canvas.draw_polygon([(375 * self.menu_reveal, 525), (385 * self.menu_reveal, 525 - 35),
-                             (375, 525 - 35), (375, 525)], 0, "Black", "Black", "sans-serif")
+                             (375, 525 - 35), (375, 525)], 1, "Black", "Black", "sans-serif")
 
     def reveal(self):
         if round(self.box1_reveal, 1) < 1.0:

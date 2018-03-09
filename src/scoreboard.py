@@ -53,7 +53,7 @@ class ScoreBoard:
         box1_height = 75
         canvas.draw_polygon([(box1_x, box1_y), (box1_x, box1_y + box1_height),
                              (box1_x + box1_width, box1_y + box1_height),
-                             (box1_x + box1_width, box1_y)], 0, "Black", "Yellow")
+                             (box1_x + box1_width, box1_y)], 1, "Black", "Yellow")
         canvas.draw_text("Scoreboard", (box1_x + 20, box1_y + 67), 50, "Black", "sans-serif")
         # Draw instruction labels
         hint_colour = "White" if self.menu_reveal == 0 else "Black"
