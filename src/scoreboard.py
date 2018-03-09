@@ -1,9 +1,6 @@
 import collections
 import math
 
-from player_attributes_sqlite import PlayerAttributesSQLite
-from player_data import PlayerData
-
 try:
     import simplegui
 except ImportError:
@@ -26,8 +23,8 @@ class ScoreBoard:
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
         self.players_reveal = False  # Instantaneous reveal when True
 
-        self.players = self.load_players()
         self.page = 0
+        self.players = []
         self.pages = 1 if len(self.players) == 0 else math.ceil(len(self.players) / 7)
 
     def exit(self):
@@ -45,8 +42,7 @@ class ScoreBoard:
             self.page = (self.page + 1) % self.pages
         elif key == simplegui.KEY_MAP["right"]:
             if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
-                PlayerAttributesSQLite.delete_all_players()
-                self.players = self.load_players()
+                print("SQLite database unsupported in CodeSkulptor.")
             elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:
                 self.exit()
 
@@ -73,11 +69,6 @@ class ScoreBoard:
         for index, item in enumerate(ScoreBoardMenuItems.ITEMS):
             canvas.draw_text(item["label"], (75 - self.menu_reveal, 480 + (42 * index)), 30,
                              menu_items[item["index"]], "sans-serif")
-
-    @staticmethod
-    def load_players():
-        db = PlayerData(PlayerData.DATABASE_NAME)
-        return [PlayerAttributesSQLite.load(key) for key in db.get_all_ids()]
 
     def draw_players(self, canvas):
         players_per_page = 7

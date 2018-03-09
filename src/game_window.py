@@ -2,12 +2,18 @@ from death_menu import DeathMenu
 from game_interface import GameInterface
 from main_menu import MainMenu
 from pause_menu import PauseMenu
-from score_board import ScoreBoard
 
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
+
+if simplegui.__name__ == "simpleguitk":
+    print("SQLite3 database supported.")
+    from scoreboard_sqlite import ScoreBoardSQLite as ScoreBoard
+else:
+    print("SQLite3 database not supported on CodeSkulptor.")
+    from scoreboard import ScoreBoard
 
 
 class GameWindow:
@@ -31,7 +37,6 @@ class GameWindow:
 
 
 if __name__ == "__main__":
-    print(simplegui.__name__)
     window = GameWindow()
     window.start()
 
