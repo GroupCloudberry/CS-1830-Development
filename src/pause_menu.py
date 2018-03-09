@@ -66,7 +66,6 @@ class PauseMenu:
             self.menu_reveal = 0
 
     def draw_canvas(self, canvas):
-        print(self.window.frame.get_canvas_textwidth("Paused", 50))
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_boxes(canvas)
         self.draw_menu(canvas)

@@ -31,6 +31,7 @@ class GameWindow:
 
 
 if __name__ == "__main__":
+    print(simplegui.__name__)
     window = GameWindow()
     window.start()
 

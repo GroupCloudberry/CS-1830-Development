@@ -8,6 +8,19 @@ class Player:
 
     The fields name, level, high_score, currency, and lives are available as instance variables
     of PlayerAttributes. They can be updated by assigning a new value to them.
+
+    Note that you should not import this class directly.
+    The Player class only should be used for instances where the simplegui import refers to the simplegui module.
+    This is because Codeskulptor does not support SQLite3. PlayerSQLite should be used wherever the simplegui import
+    refers to the simpleguitk module, in order to support database functionality.
+
+    To make imports easier, use the following snippet:
+    if simplegui.__name__ == "simpleguitk":
+        from player_sqlite import PlayerSQLite as Player
+        from player_attributes_sqlite import PlayerAttributesSQLite as PlayerAttributes
+    else:
+        from player import Player
+        from player_attributes import PlayerAttributes
     """
 
     def __init__(self, attributes: PlayerAttributes):
@@ -21,31 +34,24 @@ class Player:
 
     def rename(self, name):
         self.attributes.name = name
-        # self.attributes.sync_to_db()
 
     def level_up(self):
         self.attributes.level += 1
-        # self.attributes.sync_to_db()
 
     def high_score(self):
         if self.current_score > self.attributes.high_score:
             self.attributes.high_score = self.current_score
-            # self.attributes.sync_to_db()
             return True
         return False
 
     def spend_money(self, amount):
         self.attributes.currency -= amount
-        # self.attributes.sync_to_db()
 
     def receive_money(self, amount):
         self.attributes.currency += amount
-        # self.attributes.sync_to_db()
 
     def lose_life(self):
         self.attributes.lives -= 1
-        # self.attributes.sync_to_db()
 
     def gain_life(self, lives=1):
         self.attributes.lives += lives
-        # self.attributes.sync_to_db()
