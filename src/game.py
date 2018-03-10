@@ -34,7 +34,7 @@ class Game:
         self.options = None  # WIP
 
     def start(self):
-        self.frame.set_draw_handler(self.story_screen.draw_canvas)
+        self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
 
