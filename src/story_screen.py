@@ -49,15 +49,17 @@ class StoryScreen:
               format(str(overflowing_words), sum([len(container) for container in containers])))
 
     def draw_boxes(self, canvas):
+        bg_colour = "Teal"
         text = "Welcome"
         text_size = 25
+        text_colour = "Black"
         width = (self.window.frame.get_canvas_textwidth(text, text_size) + (15 * 2)) * self.box_reveal
         height = 45
         x, y = 75, 75
         canvas.draw_polygon([(x, y), (x, y + height),
                              (x + width, y + height),
-                             (x + width, y)], 0, "Black", "Teal")
-        canvas.draw_text(text, (x + 15, y + 37), text_size, "Black", "sans-serif")
+                             (x + width, y)], 1, bg_colour, bg_colour)
+        canvas.draw_text(text, (x + 15, y + 37), text_size, text_colour, "sans-serif")
 
     def draw_menu(self, canvas):
         canvas.draw_text(StoryScreenMenuItems.SKIP["label"], (self.window.__class__.WIDTH - 75 -
