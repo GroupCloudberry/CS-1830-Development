@@ -22,6 +22,7 @@ class StoryScreen:
     def __init__(self, window):
         self.window = window
         self.selected_menu_item = 1
+        self.box_reveal = 0.0
 
         # Testing variables to be removed after completion
         self.testpage = StoryPage()
@@ -43,7 +44,7 @@ class StoryScreen:
     def draw_boxes(self, canvas):
         box1_text = "Welcome"
         box1_text_size = 25
-        box1_width = self.window.frame.get_canvas_textwidth(box1_text, box1_text_size) + (15 * 2)
+        box1_width = (self.window.frame.get_canvas_textwidth(box1_text, box1_text_size) + (15 * 2)) * self.box_reveal
         box1_height = 45
         box1_x = 75
         box1_y = 75
@@ -73,7 +74,12 @@ class StoryScreen:
         print("Reflowed {} words into {} lines.".
               format(str(overflowing_words), sum([len(container) for container in containers])))
 
+    def reveal(self):
+        if round(self.box_reveal, 1) < 1.0:
+            self.box_reveal += 0.1
+
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_boxes(canvas)
         self.draw_menu(canvas)
+        self.reveal()
