@@ -21,7 +21,6 @@ class StoryScreenMenuItems:
 class StoryScreen:
     def __init__(self, window):
         self.window = window
-        self.selected_menu_item = 1
         self.box_reveal = 0.0
 
         # Testing variables to be removed after completion
@@ -38,8 +37,7 @@ class StoryScreen:
 
     def key_down(self, key):
         if key == simplegui.KEY_MAP["right"]:
-            if self.selected_menu_item == StoryScreenMenuItems.SKIP:
-                self.dismiss()
+            self.dismiss()
 
     def draw_boxes(self, canvas):
         box1_text = "Welcome"
@@ -57,6 +55,9 @@ class StoryScreen:
         canvas.draw_text(StoryScreenMenuItems.SKIP["label"], (self.window.__class__.WIDTH - 75 -
                             self.window.frame.get_canvas_textwidth(StoryScreenMenuItems.SKIP["label"], 25),
                           self.window.__class__.HEIGHT - 75), 25, "Teal", "sans-serif")
+        canvas.draw_text("Page {}/{}".format(self.page + 1, len(self.pages)), (self.window.__class__.WIDTH - 75 -
+                        self.window.frame.get_canvas_textwidth("Page {}/{}".format(self.page + 1, len(self.pages)), 13),
+                        75 + 30), 13, "Grey", "sans-serif")
 
     def reflow_text(self):
         # Algorithm to reflow overflowing lines of text
