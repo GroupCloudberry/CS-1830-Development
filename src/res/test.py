@@ -21,14 +21,15 @@ pos1 = [60, 100]
 pos2 = [140, 100]
 # This line is necessary to import images for your program.
 white_image = simplegui.load_image("http://commondatastorage.googleapis.com/codeskulptor-assets/week5-triangle.png")
-clear_image = simplegui.load_image("https://i.imgur.com/IJAJK1G.png")
+clear_image = simplegui.load_image("https://i.imgur.com/LzsJYH2.png")
+image2_size = (clear_image.get_width(), clear_image.get_height())
 
 
 # Event Handlers
 
 def draw(canvas):
     canvas.draw_image(white_image, image_center, image_size, pos1, image_size)
-    canvas.draw_image(clear_image, (100,100), (clear_image.get_width(), clear_image.get_height()), pos2, image_size)
+    canvas.draw_image(clear_image, (100,90), (100,100), pos2, image_size)
 
 
 # Frame

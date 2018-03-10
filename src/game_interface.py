@@ -18,7 +18,7 @@ class GameInterface:
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
         self.keyboard = Keyboard()
-        self.car = Car(Vector(50, Values.canvas_HEIGHT/2))
+        self.car = Car(Vector(50, 375))
         self.road = Road(0)
         self.interaction = Interaction(self.car, self.keyboard, self.road)
 
@@ -64,6 +64,10 @@ class Interaction:
 
     def update(self):
         if self.keyboard.right:
-            self.car.vel.add(Vector(0.5, 0))
+            if self.car.position.getX() < Values.canvas_WIDTH*0.30:
+                self.car.vel.add(Vector(0.5, 0))
+            self.car.rotation = self.car.rotation + 1
         if self.keyboard.left:
-            self.car.vel.add(Vector(-0.5,0))
+            if self.car.position.getX() > 50:
+                self.car.vel.add(Vector(-0.5, 0))
+            self.car.rotation = self.car.rotation - 1
