@@ -18,7 +18,6 @@ class MainMenu:
     def __init__(self, window):
         self.selected_menu_item = 0
         self.window = window
-        self.canvas = None
 
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
@@ -26,26 +25,7 @@ class MainMenu:
 
         self.exiting = False
 
-    def player_exit(self):
-        box_colour = "Black"
-        self.canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
-                                  (self.left_cover_x + self.window.__class__.WIDTH / 2,
-                                   self.window.__class__.HEIGHT),
-                                  (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
-                                 1, box_colour, box_colour)
-        self.canvas.draw_polygon([(self.right_cover_x, 0),
-                                  (self.right_cover_x, self.window.__class__.HEIGHT),
-                                  (self.right_cover_x + self.window.__class__.WIDTH / 2,
-                                   self.window.__class__.HEIGHT),
-                                  (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
-                                 box_colour, box_colour)
-        if self.left_cover_x < 0:
-            self.left_cover_x += 50
-            self.right_cover_x -= 50
-        else:
-            exit()
-
-    def draw_boxes(self, canvas):
+    def draw_banner(self, canvas):
         box_colour = "Teal"
         box1_x = 75
         box1_y = 75
@@ -55,28 +35,44 @@ class MainMenu:
                              (box1_x + box1_width, box1_y + box1_height),
                              (box1_x + box1_width, box1_y)], 1, box_colour, box_colour)
         canvas.draw_text("BerryDrive", (75 + 23, 185), 90, "White", "sans-serif")
-        # Reveal slide-out animation
+
+    def draw_banner_cover(self, canvas):
+        box_colour = "Teal"
+        box1_x = 75
+        box1_y = 75
+        box1_width = 443
+        box1_height = 123
+        # Covering polygon to facilitate slide-out animation
         canvas.draw_polygon([(box1_x + (box1_width * self.banner_reveal), box1_y),
                              (box1_x + (box1_width * self.banner_reveal), box1_y + box1_height),
                              (box1_x + box1_width, box1_y + box1_height),
                              (box1_x + box1_width, box1_y)], 1, "Black", "Black")
 
-    def reveal(self):
+    def draw_exit_covers(self, canvas):
+        box_colour = "Black"
+        canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
+                                  (self.left_cover_x + self.window.__class__.WIDTH / 2,
+                                   self.window.__class__.HEIGHT),
+                                  (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
+                                 1, box_colour, box_colour)
+        canvas.draw_polygon([(self.right_cover_x, 0),
+                                  (self.right_cover_x, self.window.__class__.HEIGHT),
+                                  (self.right_cover_x + self.window.__class__.WIDTH / 2,
+                                   self.window.__class__.HEIGHT),
+                                  (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
+                                 box_colour, box_colour)
+
+    def draw_launch_covers(self, canvas):
         box_colour = "Teal"
-        self.canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
+        canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
                             1, box_colour, box_colour)
-        self.canvas.draw_polygon([(self.right_cover_x, 0),
+        canvas.draw_polygon([(self.right_cover_x, 0),
                              (self.right_cover_x, self.window.__class__.HEIGHT),
                              (self.right_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
                              (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
                             box_colour, box_colour)
-        if self.left_cover_x > -(self.window.__class__.WIDTH / 2):
-            self.left_cover_x -= 25
-            self.right_cover_x += 25
-        elif round(self.banner_reveal, 1) < 1.0:
-            self.banner_reveal += 0.1
 
     # noinspection PyTypeChecker
     def key_down(self, key):
@@ -93,16 +89,31 @@ class MainMenu:
                 print("Player exited game.")
                 self.exiting = True
 
+    def reveal(self, canvas):
+        self.draw_launch_covers(canvas)
+        if self.left_cover_x > -(self.window.__class__.WIDTH / 2):
+            self.left_cover_x -= 25
+            self.right_cover_x += 25
+        elif round(self.banner_reveal, 1) < 1.0:
+            self.banner_reveal += 0.1
+
+    def player_exit(self, canvas):
+        self.draw_exit_covers(canvas)
+        if self.left_cover_x < 0:
+            self.left_cover_x += 50
+            self.right_cover_x -= 50
+        else:
+            exit()
+
     # noinspection PyTypeChecker
     def draw_canvas(self, canvas):
-        if self.canvas is None:
-            self.canvas = canvas
         self.window.frame.set_keydown_handler(self.key_down)
-        self.draw_boxes(canvas)
+        self.draw_banner(canvas)
+        self.draw_banner_cover(canvas)
         menu_items = collections.OrderedDict([(item["index"], "White") for item in MainMenuItems.ITEMS])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Teal"
         for index, item in enumerate(MainMenuItems.ITEMS):
             canvas.draw_text(item["label"], (75, 375 + (50 * index)), 40, menu_items[item["index"]], "sans-serif")
-        self.reveal()
+        self.reveal(canvas)
         if self.exiting:
-            self.player_exit()
+            self.player_exit(canvas)

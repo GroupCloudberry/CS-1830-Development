@@ -24,23 +24,6 @@ class PauseMenu:
         self.box_reveal = 0.0  # Floating point for incremental reveal
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
 
-    def exit(self):
-        # New ScoreBoard object created to run the animation again on next load
-        self.window.scoreboard = PauseMenu(self.window)
-        self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
-
-    # noinspection PyTypeChecker
-    def key_down(self, key):
-        if key == simplegui.KEY_MAP["down"]:
-            self.selected_menu_item = (self.selected_menu_item + 1) % len(PauseMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["up"]:
-            self.selected_menu_item = (self.selected_menu_item - 1) % len(PauseMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["right"]:
-            if self.selected_menu_item == PauseMenuItems.RESUME["index"]:
-                self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
-            elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:
-                self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
-
     def draw_boxes(self, canvas):
         box1_x = 75
         box1_y = 75
@@ -59,11 +42,27 @@ class PauseMenu:
             canvas.draw_text(item["label"], (75 - self.menu_reveal, 480 + (42 * index)), 30,
                              menu_items[item["index"]], "sans-serif")
 
+    def key_down(self, key):
+        if key == simplegui.KEY_MAP["down"]:
+            self.selected_menu_item = (self.selected_menu_item + 1) % len(PauseMenuItems.ITEMS)
+        elif key == simplegui.KEY_MAP["up"]:
+            self.selected_menu_item = (self.selected_menu_item - 1) % len(PauseMenuItems.ITEMS)
+        elif key == simplegui.KEY_MAP["right"]:
+            if self.selected_menu_item == PauseMenuItems.RESUME["index"]:
+                self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
+            elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:
+                self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
+
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:
             self.box_reveal += 0.1
         elif self.menu_reveal < 0:
             self.menu_reveal = 0
+
+    def exit(self):
+        # New ScoreBoard object created to run the animation again on next load
+        self.window.scoreboard = PauseMenu(self.window)
+        self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
