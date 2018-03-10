@@ -1,7 +1,7 @@
 import random
 import string
 
-from player_attributes import PlayerAttributes
+from player_attributes_sqlite import PlayerAttributesSQLite
 from player_data import PlayerData
 
 
@@ -13,12 +13,12 @@ class TestDatabase:
     @staticmethod
     def populate_table(number_to_add):
         for i in range(number_to_add):
-            PlayerAttributes.create("".join(random.choices(string.ascii_letters + string.digits, k=20)))
+            PlayerAttributesSQLite.create("".join(random.choices(string.ascii_letters + string.digits, k=20)))
 
     def load_table(self):
         db = PlayerData(PlayerData.DATABASE_NAME)
         for key in db.get_all_ids():
-            self.players.append(PlayerAttributes.load(key))
+            self.players.append(PlayerAttributesSQLite.load(key))
 
     def print_table(self):
         for player in self.players:
