@@ -1,7 +1,26 @@
-from player_data import PlayerData, PlayerFields
-
-
 class PlayerAttributes:
+    """
+    The PlayerAttributes object is used to store the properties of Player instance.
+    Each Player object has its own PlayerAttributes instance, with its own methods to modulate parameters
+    of that instance.
+
+    To set a new value for any of the parameters, you can either directly assign the appropriate instance
+    variable a new value, or use the set_params(self, name=None, level=None, high_score=None, currency=None, lives=None)
+    method, specifying the relevant parameters.
+
+    Note that you should not import this class directly.
+    The PlayerAttributes class only should be used for instances where the simplegui import refers to the simplegui
+    module. This is because Codeskulptor does not support SQLite3. PlayerSQLite should be used wherever the simplegui
+    import refers to the simpleguitk module, in order to support database functionality.
+
+    To make imports easier, use the following snippet:
+    if simplegui.__name__ == "simpleguitk":
+        from player_sqlite import PlayerSQLite as Player
+        from player_attributes_sqlite import PlayerAttributesSQLite as PlayerAttributes
+    else:
+        from player import Player
+        from player_attributes import PlayerAttributes
+    """
 
     DEFAULT_LEVEL = 1
     DEFAULT_SCORE = 0
@@ -15,16 +34,6 @@ class PlayerAttributes:
         self.currency = None
         self.lives = None
 
-        self.db = PlayerData(PlayerData.DATABASE_NAME)
-        self.id = None
-
-    def add_to_db(self):
-        self.id = self.db.add_player(self.name, self.level, self.high_score, self.currency, self.lives)
-        return self.id
-
-    def sync_to_db(self):
-        self.db.update_player(self.id, self.name, self.level, self.high_score, self.currency, self.lives)
-
     def set_params(self, name=None, level=None, high_score=None, currency=None, lives=None):
         self.name = name
         self.level = level
@@ -32,35 +41,9 @@ class PlayerAttributes:
         self.currency = currency
         self.lives = lives
 
-    def close(self):
-        self.db.close()
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
-
     @staticmethod
     def create(name):
         attr = PlayerAttributes()
         attr.set_params(name, PlayerAttributes.DEFAULT_LEVEL, PlayerAttributes.DEFAULT_SCORE,
                         PlayerAttributes.DEFAULT_CURRENCY, PlayerAttributes.DEFAULT_LIVES)
-        attr.add_to_db()
         return attr
-
-    @staticmethod
-    def load(key):
-        attr = PlayerAttributes()
-        attr.set_params(attr.db.get_field_by_id(key, PlayerFields.NAME),
-                        attr.db.get_field_by_id(key, PlayerFields.LEVEL),
-                        attr.db.get_field_by_id(key, PlayerFields.HIGH_SCORE),
-                        attr.db.get_field_by_id(key, PlayerFields.CURRENCY),
-                        attr.db.get_field_by_id(key, PlayerFields.LIVES))
-        attr.id = key
-        return attr
-
-    @staticmethod
-    def get_ids_with_name(name):
-        db = PlayerData(PlayerAttributes.DATABASE_NAME)
-        try:
-            return db.get_ids_by_name(name)
-        finally:
-            db.close()
