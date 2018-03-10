@@ -38,6 +38,14 @@ class StoryScreen:
     def key_down(self, key):
         if key == simplegui.KEY_MAP["right"]:
             self.dismiss()
+        elif key == simplegui.KEY_MAP["down"] or key == simplegui.KEY_MAP["space"]:
+            if self.page == len(self.pages) - 1:
+                self.dismiss()
+            else:
+                self.page += 1
+        elif key == simplegui.KEY_MAP["up"]:
+            if not self.page == 0:
+                self.page -= 1
 
     def draw_boxes(self, canvas):
         box1_text = "Welcome"
