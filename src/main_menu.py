@@ -26,27 +26,26 @@ class MainMenu:
         self.exiting = False
 
     def draw_banner(self, canvas):
-        box_colour = "Teal"
-        box1_x = 75
-        box1_y = 75
-        box1_width = 443
-        box1_height = 123
-        canvas.draw_polygon([(box1_x, box1_y), (box1_x, box1_y + box1_height),
-                             (box1_x + box1_width, box1_y + box1_height),
-                             (box1_x + box1_width, box1_y)], 1, box_colour, box_colour)
-        canvas.draw_text("BerryDrive", (75 + 23, 185), 90, "White", "sans-serif")
+        bg_colour = "Teal"
+        text = "BerryDrive"
+        text_size = 90
+        text_colour = "White"
+        x, y = 75, 75
+        # Automatically calculate width of the banner to account for differing fonts in various environments
+        width = self.window.frame.get_canvas_textwidth(text, text_size) + (2 * 25)
+        height = 123
+        canvas.draw_polygon([(x, y), (x, y + height),
+                             (x + width, y + height),
+                             (x + width, y)], 1, bg_colour, bg_colour)
+        canvas.draw_text(text, (75 + 25, 185), text_size, text_colour, "sans-serif")
+        self.draw_banner_cover(canvas, width, height, x, y)
 
-    def draw_banner_cover(self, canvas):
-        box_colour = "Teal"
-        box1_x = 75
-        box1_y = 75
-        box1_width = 443
-        box1_height = 123
+    def draw_banner_cover(self, canvas, width, height, x, y):
         # Covering polygon to facilitate slide-out animation
-        canvas.draw_polygon([(box1_x + (box1_width * self.banner_reveal), box1_y),
-                             (box1_x + (box1_width * self.banner_reveal), box1_y + box1_height),
-                             (box1_x + box1_width, box1_y + box1_height),
-                             (box1_x + box1_width, box1_y)], 1, "Black", "Black")
+        canvas.draw_polygon([(x + (width * self.banner_reveal), y),
+                             (x + (width * self.banner_reveal), y + height),
+                             (x + width, y + height),
+                             (x + width, y)], 1, "Black", "Black")
 
     def draw_exit_covers(self, canvas):
         box_colour = "Black"
@@ -109,7 +108,6 @@ class MainMenu:
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_banner(canvas)
-        self.draw_banner_cover(canvas)
         menu_items = collections.OrderedDict([(item["index"], "White") for item in MainMenuItems.ITEMS])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Teal"
         for index, item in enumerate(MainMenuItems.ITEMS):
