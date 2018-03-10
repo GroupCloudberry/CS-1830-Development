@@ -16,38 +16,42 @@ velocity = 8
 vel = [0,  velocity]
 """
 gravity = -0.1
-image = simplegui.load_image('https://opengameart.org/sites/default/files/city_background_night.png')
+image = simplegui.load_image('https://i.imgur.com/21qDQMK.png')
 width = image.get_width()
 height = image.get_height()
 
-columns = 8
+columns = 1
 rows = 1
 
 frameWidth = width//columns
 frameHeight = height//rows
 
+
 frameCentreX = frameWidth//2
 frameCentreY = frameHeight//2
 frameIndex = (0,0)
 
+pressedR = False
+pressedL = False
 
 class GameInterface:
     def __init__(self, window):
         self.window = window
 
+        self.image_center = 800
         self.transition_clock = TransitionClock()
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
     def draw_canvas(self, canvas):
         global velocity
-        x = frameWidth * frameIndex[0] + frameCentreX
-        y = frameHeight * frameIndex[1] + frameCentreY
-        center_source = (x, y)
-        width_height_source = (frameWidth, frameHeight)
-        center_dest = (120, 147)
-        width_height_dest = (frameWidth, frameHeight)
-        canvas.draw_image(image, center_source, width_height_source, center_dest, width_height_dest)
+
+        if pressedR:
+            self.image_center = self.image_center+5
+        elif pressedL:
+            self.image_center = self.image_center-5
+
+        canvas.draw_image(image, [self.image_center/2, height/2], [800,height], [800/2, 600/2], [800,600])
 
 
         #Constructing the road
@@ -108,6 +112,9 @@ class GameInterface:
         if self.left_cover_x > - self.window.__class__.WIDTH / 2:
             self.reveal(canvas)
 
+        self.window.frame.set_keydown_handler(self.key_down)
+        self.window.frame.set_keyup_handler(self.key_up)
+
 
     def reveal(self, canvas):
         box_colour_left = "Orange"
@@ -136,32 +143,33 @@ class GameInterface:
     def click(pos):
         pos.nextFrame()
 
+    def key_down(self, key):
+        global pressedR, pressedL
+        if key == simplegui.KEY_MAP["escape"]:
+            print("escape pressed")
 
-class Keyboard:
-    def _init_(self):
-        self.right = False
-        self.left = False
+        elif key == simplegui.KEY_MAP["right"]:
+            print("right pressed")
+            pressedR = True
+            #self.image_center = self.image_center + 10
 
-    def keyDown(self, key):
-        if key == simplegui.KEY_MAP['right']:
-            self.right = True
-            self.left = False
+        elif key == simplegui.KEY_MAP["left"]:
+            print("left pressed")
+            pressedL = True
+            #self.image_center = self.image_center - 10
 
-    def keyUp(self, key):
-        if key == simplegui.KEY_MAP['left']:
-            self.left = True
-            self.right = False
+    def key_up(self, key):
+        global pressedR, pressedL
+        if key == simplegui.KEY_MAP["escape"]:
+            print("escape pressed")
 
+        elif key == simplegui.KEY_MAP["right"]:
+            print("right up")
+            pressedR = False
+            #self.image_center = self.image_center + 10
 
-class Interaction:
-    def _init_(self, wheel, keyboard):
-        self.wheel = wheel
-        self.keyboard = keyboard
-
-    def update(self):
-        if self.keyboard.right:
-            self.wheel.vel.add(Vector(1, 0))
-
-        if self.keyboard.left:
-            self.wheel.vel.add(Vector(-1, 0))
+        elif key == simplegui.KEY_MAP["left"]:
+            print("left up")
+            pressedL = False
+            #self.image_center = self.image_center - 10
 
