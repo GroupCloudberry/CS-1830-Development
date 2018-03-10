@@ -1,5 +1,6 @@
 from transition_clock import TransitionClock
 from vector import Vector
+from car import Car
 
 try:
     import simplegui
@@ -35,6 +36,8 @@ pressedR = False
 pressedL = False
 
 class GameInterface:
+
+    #Main constructor
     def __init__(self, window):
         self.window = window
 
@@ -43,6 +46,7 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
+    #The game loop
     def draw_canvas(self, canvas):
         global velocity
 
@@ -115,6 +119,11 @@ class GameInterface:
         self.window.frame.set_keydown_handler(self.key_down)
         self.window.frame.set_keyup_handler(self.key_up)
 
+        car = Car()
+        car.setSpeed(90)
+        canvas.draw_text(car.getSpeed(), [50, 112], 48, "Red")
+
+
 
     def reveal(self, canvas):
         box_colour_left = "Black"
@@ -172,4 +181,7 @@ class GameInterface:
             print("left up")
             pressedL = False
             #self.image_center = self.image_center - 10
+
+
+
 

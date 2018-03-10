@@ -1,6 +1,9 @@
 class Car:
+
+    speed = 10
+
     def __init__(self):
-        self.speed = 0
+        self.speed = 5
 
     def accelerate(self, acceleration):
         self.speed = self.speed + acceleration
