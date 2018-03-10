@@ -18,6 +18,11 @@ class Vector:
         return not self.__eq__(other)
 
         # Returns a tuple with the point corresponding to the vector
+    def getX(self):
+        return self.x
+
+    def getY(self):
+        return self.y
 
     def getP(self):
         return (self.x, self.y)

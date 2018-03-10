@@ -95,8 +95,8 @@ frame.set_draw_handler(Road.draw_handler)
 frame.start()
 """
 class Road:
-    def __init__(self,canvas):
-        self.canvas = canvas
+    def __init__(self,position):
+        self.position = position
 
-    def drawRoad(self):
-        self.canvas.draw_line([0, 400], [Values.canvas_WIDTH, 400], 5, 'white')
+    def drawRoad(self,canvas):
+        canvas.draw_line([0, 400], [Values.canvas_WIDTH, 400], 5, 'white')
