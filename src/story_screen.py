@@ -12,7 +12,7 @@ class StoryPage:
 
 
 class StoryScreenMenuItems:
-    NEXT = {"index": 0, "label": "Next->"}
+    NEXT = {"index": 0, "label": "Next [->]"}
     ITEMS = [NEXT]
 
 
@@ -59,7 +59,7 @@ class StoryScreen:
 
     def draw_boxes(self, canvas):
         bg_colour = "Teal"
-        text = "Welcome"
+        text = "Introduction"
         text_size = 25
         text_colour = "Black"
         width = (self.window.frame.get_canvas_textwidth(text, text_size) + (15 * 2)) * self.box_reveal
@@ -98,12 +98,16 @@ class StoryScreen:
                         75 + 30), 13, "Grey", "sans-serif")
 
     def draw_navigation_hint(self, canvas):
-        canvas.draw_text("Press space bar to skip.", (75, self.window.__class__.HEIGHT - 75), 12,
+        canvas.draw_text("Press up and down or left and right arrow keys to change page.", (75, self.window.__class__.HEIGHT - 93), 12,
+                         "Grey", "sans-serif")
+        canvas.draw_text("Or press space bar to skip.", (75, self.window.__class__.HEIGHT - 75), 12,
                          "Grey", "sans-serif")
 
     def key_down(self, key):
         if key == simplegui.KEY_MAP["right"] or key == simplegui.KEY_MAP["down"]:
-            self.next_page()
+            self.page_down()
+        elif key == simplegui.KEY_MAP["left"] or key == simplegui.KEY_MAP["up"]:
+            self.page_up()
         elif key == simplegui.KEY_MAP["space"]:
             self.dismiss()
         elif key == simplegui.KEY_MAP["up"]:
@@ -114,8 +118,18 @@ class StoryScreen:
         if round(self.box_reveal, 1) < 1.0:
             self.box_reveal += 0.1
 
-    def next_page(self):
-        pass
+    def page_up(self):
+        self.page = (self.page - 1) % len(self.pages)
+        self.reflow_text()
+        self.preload_images()
+
+    def page_down(self):
+        if self.page + 1 == len(self.pages):
+            self.dismiss()
+        else:
+            self.page = (self.page + 1) % len(self.pages)
+            self.reflow_text()
+            self.preload_images()
 
     def dismiss(self):
         pass
