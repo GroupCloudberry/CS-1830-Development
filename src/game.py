@@ -28,13 +28,12 @@ class Game:
         self.main_menu = MainMenu(self)
         self.pause_menu = PauseMenu(self)
         self.death_menu = DeathMenu(self)
-        self.story_screen = StoryScreen(self)
         self.game_interface = GameInterface(self)
         self.scoreboard = ScoreBoard(self)
         self.options = None  # WIP
 
     def start(self):
-        self.frame.set_draw_handler(self.story_screen.draw_canvas)
+        self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
 

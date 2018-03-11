@@ -17,32 +17,25 @@ class StoryScreenMenuItems:
 
 
 class StoryScreen:
-    def __init__(self, window):
+    """
+    Needs *a lot* of refactoring, subject to time constraints.
+    """
+    def __init__(self, window, pages):
         self.window = window
         self.box_reveal = 0.0
 
         # Testing variables to be removed after completion
-        self.test_page = StoryPage({"text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                                           "Donec sed lorem in sem elementum pretium at ut eros. "
-                                           "Quisque sollicitudin arcu nulla, eu venenatis lorem tristique hendrerit. "
-                                           "Nam gravida tincidunt placerat. Sed sed nisl nec orci bibendum condimentum.",
-                                   "image": 1},
-                                   {"text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                                            "Donec sed lorem in sem elementum pretium at ut eros. "
-                                            "Quisque sollicitudin arcu nulla, eu venenatis lorem tristique hendrerit. "
-                                            "Nam gravida tincidunt placerat. Sed sed nisl nec orci bibendum condimentum.",
-                                    "image": 1},
-                                   )
         self.page = 0
-        self.pages = [self.test_page]
+        self.pages = pages
         self.text = ["", ""]
         self.images =[None, None]
 
         self.text_size = 20
         self.image_size = 150 # Value of 100 would be 100x100
-        self.reflow_content()
+        self.reflow_text()
+        self.preload_images()
 
-    def reflow_content(self):
+    def reflow_text(self):
         # Algorithm to reflow overflowing lines of text
         # For each container on this page, split up the container text into words and put them into a list
         containers = [[[word for word in self.pages[self.page].container1["text"].split()]],
@@ -59,6 +52,11 @@ class StoryScreen:
                     container[lines_index + 1].insert(0, line.pop())
             self.text[containers_index] = container
 
+    def preload_images(self):
+        for index, container in enumerate([self.pages[self.page].container1, self.pages[self.page].container2]):
+            if container["image"] is not None:
+                self.images[index] = simplegui.load_image(container["image"])
+
     def draw_boxes(self, canvas):
         bg_colour = "Teal"
         text = "Welcome"
@@ -74,11 +72,20 @@ class StoryScreen:
 
     def draw_text(self, canvas):
         for index, container in enumerate([self.pages[self.page].container1, self.pages[self.page].container2]):
-            for line_number, line in enumerate(self.text[index]):
-                margin_left = self.image_size if (index + 1) % 2 == 0 else 0
+            for line_index, line in enumerate(self.text[index]):
+                margin_left = self.image_size if (index + 1) % 2 == 0 and container["image"] is not None else 0
+                x_offset = 15 if (index + 1) % 2 == 0 and container["image"] is not None else 0
                 container_spacing = 30 + ((self.text_size + 2) * len(self.text[index - 1])) if index > 0 else 0
-                canvas.draw_text(line, (75 + margin_left, 165 + ((self.text_size + 2) * line_number)
+                canvas.draw_text(line, (75 + margin_left + x_offset, 165 + ((self.text_size + 2) * line_index)
                                         + container_spacing), self.text_size, "White")
+
+    def draw_images(self, canvas):
+        for index, container in enumerate([self.pages[self.page].container1, self.pages[self.page].container2]):
+            if self.images[index] is not None:
+                container_spacing = 45 + ((self.text_size + 2) * len(self.text[index - 1])) if index > 0 else 0
+                x = self.image_size if (index + 1) % 2 == 0 else self.window.__class__.WIDTH - self.image_size
+                canvas.draw_image(self.images[index], (self.image_size / 2, self.image_size /2), (self.image_size, self.image_size),
+                                  (x, 200 + container_spacing), (self.image_size, self.image_size))
 
     def draw_menu(self, canvas):
         canvas.draw_text(StoryScreenMenuItems.SKIP["label"], (self.window.__class__.WIDTH - 75 -
@@ -113,6 +120,7 @@ class StoryScreen:
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_boxes(canvas)
         self.draw_text(canvas)
+        self.draw_images(canvas)
         self.draw_menu(canvas)
         self.draw_page_number(canvas)
         self.reveal()
