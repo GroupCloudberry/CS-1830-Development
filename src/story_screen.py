@@ -12,8 +12,8 @@ class StoryPage:
 
 
 class StoryScreenMenuItems:
-    SKIP = {"index": 0, "label": "Skip->"}
-    ITEMS = [SKIP]
+    NEXT = {"index": 0, "label": "Next->"}
+    ITEMS = [NEXT]
 
 
 class StoryScreen:
@@ -88,23 +88,24 @@ class StoryScreen:
                                   (x, 200 + container_spacing), (self.image_size, self.image_size))
 
     def draw_menu(self, canvas):
-        canvas.draw_text(StoryScreenMenuItems.SKIP["label"], (self.window.__class__.WIDTH - 75 -
-                            self.window.frame.get_canvas_textwidth(StoryScreenMenuItems.SKIP["label"], 25),
-                          self.window.__class__.HEIGHT - 75), 25, "Teal", "sans-serif")
+        canvas.draw_text(StoryScreenMenuItems.NEXT["label"], (self.window.__class__.WIDTH - 75 -
+                                                              self.window.frame.get_canvas_textwidth(StoryScreenMenuItems.NEXT["label"], 25),
+                                                              self.window.__class__.HEIGHT - 75), 25, "Teal", "sans-serif")
 
     def draw_page_number(self, canvas):
         canvas.draw_text("Page {}/{}".format(self.page + 1, len(self.pages)), (self.window.__class__.WIDTH - 75 -
                         self.window.frame.get_canvas_textwidth("Page {}/{}".format(self.page + 1, len(self.pages)), 13),
                         75 + 30), 13, "Grey", "sans-serif")
 
+    def draw_navigation_hint(self, canvas):
+        canvas.draw_text("Press space bar to skip.", (75, self.window.__class__.HEIGHT - 75), 12,
+                         "Grey", "sans-serif")
+
     def key_down(self, key):
-        if key == simplegui.KEY_MAP["right"]:
+        if key == simplegui.KEY_MAP["right"] or key == simplegui.KEY_MAP["down"]:
+            self.next_page()
+        elif key == simplegui.KEY_MAP["space"]:
             self.dismiss()
-        elif key == simplegui.KEY_MAP["down"] or key == simplegui.KEY_MAP["space"]:
-            if self.page == len(self.pages) - 1:
-                self.dismiss()
-            else:
-                self.page += 1
         elif key == simplegui.KEY_MAP["up"]:
             if not self.page == 0:
                 self.page -= 1
@@ -112,6 +113,9 @@ class StoryScreen:
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:
             self.box_reveal += 0.1
+
+    def next_page(self):
+        pass
 
     def dismiss(self):
         pass
@@ -123,4 +127,5 @@ class StoryScreen:
         self.draw_images(canvas)
         self.draw_menu(canvas)
         self.draw_page_number(canvas)
+        self.draw_navigation_hint(canvas)
         self.reveal()
