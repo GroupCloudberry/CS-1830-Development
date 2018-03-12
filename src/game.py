@@ -1,8 +1,8 @@
 from death_menu import DeathMenu
 from game_interface import GameInterface
+from hud import HUD
 from main_menu import MainMenu
 from pause_menu import PauseMenu
-from story_screen import StoryScreen
 
 try:
     import simplegui
@@ -31,9 +31,10 @@ class Game:
         self.game_interface = GameInterface(self)
         self.scoreboard = ScoreBoard(self)
         self.options = None  # WIP
+        self.hud = HUD(self)
 
     def start(self):
-        self.frame.set_draw_handler(self.main_menu.draw_canvas)
+        self.frame.set_draw_handler(self.hud.draw_canvas)
         self.frame.start()
 
 
@@ -41,5 +42,9 @@ if __name__ == "__main__":
     window = Game()
     window.start()
 
+    """
+    This timer is introducing latency but no usages were found. Still needed?
     timer = simplegui.create_timer(50, GameInterface(window).nextFrame)
     timer.start()
+    """
+
