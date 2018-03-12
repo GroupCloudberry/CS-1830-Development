@@ -1,11 +1,5 @@
-'''
-Class Id's:
-1: Camera
-2: particle
-3: Player
-4: Monster
-'''
-#FOR MULTIPLAYER MAKE SURE EACH PLAYER ID IS DIFFERENT, 1-4
+
+
 
 #DEVELOPER OPTIONS
 DEVELOPER_OPTIONS = False
