@@ -54,6 +54,3 @@ class Car:
         self.tyre1 = [self.position.getX(), self.position.getY()]
         self.tyre2 = [self.position.getX()+100, self.position.getY()]
         self.vel.multiply(0.85)
-
-
-

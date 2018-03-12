@@ -1,5 +1,4 @@
-import SimpleGUICS2Pygame
-from SimpleGUICS2Pygame import simpleguics2pygame
+import simpleguitk as simpleguics2pygame
 
 from Objects import cam
 

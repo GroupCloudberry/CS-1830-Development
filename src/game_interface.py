@@ -64,7 +64,7 @@ class Interaction:
 
     def update(self):
         if self.keyboard.right:
-            if self.car.position.getX() < Values.canvas_WIDTH*0.30:
+            if self.car.position.getX() < Values.canvas_WIDTH*0.2:
                 self.car.vel.add(Vector(0.5, 0))
             self.car.rotation = self.car.rotation + 1
         if self.keyboard.left:

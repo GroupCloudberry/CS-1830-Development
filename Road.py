@@ -1,9 +1,8 @@
-
 import random
 import math
 from Vector import Vector
 
-import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
+import simpleguitk as simplegui
 Points = list()
 
 
