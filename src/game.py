@@ -34,7 +34,7 @@ class Game:
         self.hud = HUD(self)
 
     def start(self):
-        self.frame.set_draw_handler(self.hud.draw_canvas)
+        self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
 
