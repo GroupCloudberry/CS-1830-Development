@@ -11,13 +11,24 @@ class HUD:
         canvas.draw_polygon([(x, 0), (x - width, 0), (x - width, height), (x, height)], 1, colour, colour)
 
     def draw_pause_button(self, canvas):
+        text_size = 15
         colour = "Teal"
-        width = 82
+        width = 73
         height = 25
-        x, y = 75 + ((width - self.window.frame.get_canvas_textwidth("Pause", 18)) / 2), 0
+        x, y = 75 + ((width - self.window.frame.get_canvas_textwidth("Pause", text_size)) / 2), 0
         canvas.draw_polygon([(x, 0), (x + width, 0 ), (x + width, height), (x, height)], 1, colour, colour)
-        canvas.draw_text("Pause", (x + 15, 25), 18, "White")
+        canvas.draw_text("Pause", (x + 16, 23), text_size, "White")
+
+    def mouse_down(self, postion):
+        if (180) > postion[0] > 75 and 25 > postion[1] > 0:
+            self.pause()
+        print(postion)
+
+    def pause(self):
+        self.window.hud = HUD(self.window)
+        self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
 
     def draw_canvas(self, canvas):
         self.draw_score_lives(canvas)
         self.draw_pause_button(canvas)
+        self.window.frame.set_mouseclick_handler(self.mouse_down)

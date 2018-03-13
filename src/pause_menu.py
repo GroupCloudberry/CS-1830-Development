@@ -28,15 +28,23 @@ class PauseMenu:
         bg_colour = "Teal"
         text = "Paused"
         text_size = 50
-        text_colour = "Black"
+        text_colour = "White"
         x, y = 75, 75
         # Automatically calculate width of the banner to account for differing fonts in various environments
-        width = (self.window.frame.get_canvas_textwidth(text, text_size) + (20 * 2)) * self.box_reveal
+        width = (self.window.frame.get_canvas_textwidth(text, text_size) + (20 * 2))
         height = 75
         canvas.draw_polygon([(x, y), (x, y + height),
                              (x + width, y + height),
                              (x + width, y)], 1, bg_colour, bg_colour)
         canvas.draw_text(text, (x + 20, y + 67), text_size, text_colour, "sans-serif")
+
+    def draw_box_covers(self, canvas):
+        x, y = 75, 75
+        width = 600 - (600 * self.box_reveal)
+        height = 75
+        canvas.draw_polygon([(x, y), (x, y + height),
+                             (x + width, y + height),
+                             (x + width, y)], 1, "Black", "Black")
 
     # noinspection PyTypeChecker
     def draw_menu(self, canvas):
@@ -58,7 +66,7 @@ class PauseMenu:
                 self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
     def reveal(self):
-        if round(self.box_reveal, 1) < 1.0:
+        if round(self.box_reveal, 1) < 1:
             self.box_reveal += 0.1
         elif self.menu_reveal < 0:
             self.menu_reveal = 0
@@ -71,5 +79,6 @@ class PauseMenu:
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_boxes(canvas)
+        self.draw_box_covers(canvas)
         self.draw_menu(canvas)
         self.reveal()
