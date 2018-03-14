@@ -40,3 +40,9 @@ class KeyboardCompat:
             return key == simplegui.KEY_MAP["escape"] or key == simplegui.KEY_MAP["p"]
         return key == simplegui.KEY_MAP["p"]
 
+    def backspace_key_pressed(self, key):
+        # Use left arrow key as a fallback, as the backspace key is not supported by CodeSkulptor
+        if simplegui.__name__ == "simpleguitk":
+            return key == simplegui.KEY_MAP["backspace"] or key == simplegui.KEY_MAP["left"]
+        return key == simplegui.KEY_MAP["left"]
+

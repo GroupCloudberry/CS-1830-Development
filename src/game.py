@@ -3,6 +3,7 @@ from game_interface import GameInterface
 from hud import HUD
 from main_menu import MainMenu
 from pause_menu import PauseMenu
+from player_details_form import PlayerDetailsForm
 
 try:
     import simplegui
@@ -32,6 +33,7 @@ class Game:
         self.scoreboard = ScoreBoard(self)
         self.options = None  # WIP
         self.hud = HUD(self)
+        self.player_details_form = PlayerDetailsForm(self)
 
     def start(self):
         self.frame.set_draw_handler(self.main_menu.draw_canvas)
