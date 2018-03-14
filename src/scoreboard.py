@@ -1,7 +1,7 @@
 import collections
 import math
 
-from keyboard_mediator import KeyboardMediator
+from keyboard_compat import KeyboardCompat
 
 try:
     import simplegui
@@ -19,7 +19,7 @@ class ScoreBoard:
 
     def __init__(self, window):
         self.window = window
-        self.keyboard = KeyboardMediator()
+        self.kb_compat = KeyboardCompat()
         self.selected_menu_item = 1
 
         self.box_reveal = 0.0  # Floating point for incremental reveal
@@ -69,13 +69,13 @@ class ScoreBoard:
                              menu_items[item["index"]], "sans-serif")
 
     def key_down(self, key):
-        if self.keyboard.down_key_pressed(key):
+        if self.kb_compat.down_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif self.keyboard.up_key_pressed(key):
+        elif self.kb_compat.up_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif self.keyboard.space_key_pressed(key):
+        elif self.kb_compat.space_key_pressed(key):
             self.page = (self.page + 1) % self.pages
-        elif self.keyboard.enter_key_pressed(key):
+        elif self.kb_compat.enter_key_pressed(key):
             if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
                 print("SQLite database unsupported in CodeSkulptor.")
             elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:

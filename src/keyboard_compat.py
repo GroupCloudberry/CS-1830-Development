@@ -4,8 +4,11 @@ except ImportError:
     import simpleguitk as simplegui
 
 
-class KeyboardMediator:
+class KeyboardCompat:
     """
+    Compatibility class to implement fallback keys, in the event that a key binding is incompatible
+    with the simplegui implementation.
+
     Because CodeSkulptor does not support static methods, an instance of KeyboardMediator must be created
     to utilise these methods.
     """

@@ -29,13 +29,13 @@ class ScoreBoardSQLite(ScoreBoard):
 
     # noinspection PyTypeChecker
     def key_down(self, key):
-        if self.keyboard.down_key_pressed(key):
+        if self.kb_compat.down_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif self.keyboard.up_key_pressed(key):
+        elif self.kb_compat.up_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif self.keyboard.space_key_pressed(key):
+        elif self.kb_compat.space_key_pressed(key):
             self.page = (self.page + 1) % self.pages
-        elif self.keyboard.enter_key_pressed(key):
+        elif self.kb_compat.enter_key_pressed(key):
             if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
                 PlayerAttributesSQLite.delete_all_players()
                 self.players = self.load_players()

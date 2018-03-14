@@ -1,5 +1,7 @@
 import collections
 from enum import Enum, unique
+
+from keyboard_compat import KeyboardCompat
 from transition_clock import TransitionClock
 
 try:
@@ -17,6 +19,7 @@ class DeathMenuItems:
 class DeathMenu:
     def __init__(self, window):
         self.window = window
+        self.kb_compat = KeyboardCompat()
         self.selected_menu_item = 0
 
         self.transition_clock = TransitionClock()
@@ -55,11 +58,11 @@ class DeathMenu:
                              (375, 525 - 35), (375, 525)], 1, "Black", "Black", "sans-serif")
 
     def key_down(self, key):
-        if key == simplegui.KEY_MAP["down"]:
+        if self.kb_compat.down_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % 2
-        elif key == simplegui.KEY_MAP["up"]:
+        elif self.kb_compat.up_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % 2
-        elif key == simplegui.KEY_MAP["return"]:
+        elif self.kb_compat.enter_key_pressed(key):
             if self.selected_menu_item == DeathMenuItems.RESTART:
                 pass
             elif self.selected_menu_item == DeathMenuItems.MAIN_MENU:
