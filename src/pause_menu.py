@@ -1,10 +1,7 @@
 import collections
-import math
 
 from game_interface import GameInterface
 from keyboard_compat import KeyboardCompat
-from player_attributes import PlayerAttributes
-from player_data import PlayerData
 
 try:
     import simplegui
@@ -66,11 +63,12 @@ class PauseMenu:
             if self.selected_menu_item == PauseMenuItems.RESUME["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:
-                self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
+                self.exit()
+        elif self.kb_compat.escape_key_pressed(key):
+            self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
 
     def mouse_down(self, position):
         # Go back to main menu when any click detected. Lives and scores automatically reset next time game is started.
-        self.window.game_interface = GameInterface(self.window)
         self.exit()
 
     def reveal(self):
@@ -80,8 +78,8 @@ class PauseMenu:
             self.menu_reveal = 0
 
     def exit(self):
-        # New ScoreBoard object created to run the animation again on next load
-        self.window.scoreboard = PauseMenu(self.window)
+        # New GameInterface object created to restart anew
+        self.window.game_interface = GameInterface(self.window)
         self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
     def draw_canvas(self, canvas):
