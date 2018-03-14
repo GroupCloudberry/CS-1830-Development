@@ -1,6 +1,8 @@
 import collections
 import math
 
+from game_interface import GameInterface
+from keyboard_mediator import KeyboardMediator
 from player_attributes import PlayerAttributes
 from player_data import PlayerData
 
@@ -19,13 +21,14 @@ class PauseMenuItems:
 class PauseMenu:
     def __init__(self, window):
         self.window = window
+        self.keyboard = KeyboardMediator()
         self.selected_menu_item = 0
 
         self.box_reveal = 0.0  # Floating point for incremental reveal
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
 
     def draw_boxes(self, canvas):
-        bg_colour = "Teal"
+        background_colour = "Teal"
         text = "Paused"
         text_size = 50
         text_colour = "White"
@@ -35,7 +38,7 @@ class PauseMenu:
         height = 75
         canvas.draw_polygon([(x, y), (x, y + height),
                              (x + width, y + height),
-                             (x + width, y)], 1, bg_colour, bg_colour)
+                             (x + width, y)], 1, background_colour, background_colour)
         canvas.draw_text(text, (x + 20, y + 67), text_size, text_colour, "sans-serif")
 
     def draw_box_covers(self, canvas):
@@ -55,15 +58,20 @@ class PauseMenu:
                              menu_items[item["index"]], "sans-serif")
 
     def key_down(self, key):
-        if key == simplegui.KEY_MAP["down"]:
+        if self.keyboard.down_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(PauseMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["up"]:
+        elif self.keyboard.up_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(PauseMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["right"]:
+        elif self.keyboard.enter_key_pressed(key):
             if self.selected_menu_item == PauseMenuItems.RESUME["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:
                 self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
+
+    def mouse_down(self, position):
+        # Go back to main menu when any click detected. Lives and scores automatically reset next time game is started.
+        self.window.game_interface = GameInterface(self.window)
+        self.exit()
 
     def reveal(self):
         if round(self.box_reveal, 1) < 1:
@@ -78,6 +86,7 @@ class PauseMenu:
 
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
+        self.window.frame.set_mouseclick_handler(self.mouse_down)
         self.draw_boxes(canvas)
         self.draw_box_covers(canvas)
         self.draw_menu(canvas)

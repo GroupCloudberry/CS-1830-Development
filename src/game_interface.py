@@ -67,11 +67,22 @@ class Interaction:
         self.keyboard = keyboard
 
     def update(self):
+<<<<<<< HEAD
         if self.keyboard.right:
             self.car.accelerate()
             print(self.car.vel)
         if self.keyboard.left:
             self.car.reverse()
+=======
+        if self.keyboard.right_key_pressed:
+            # if self.car.position.getX() < Values.canvas_WIDTH*0.2:
+            self.car.vel.add(Vector(5, 0))
+            self.car.rotation = self.car.rotation + 1
+            print(self.car.vel)
+        if self.keyboard.left_key_pressed:
+            # if self.car.position.getX() > 50:
+            self.car.vel.add(Vector(-5, 0))
+>>>>>>> 986e847f8e50b4b3a3758ede573ada0081a846bc
             print(self.car.vel)
 
         if not self.keyboard.left and not self.keyboard.right:

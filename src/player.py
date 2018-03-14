@@ -1,4 +1,12 @@
-from player_attributes import PlayerAttributes
+try:
+    import simplegui
+except ImportError:
+    import simpleguitk as simplegui
+
+if simplegui.__name__ == "simpleguitk":
+    from player_attributes_sqlite import PlayerAttributesSQLite as PlayerAttributes
+else:
+    from player_attributes import PlayerAttributes
 
 
 class Player:
