@@ -77,11 +77,11 @@ class MainMenu:
 
     # noinspection PyTypeChecker
     def key_down(self, key):
-        if self.keyboard.down(key):
+        if self.keyboard.down_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(MainMenuItems.ITEMS)
-        elif self.keyboard.up(key):
+        elif self.keyboard.up_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(MainMenuItems.ITEMS)
-        elif self.keyboard.enter(key):
+        elif self.keyboard.enter_key_pressed(key):
             if self.selected_menu_item == MainMenuItems.START["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == MainMenuItems.SCOREBOARD["index"]:

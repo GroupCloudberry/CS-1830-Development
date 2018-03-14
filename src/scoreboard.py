@@ -69,13 +69,13 @@ class ScoreBoard:
                              menu_items[item["index"]], "sans-serif")
 
     def key_down(self, key):
-        if self.keyboard.down(key):
+        if self.keyboard.down_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif self.keyboard.up(key):
+        elif self.keyboard.up_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif self.keyboard.space(key):
+        elif self.keyboard.space_key_pressed(key):
             self.page = (self.page + 1) % self.pages
-        elif self.keyboard.enter(key):
+        elif self.keyboard.enter_key_pressed(key):
             if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
                 print("SQLite database unsupported in CodeSkulptor.")
             elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:
