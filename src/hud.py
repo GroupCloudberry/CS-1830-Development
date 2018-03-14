@@ -39,14 +39,3 @@ class HUD:
         self.draw_score_lives(canvas)
         self.draw_pause_button(canvas)
 
-    """
-    The following code for the mouse click handler should be moved to GameInterface.
-    
-    def mouse_down(self, postion):
-    if (180) > postion[0] > 75 and 25 > postion[1] > 0:
-        self.pause()
-    print(postion)
-        
-    def draw_canvas(self, canvas):
-        self.window.frame.set_mouseclick_handler(self.mouse_down)
-    """
