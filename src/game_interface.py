@@ -3,12 +3,12 @@ from vector import Vector
 from values import Values
 from road import Road
 from car import Car
-from keyboard import Keyboard
+from keyboard_game_interface import KeyboardGameInterface
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-from SimpleGUICS2Pygame import simplegui_lib_fps
+#from SimpleGUICS2Pygame import simplegui_lib_fps
 
 
 class GameInterface:
@@ -18,13 +18,13 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
-        self.keyboard = Keyboard(window)
+        self.keyboard = KeyboardGameInterface(window)
         self.car = Car(Vector(50, 375))
         self.road = Road(0)
         self.interaction = Interaction(self.car, self.keyboard, self.road)
 
-        self.fps = simplegui_lib_fps.FPS()
-        self.fps.start()
+        # self.fps = simplegui_lib_fps.FPS()
+        # self.fps.start()
 
     def draw_canvas(self, canvas):
 
@@ -41,7 +41,7 @@ class GameInterface:
         self.car.drawcar(canvas)
         self.road.drawRoad(canvas)
 
-        self.fps.draw_fct(canvas)
+        # self.fps.draw_fct(canvas)
 
 
     #Curtain animation mathod

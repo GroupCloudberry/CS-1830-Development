@@ -7,7 +7,7 @@ try:
 except ImportError:
     import simpleguitk as simplegui
 
-class Keyboard:
+class KeyboardGameInterface:
     def __init__(self, window):
         self.right = False
         self.left = False
