@@ -1,3 +1,4 @@
+from hud import HUD
 from transition_clock import TransitionClock
 from vector import Vector
 from values import Values
@@ -22,16 +23,14 @@ class GameInterface:
         self.car = Car(Vector(50, 375))
         self.road = Road(0)
         self.interaction = Interaction(self.car, self.keyboard, self.road)
+        self.hud = HUD(window)
 
         # self.fps = simplegui_lib_fps.FPS()
         # self.fps.start()
 
     def draw_canvas(self, canvas):
-
         #Check if window was just opened and display animation if true
         self.transition_clock.tick()
-        if self.left_cover_x > - self.window.__class__.WIDTH / 2:
-            self.reveal(canvas)
         #Set keyup and down handlers
         self.window.frame.set_keydown_handler(self.keyboard.keyDown)
         self.window.frame.set_keyup_handler(self.keyboard.keyUp)
@@ -40,14 +39,15 @@ class GameInterface:
         self.car.update()
         self.car.drawcar(canvas)
         self.road.drawRoad(canvas)
+        self.hud.draw_hud(canvas)
 
-        # self.fps.draw_fct(canvas)
+        # Animated reveal transition
+        if self.left_cover_x > - self.window.__class__.WIDTH / 2:
+            self.reveal(canvas)
 
-
-    #Curtain animation mathod
     def reveal(self, canvas):
-        box_colour_left = "Black"
-        box_colour_right = "Black"
+        box_colour_left = "Teal"
+        box_colour_right = "Teal"
         canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
