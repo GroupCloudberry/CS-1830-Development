@@ -1,10 +1,7 @@
 import collections
-import math
 
 from game_interface import GameInterface
 from keyboard_compat import KeyboardCompat
-from player_attributes import PlayerAttributes
-from player_data import PlayerData
 
 try:
     import simplegui
