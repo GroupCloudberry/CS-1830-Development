@@ -1,33 +1,41 @@
+from keyboard_compat import KeyboardCompat
+from car import Car
+from vector import Vector
+
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-from car import Car
-from vector import Vector
 
 class Keyboard:
-    def __init__(self):
+    def __init__(self, window):
         self.right = False
         self.left = False
         self.space = False
         self.x = False
 
+        self.kb_compat = KeyboardCompat()
+        self.window = window
+
     def keyDown(self, key):
         if key == simplegui.KEY_MAP['right']:
             self.right = True
-        if key == simplegui.KEY_MAP['left']:
+        elif key == simplegui.KEY_MAP['left']:
             self.left = True
-        if key == simplegui.KEY_MAP['space']:
+        elif key == simplegui.KEY_MAP['space']:
             self.space = True
-        if key == simplegui.KEY_MAP['x']:
+        elif key == simplegui.KEY_MAP['x']:
             self.x = True
+        elif self.kb_compat.escape_key_pressed(key):
+            self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
+
 
     def keyUp(self, key):
         if key == simplegui.KEY_MAP['right']:
             self.right = False
-        if key == simplegui.KEY_MAP['left']:
+        elif key == simplegui.KEY_MAP['left']:
             self.left = False
-        if key == simplegui.KEY_MAP['space']:
+        elif key == simplegui.KEY_MAP['space']:
             self.space = False
-        if key == simplegui.KEY_MAP['x']:
+        elif key == simplegui.KEY_MAP['x']:
             self.x = False

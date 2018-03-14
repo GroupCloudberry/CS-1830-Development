@@ -66,11 +66,10 @@ class PauseMenu:
             if self.selected_menu_item == PauseMenuItems.RESUME["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:
-                self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
+                self.exit()
 
     def mouse_down(self, position):
         # Go back to main menu when any click detected. Lives and scores automatically reset next time game is started.
-        self.window.game_interface = GameInterface(self.window)
         self.exit()
 
     def reveal(self):
@@ -80,8 +79,8 @@ class PauseMenu:
             self.menu_reveal = 0
 
     def exit(self):
-        # New ScoreBoard object created to run the animation again on next load
-        self.window.scoreboard = PauseMenu(self.window)
+        # New GameInterface object created to restart anew
+        self.window.game_interface = GameInterface(self.window)
         self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
     def draw_canvas(self, canvas):

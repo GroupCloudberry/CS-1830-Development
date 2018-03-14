@@ -18,7 +18,7 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
-        self.keyboard = Keyboard()
+        self.keyboard = Keyboard(window)
         self.car = Car(Vector(50, 375))
         self.road = Road(0)
         self.interaction = Interaction(self.car, self.keyboard, self.road)
