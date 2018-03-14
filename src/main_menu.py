@@ -1,4 +1,5 @@
 import collections
+from keyboard_mediator import KeyboardMediator
 
 try:
     import simplegui
@@ -18,6 +19,7 @@ class MainMenu:
     def __init__(self, window):
         self.selected_menu_item = 0
         self.window = window
+        self.keyboard = KeyboardMediator()
 
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
@@ -75,11 +77,11 @@ class MainMenu:
 
     # noinspection PyTypeChecker
     def key_down(self, key):
-        if key == simplegui.KEY_MAP['down']:
+        if self.keyboard.down(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(MainMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP['up']:
+        elif self.keyboard.up(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(MainMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP['right']:
+        elif self.keyboard.enter(key):
             if self.selected_menu_item == MainMenuItems.START["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == MainMenuItems.SCOREBOARD["index"]:

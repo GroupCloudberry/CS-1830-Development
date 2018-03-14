@@ -29,21 +29,23 @@ class ScoreBoardSQLite(ScoreBoard):
 
     # noinspection PyTypeChecker
     def key_down(self, key):
-        if key == simplegui.KEY_MAP["down"]:
+        if self.keyboard.down(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["up"]:
+        elif self.keyboard.up(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["space"]:
+        elif self.keyboard.space(key):
             self.page = (self.page + 1) % self.pages
-        elif key == simplegui.KEY_MAP["right"]:
+        elif self.keyboard.enter(key):
             if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
                 PlayerAttributesSQLite.delete_all_players()
                 self.players = self.load_players()
             elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:
                 self.exit()
 
-    def reveal(self):
-        super().reveal()
+    def exit(self):
+        # New ScoreBoard object created to run the animation and reload data on next load
+        self.window.scoreboard = ScoreBoardSQLite(self.window)
+        self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)

@@ -2,6 +2,7 @@ import collections
 import math
 
 from game_interface import GameInterface
+from keyboard_mediator import KeyboardMediator
 from player_attributes import PlayerAttributes
 from player_data import PlayerData
 
@@ -20,6 +21,7 @@ class PauseMenuItems:
 class PauseMenu:
     def __init__(self, window):
         self.window = window
+        self.keyboard = KeyboardMediator()
         self.selected_menu_item = 0
 
         self.box_reveal = 0.0  # Floating point for incremental reveal
@@ -56,11 +58,11 @@ class PauseMenu:
                              menu_items[item["index"]], "sans-serif")
 
     def key_down(self, key):
-        if key == simplegui.KEY_MAP["down"]:
+        if self.keyboard.down(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(PauseMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["up"]:
+        elif self.keyboard.up(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(PauseMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["right"]:
+        elif self.keyboard.enter(key):
             if self.selected_menu_item == PauseMenuItems.RESUME["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:

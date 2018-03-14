@@ -22,6 +22,9 @@ class KeyboardMediator:
     def right(self, key):
         return key == simplegui.KEY_MAP["right"]
 
+    def space(self, key):
+        return key == simplegui.KEY_MAP["space"]
+
     def enter(self, key):
         if simplegui.__name__ == "simpleguitk":
             return key == simplegui.KEY_MAP["return"] or key == simplegui.KEY_MAP["right"]

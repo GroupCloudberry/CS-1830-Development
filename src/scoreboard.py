@@ -1,6 +1,8 @@
 import collections
 import math
 
+from keyboard_mediator import KeyboardMediator
+
 try:
     import simplegui
 except ImportError:
@@ -17,6 +19,7 @@ class ScoreBoard:
 
     def __init__(self, window):
         self.window = window
+        self.keyboard = KeyboardMediator()
         self.selected_menu_item = 1
 
         self.box_reveal = 0.0  # Floating point for incremental reveal
@@ -66,20 +69,20 @@ class ScoreBoard:
                              menu_items[item["index"]], "sans-serif")
 
     def key_down(self, key):
-        if key == simplegui.KEY_MAP["down"]:
+        if self.keyboard.down(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["up"]:
+        elif self.keyboard.up(key):
             self.selected_menu_item = (self.selected_menu_item - 1) % len(ScoreBoardMenuItems.ITEMS)
-        elif key == simplegui.KEY_MAP["space"]:
+        elif self.keyboard.space(key):
             self.page = (self.page + 1) % self.pages
-        elif key == simplegui.KEY_MAP["right"]:
+        elif self.keyboard.enter(key):
             if self.selected_menu_item == ScoreBoardMenuItems.DELETE_ALL["index"]:
                 print("SQLite database unsupported in CodeSkulptor.")
             elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:
                 self.exit()
 
     def exit(self):
-        # New ScoreBoard object created to run the animation again on next load
+        # New ScoreBoard object created to run the animation and reload data on next load
         self.window.scoreboard = ScoreBoard(self.window)
         self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
