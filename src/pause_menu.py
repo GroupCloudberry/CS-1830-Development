@@ -67,6 +67,8 @@ class PauseMenu:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:
                 self.exit()
+        elif self.kb_compat.escape_key_pressed(key):
+            self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
 
     def mouse_down(self, position):
         # Go back to main menu when any click detected. Lives and scores automatically reset next time game is started.
