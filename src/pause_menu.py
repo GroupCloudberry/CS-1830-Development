@@ -1,6 +1,7 @@
 import collections
 import math
 
+from game_interface import GameInterface
 from player_attributes import PlayerAttributes
 from player_data import PlayerData
 
@@ -25,7 +26,7 @@ class PauseMenu:
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
 
     def draw_boxes(self, canvas):
-        bg_colour = "Teal"
+        background_colour = "Teal"
         text = "Paused"
         text_size = 50
         text_colour = "White"
@@ -35,7 +36,7 @@ class PauseMenu:
         height = 75
         canvas.draw_polygon([(x, y), (x, y + height),
                              (x + width, y + height),
-                             (x + width, y)], 1, bg_colour, bg_colour)
+                             (x + width, y)], 1, background_colour, background_colour)
         canvas.draw_text(text, (x + 20, y + 67), text_size, text_colour, "sans-serif")
 
     def draw_box_covers(self, canvas):
@@ -65,6 +66,11 @@ class PauseMenu:
             elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:
                 self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
+    def mouse_down(self, position):
+        # Go back to main menu when any click detected. Lives and scores automatically reset next time game is started.
+        self.window.game_interface = GameInterface(self.window)
+        self.exit()
+
     def reveal(self):
         if round(self.box_reveal, 1) < 1:
             self.box_reveal += 0.1
@@ -78,6 +84,7 @@ class PauseMenu:
 
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
+        self.window.frame.set_mouseclick_handler(self.mouse_down)
         self.draw_boxes(canvas)
         self.draw_box_covers(canvas)
         self.draw_menu(canvas)
