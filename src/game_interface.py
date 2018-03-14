@@ -28,22 +28,9 @@ class GameInterface:
         # self.fps = simplegui_lib_fps.FPS()
         # self.fps.start()
 
-    def draw_canvas(self, canvas):
-        #Check if window was just opened and display animation if true
-        self.transition_clock.tick()
-        #Set keyup and down handlers
-        self.window.frame.set_keydown_handler(self.keyboard.keyDown)
-        self.window.frame.set_keyup_handler(self.keyboard.keyUp)
-
-        self.interaction.update()
-        self.car.update()
-        self.car.drawcar(canvas)
-        self.road.drawRoad(canvas)
-        self.hud.draw_hud(canvas)
-
-        # Animated reveal transition
-        if self.left_cover_x > - self.window.__class__.WIDTH / 2:
-            self.reveal(canvas)
+    def mouse_down(self, position):
+        if 180 > position[0] > 75 and 25 > position[1] > 0:
+            self.hud.pause()
 
     def reveal(self, canvas):
         box_colour_left = "Teal"
@@ -60,6 +47,22 @@ class GameInterface:
         self.left_cover_x -= 25
         self.right_cover_x += 25
 
+    def draw_canvas(self, canvas):
+        self.transition_clock.tick()
+        #Set keyup and down handlers
+        self.window.frame.set_keydown_handler(self.keyboard.keyDown)
+        self.window.frame.set_keyup_handler(self.keyboard.keyUp)
+        self.window.frame.set_mouseclick_handler(self.mouse_down)
+
+        self.interaction.update()
+        self.car.update()
+        self.car.drawcar(canvas)
+        self.road.drawRoad(canvas)
+        self.hud.draw_hud(canvas) # see hud.py for brief documentation
+
+        # Animated reveal transition
+        if self.left_cover_x > - self.window.__class__.WIDTH / 2:
+            self.reveal(canvas)
 
 class Interaction:
     def __init__(self, car, keyboard, road):
