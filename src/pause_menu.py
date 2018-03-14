@@ -80,6 +80,7 @@ class PauseMenu:
     def exit(self):
         # New GameInterface object created to restart anew
         self.window.game_interface = GameInterface(self.window)
+        self.window.main_menu.banner_reveal = 0.0
         self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
     def draw_canvas(self, canvas):

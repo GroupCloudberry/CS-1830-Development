@@ -27,6 +27,8 @@ class KeyboardGameInterface:
         elif key == simplegui.KEY_MAP['x']:
             self.x = True
         elif self.kb_compat.escape_key_pressed(key):
+            # Reset the animation on load
+            self.window.pause_menu.box_reveal = 0
             self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
 
 
