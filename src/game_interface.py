@@ -8,6 +8,7 @@ try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
+from SimpleGUICS2Pygame import simplegui_lib_fps
 
 
 class GameInterface:
@@ -22,6 +23,8 @@ class GameInterface:
         self.road = Road(0)
         self.interaction = Interaction(self.car, self.keyboard, self.road)
 
+        self.fps = simplegui_lib_fps.FPS()
+        self.fps.start()
 
     def draw_canvas(self, canvas):
 
@@ -38,6 +41,7 @@ class GameInterface:
         self.car.drawcar(canvas)
         self.road.drawRoad(canvas)
 
+        self.fps.draw_fct(canvas)
 
 
     #Curtain animation mathod
@@ -64,12 +68,14 @@ class Interaction:
 
     def update(self):
         if self.keyboard.right:
-            # if self.car.position.getX() < Values.canvas_WIDTH*0.2:
-            self.car.vel.add(Vector(5, 0))
-            self.car.rotation = self.car.rotation + 1
+            self.car.accelerate()
             print(self.car.vel)
         if self.keyboard.left:
-            # if self.car.position.getX() > 50:
-            self.car.vel.add(Vector(-5, 0))
+            self.car.reverse()
             print(self.car.vel)
-            self.car.rotation = self.car.rotation - 1
+
+        if not self.keyboard.left and not self.keyboard.right:
+            self.car.brake()
+
+
+

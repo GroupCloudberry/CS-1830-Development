@@ -100,3 +100,4 @@ class Road:
 
     def drawRoad(self,canvas):
         canvas.draw_line([0, 400], [Values.canvas_WIDTH, 400], 5, 'white')
+        canvas.draw_line([300, 400], [Values.canvas_WIDTH-300, 200], 5 , 'white')
