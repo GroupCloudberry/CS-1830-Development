@@ -17,64 +17,74 @@ class Car:
 
         self.prevTime=time.time()
 
-    def __init__(self, position):
-        self.speed = 0
-        self.tyre_radius = 15
-        self.prevTime=time.time()
-        self.position = position
-        self.vel = Vector()
-        #load images
+    def __init__(self, position, fuel):
 
+        #Position vector
+        self.position = position
+
+        #Use system time
+        self.prevTime = time.time()
+
+        #Velocity and acceleration
+        self.vel = Vector()
+        self.acceleration = Vector()
+
+
+        #tyre radius and rotation
+        self.tyre_radius = 15
+        self.rotation = 0
+
+
+        #Defining tyre positions
         self.tyre1x = position.getX() + 30
         self.tyre1y = position.getY()
-
         self.tyre2x = position.getX() - 30
         self.tyre2y = position.getY()
 
-        self.rotation = 0
-        self.acceleration = Vector()
 
         #Defining tyre edges
-        self.tyre1_offset = self.tyre1y + self.tyre_radius
-        self.tyre2_offset = self.tyre2y + self.tyre_radius
+        self.tyre1_offset_bottom = self.tyre1y + self.tyre_radius
+        self.tyre2_offset_bottom = self.tyre2y + self.tyre_radius
 
+
+        #Fuel
+        self.fuel = fuel
+
+        #Constants
+        self.friction = Vector(-2,0)
 
     # car mechanics
     def accelerate(self):
-        if self.acceleration.getX() <= 150:
-            self.acceleration.add(Vector(3,0))
-        self.vel.add(Vector(10, 0))
-        self.vel.add(self.acceleration)
-        self.rotation = self.rotation + 1
-        print(self.acceleration)
-
-    def reverse(self):
-        self.vel.add(Vector(-10, 0))
-        if self.acceleration.getX() <= 150:
-            self.acceleration.add(Vector(3,0))
-        self.vel.add(-self.acceleration)
-        self.rotation = self.rotation - 1
-        print(self.acceleration)
+        self.acceleration.add(Vector(3,0))
 
     def brake(self):
         self.acceleration = Vector(0,0)
+        if not self.vel == Vector(0,0):
+            self.vel.add(Vector(0,0))
 
-    def getspeed(self):
-        return self.speed
+    def moveForward(self):
+        if not self.acceleration==Vector(0,0):
+            self.vel.add(self.acceleration)
+        else:
+            self.vel.add(self.friction)
+        self.rotateTyreForward()
 
-    def setspeed(self, newspeed):
-        self.speed = newspeed
+    def reverse(self):
+        if not self.acceleration==Vector(0,0):
+            self.vel.add(-self.acceleration)
+        else:
+            self.vel.add(-self.friction)
+        self.rotateTyreBackward()
 
-    def drawcar(self, canvas):
-        # Drawing Front tyre
-        canvas.draw_image(tyre_image, (tyre_image.get_width() / 2, tyre_image.get_height() / 2),
-                          (tyre_image.get_width(), tyre_image.get_height()), (self.tyre1x, self.tyre1y),
-                          (self.tyre_radius*2.2, self.tyre_radius*2.2), self.rotation)
+    #Handling sprites and images
+    def rotateTyreForward(self):
+        self.rotation = self.rotation + 1
 
-        # Drawing Back tyre
-        canvas.draw_image(tyre_image, (tyre_image.get_width() / 2, tyre_image.get_height() / 2),
-                          (tyre_image.get_width(), tyre_image.get_height()), (self.tyre2x, self.tyre2y),
-                          (self.tyre_radius * 2.2, self.tyre_radius * 2.2), self.rotation)
+    def rotateTyreBackward(self):
+        self.rotation = self.rotation - 1
+
+    #Braking
+
 
     def updatePosition(self):
         # Front tyre
@@ -86,8 +96,8 @@ class Car:
         self.tyre2y = self.position.getY()
 
         #Updating offsets
-        self.tyre1_offset = self.tyre1y + self.tyre_radius
-        self.tyre2_offset = self.tyre2y + self.tyre_radius
+        self.tyre1_offset_bottom = self.tyre1y + self.tyre_radius
+        self.tyre2_offset_bottom = self.tyre2y + self.tyre_radius
 
 
     def update(self):
@@ -97,3 +107,18 @@ class Car:
         #Updating tyre position
         self.updatePosition()
 
+    #Method to reduce fuel as car travels distance
+    def useFuel(self):
+        self.fuel = self.fuel - 1
+
+    #Displaying the updated car on canvas
+    def drawcar(self, canvas):
+        # Drawing Front tyre
+        canvas.draw_image(tyre_image, (tyre_image.get_width() / 2, tyre_image.get_height() / 2),
+                          (tyre_image.get_width(), tyre_image.get_height()), (self.tyre1x, self.tyre1y),
+                          (self.tyre_radius*2.2, self.tyre_radius*2.2), self.rotation)
+
+        # Drawing Back tyre
+        canvas.draw_image(tyre_image, (tyre_image.get_width() / 2, tyre_image.get_height() / 2),
+                          (tyre_image.get_width(), tyre_image.get_height()), (self.tyre2x, self.tyre2y),
+                          (self.tyre_radius * 2.2, self.tyre_radius * 2.2), self.rotation)
