@@ -4,15 +4,17 @@ class HUD:
         pass
 
     def draw_score_lives(self, canvas):
-        colour = "Teal"
-        width = 225
+        score_colour = "Grey"
+        lives_colour= "White"
+        width = 220
         height = 25
         x, y = self.window.__class__.WIDTH - 75, 0
-        canvas.draw_polygon([(x, 0), (x - width, 0), (x - width, height), (x, height)], 1, colour, colour)
+        canvas.draw_polygon([(x, 0), (x - width, 0), (x - width, height), (x, height)], 1, score_colour, score_colour)
+        canvas.draw_polygon([(x, 0), (x - (width / 2), 0), (x - (width / 2), height), (x, height)], 1, lives_colour, lives_colour)
 
     def draw_pause_button(self, canvas):
         text_size = 15
-        colour = "Teal"
+        colour = "Grey"
         width = 73
         height = 25
         x, y = 75 + ((width - self.window.frame.get_canvas_textwidth("Pause", text_size)) / 2), 0
@@ -29,6 +31,6 @@ class HUD:
         self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
 
     def draw_canvas(self, canvas):
+        self.window.frame.set_mouseclick_handler(self.mouse_down)
         self.draw_score_lives(canvas)
         self.draw_pause_button(canvas)
-        self.window.frame.set_mouseclick_handler(self.mouse_down)
