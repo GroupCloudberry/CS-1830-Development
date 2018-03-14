@@ -2,7 +2,8 @@ try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-
+from car import Car
+from vector import Vector
 
 class Keyboard:
     def __init__(self):
