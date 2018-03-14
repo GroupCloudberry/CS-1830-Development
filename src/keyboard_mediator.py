@@ -5,8 +5,10 @@ except ImportError:
 
 
 class KeyboardMediator:
-    def __init__(self):
-        pass
+    """
+    Because CodeSkulptor does not support static methods, an instance of KeyboardMediator should be created
+    to utilise these methods.
+    """
 
     def down(self, key):
         return key == simplegui.KEY_MAP["down"]
@@ -22,7 +24,7 @@ class KeyboardMediator:
 
     def enter(self, key):
         if simplegui.__name__ == "simpleguitk":
-            return key == simplegui.KEY_MAP["enter"] or key == simplegui == simplegui.KEY_MAP["right"]
+            return key == simplegui.KEY_MAP["return"] or key == simplegui.KEY_MAP["right"]
         return key == simplegui.KEY_MAP["right"]
 
     def pause(self, key):
