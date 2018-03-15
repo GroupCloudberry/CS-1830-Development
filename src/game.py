@@ -26,6 +26,7 @@ class Game:
     def __init__(self):
         self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", Game.WIDTH, Game.HEIGHT)
 
+        #Instantiating classes
         self.main_menu = MainMenu(self)
         self.pause_menu = PauseMenu(self)
         self.death_menu = DeathMenu(self)
@@ -35,12 +36,14 @@ class Game:
         self.hud = HUD(self)
         self.player_details_form = PlayerDetailsForm(self)
 
+    #Start main_menu
     def start(self):
         self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
-
+#The main funciton
 if __name__ == "__main__":
+    #Using start method from class Game to display main_menu
     window = Game()
     window.start()
 

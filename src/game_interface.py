@@ -28,6 +28,8 @@ class GameInterface:
             self.reveal(canvas)
         #Set keyup and down handlers
 
+        canvas.draw_line([0,400], [800,400], "10", 'white')
+
     #Curtain animation mathod
     def reveal(self, canvas):
         box_colour_left = "Black"
