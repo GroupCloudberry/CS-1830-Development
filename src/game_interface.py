@@ -21,16 +21,19 @@ class GameInterface:
 
 
     def draw_canvas(self, canvas):
-
-        #Check if window was just opened and display animation if true
+        # Increment the clock counter each time a frame is drawn to facilitate time-based functionality
         self.transition_clock.tick()
-        if self.left_cover_x > - self.window.__class__.WIDTH / 2:
-            self.reveal(canvas)
-        #Set keyup and down handlers
 
         canvas.draw_line([0,400], [800,400], "10", 'white')
 
-    #Curtain animation mathod
+        # Draw the covers and incrementally reveal the underlying content
+        # To cover all elements, the cover needs to be be drawn last
+        if self.left_cover_x > - self.window.__class__.WIDTH / 2:
+            self.reveal(canvas)
+
+        # Set key up and down handlers
+
+    # Curtain animation mechanism
     def reveal(self, canvas):
         box_colour_left = "Black"
         box_colour_right = "Black"
