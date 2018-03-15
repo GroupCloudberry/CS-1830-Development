@@ -69,6 +69,7 @@ class ScoreBoard:
                              menu_items[item["index"]], "sans-serif")
 
     def key_down(self, key):
+        print(key)
         if self.kb_compat.down_key_pressed(key):
             self.selected_menu_item = (self.selected_menu_item + 1) % len(ScoreBoardMenuItems.ITEMS)
         elif self.kb_compat.up_key_pressed(key):
@@ -80,6 +81,8 @@ class ScoreBoard:
                 print("SQLite database unsupported in CodeSkulptor.")
             elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:
                 self.exit()
+        elif self.kb_compat.escape_key_pressed(key):
+            self.exit()
 
     def exit(self):
         # New ScoreBoard object created to run the animation and reload data on next load

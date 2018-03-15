@@ -41,6 +41,8 @@ class ScoreBoardSQLite(ScoreBoard):
                 self.players = self.load_players()
             elif self.selected_menu_item == ScoreBoardMenuItems.MAIN_MENU["index"]:
                 self.exit()
+        elif self.kb_compat.escape_key_pressed(key):
+            self.exit()
 
     def exit(self):
         # New ScoreBoard object created to run the animation and reload data on next load

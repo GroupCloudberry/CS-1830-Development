@@ -21,7 +21,7 @@ class PauseMenu:
         self.kb_compat = KeyboardCompat()
         self.selected_menu_item = 0
 
-        self.box_reveal = 0.0  # Floating point for incremental reveal
+        self.box_reveal = 0.0  # Multiplier for incremental reveal
         self.menu_reveal = -(self.window.__class__.WIDTH * 2)
 
     def draw_boxes(self, canvas):
@@ -80,6 +80,7 @@ class PauseMenu:
     def exit(self):
         # New GameInterface object created to restart anew
         self.window.game_interface = GameInterface(self.window)
+        self.window.main_menu.banner_reveal = 0.0
         self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
     def draw_canvas(self, canvas):
