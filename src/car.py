@@ -17,7 +17,7 @@ class Car:
 
         self.prevTime=time.time()
 
-    def __init__(self, position, fuel):
+    def __init__(self, position, fuel,road):
 
         #Position vector
         self.position = position
@@ -35,6 +35,11 @@ class Car:
         self.rotation = 0
 
 
+        #Constants
+        self.friction = Vector(-0.05,0)
+        self.maxAcceleration = 200
+        self.distancePerLitre = 100
+
         #Defining tyre positions
         self.tyre1x = position.getX() + 30
         self.tyre1y = position.getY()
@@ -47,15 +52,21 @@ class Car:
         self.tyre2_offset_bottom = self.tyre2y + self.tyre_radius
 
 
-        #Fuel
+        #Fuel (Get fuel in litres from the argument)
+        self.fuelDistance = fuel * self.distancePerLitre
         self.fuel = fuel
 
-        #Constants
-        self.friction = Vector(-2,0)
+        #Get the road
+        self.road = road
+
+        #Get the camera
+        self.cam = '' #to be set everytime car is created
+
 
     # car mechanics
     def accelerate(self):
-        self.acceleration.add(Vector(3,0))
+        if self.acceleration.getX() <= self.maxAcceleration:
+            self.acceleration.add(Vector(3,0))
 
     def brake(self):
         self.acceleration = Vector(0,0)
@@ -68,22 +79,32 @@ class Car:
         else:
             self.vel.add(self.friction)
         self.rotateTyreForward()
+        self.useFuel()
 
     def reverse(self):
         if not self.acceleration==Vector(0,0):
-            self.vel.add(-self.acceleration)
+            self.vel.subtract(self.acceleration)
         else:
-            self.vel.add(-self.friction)
+            self.vel.subtract(self.friction)
         self.rotateTyreBackward()
+        self.useFuel()
 
-    #Handling sprites and images
+
+    # Handling sprites and images
     def rotateTyreForward(self):
         self.rotation = self.rotation + 1
 
     def rotateTyreBackward(self):
         self.rotation = self.rotation - 1
 
-    #Braking
+
+    #Method to reduce fuel as car travels distance
+    def useFuel(self):
+        self.fuelDistance = self.fuelDistance - 1
+        print(self.fuelDistance)
+        if self.fuelDistance % self.distancePerLitre == 0:
+            self.fuel = self.fuel - 1
+
 
 
     def updatePosition(self):
@@ -106,10 +127,10 @@ class Car:
 
         #Updating tyre position
         self.updatePosition()
+        self.cam.origin = self.position
 
-    #Method to reduce fuel as car travels distance
-    def useFuel(self):
-        self.fuel = self.fuel - 1
+
+
 
     #Displaying the updated car on canvas
     def drawcar(self, canvas):
@@ -122,3 +143,5 @@ class Car:
         canvas.draw_image(tyre_image, (tyre_image.get_width() / 2, tyre_image.get_height() / 2),
                           (tyre_image.get_width(), tyre_image.get_height()), (self.tyre2x, self.tyre2y),
                           (self.tyre_radius * 2.2, self.tyre_radius * 2.2), self.rotation)
+
+        print("Fuel is " + str(self.fuel))

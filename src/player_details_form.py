@@ -4,6 +4,7 @@ try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
+from values import Values
 
 class PlayerDetailsForm:
 
@@ -12,7 +13,7 @@ class PlayerDetailsForm:
         self.kb_compat = KeyboardCompat()
 
         self.box_reveal = 0.0
-        self.menu_reveal = (self.window.__class__.WIDTH * 2)
+        self.menu_reveal = (Values.canvas_WIDTH * 2)
 
         self.player_name = ""
 
