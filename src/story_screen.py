@@ -77,7 +77,7 @@ class StoryScreen:
                 x_offset = 15 if (index + 1) % 2 == 0 and container["image"] is not None else 0
                 container_spacing = 30 + ((self.text_size + 2) * len(self.text[index - 1])) if index > 0 else 0
                 canvas.draw_text(line, (75 + margin_left + x_offset, 165 + ((self.text_size + 2) * line_index)
-                                        + container_spacing), self.text_size, "White")
+                                        + container_spacing), self.text_size, "White", "sans-serif")
 
     def draw_images(self, canvas):
         for index, container in enumerate([self.pages[self.page].container1, self.pages[self.page].container2]):
@@ -89,8 +89,8 @@ class StoryScreen:
 
     def draw_menu(self, canvas):
         canvas.draw_text(StoryScreenMenuItems.NEXT["label"], (self.window.__class__.WIDTH - 75 -
-                                                              self.window.frame.get_canvas_textwidth(StoryScreenMenuItems.NEXT["label"], 25),
-                                                              self.window.__class__.HEIGHT - 75), 25, "Teal", "sans-serif")
+               self.window.frame.get_canvas_textwidth(StoryScreenMenuItems.NEXT["label"], 25),
+                self.window.__class__.HEIGHT - 75), 25, "Teal", "sans-serif")
 
     def draw_page_number(self, canvas):
         canvas.draw_text("Page {}/{}".format(self.page + 1, len(self.pages)), (self.window.__class__.WIDTH - 75 -
