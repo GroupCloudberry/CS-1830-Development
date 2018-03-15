@@ -5,6 +5,7 @@ try:
 except ImportError:
     import simpleguitk as simplegui
 import time
+from level_camera import LevelCamera
 
 #Using simplegui load_image to import the image for the tyre
 
@@ -17,7 +18,7 @@ class Car:
 
         self.prevTime=time.time()
 
-    def __init__(self, position, fuel,road):
+    def __init__(self, position, fuel,road,cam):
 
         #Position vector
         self.position = position
@@ -60,7 +61,7 @@ class Car:
         self.road = road
 
         #Get the camera
-        self.cam = '' #to be set everytime car is created
+        self.cam = cam#to be set everytime car is created
 
 
     # car mechanics
@@ -106,6 +107,8 @@ class Car:
             self.fuel = self.fuel - 1
 
 
+    def updateCameraCanvasPosition(self):
+        self.position = self.position.copy().transformFromCam(self.cam)
 
     def updatePosition(self):
         # Front tyre
@@ -127,8 +130,6 @@ class Car:
 
         #Updating tyre position
         self.updatePosition()
-        self.cam.origin = self.position
-
 
 
 
