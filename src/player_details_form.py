@@ -40,7 +40,7 @@ class PlayerDetailsForm:
 
     def draw_text(self, canvas):
         text1 = "Type your name and then press the right arrow key or Enter to save your progress."
-        text2 = "Use the left arrow key or back space to delete the last character or the 0 key to clear."
+        text2 = "Use the left arrow key or back space to delete the last character or space x3 to clear."
         text_size = 15
         text_colour = "White"
         x, y = x, y = 75, 115
@@ -61,9 +61,12 @@ class PlayerDetailsForm:
         elif self.kb_compat.backspace_key_pressed(key):
             self.player_name = self.player_name[:len(self.player_name) - 1] if len(self.player_name) >= 1 \
                 else ""
-        elif key == simplegui.KEY_MAP["0"]:
-            self.player_name = ""
-        elif 90 >= key >= 65 or key == simplegui.KEY_MAP["space"]:
+        elif key == simplegui.KEY_MAP["space"]:
+            if self.player_name[len(self.player_name) - 2:] == "  ":
+                self.player_name = ""
+            else:
+                self.player_name += chr(key)
+        elif 90 >= key >= 65 or 57 >= key >= 48:
             if self.player_name[len(self.player_name) - 1:] == " ":
                 self.player_name += chr(key).upper()
             elif len(self.player_name):
