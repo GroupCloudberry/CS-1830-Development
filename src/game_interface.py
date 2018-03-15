@@ -18,8 +18,6 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
-
-
     def draw_canvas(self, canvas):
         # Increment the clock counter each time a frame is drawn to facilitate time-based functionality
         self.transition_clock.tick()
