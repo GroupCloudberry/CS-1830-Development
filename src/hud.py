@@ -19,8 +19,9 @@ class HUD:
         x, y = self.window.__class__.WIDTH - 75, 0
         canvas.draw_polygon([(x, 0), (x - width, 0), (x - width, height), (x, height)], 1, score_colour, score_colour)
         canvas.draw_polygon([(x, 0), (x - (width / 2), 0), (x - (width / 2), height), (x, height)], 1, lives_colour, lives_colour)
-        canvas.draw_text("Lives: {}".format(self.lives), (x - width + 10, height - 2), text_size, "White")
-        canvas.draw_text("Score: {}".format(self.score), (x - (width / 2) + 10, height - 2), text_size, "Teal")
+        canvas.draw_text("Lives: {}".format(self.lives), (x - width + 10, height - 2), text_size, "White", "sans-serif")
+        canvas.draw_text("Score: {}".format(self.score), (x - (width / 2) + 10, height - 2), text_size, "Teal",
+                         "sans-serif")
 
     def draw_pause_button(self, canvas):
         text_size = 15
@@ -29,7 +30,7 @@ class HUD:
         height = 25
         x, y = 75 + ((width - self.window.frame.get_canvas_textwidth("Pause", text_size)) / 2), 0
         canvas.draw_polygon([(x, 0), (x + width, 0 ), (x + width, height), (x, height)], 1, colour, colour)
-        canvas.draw_text("Pause", (x + 16, 23), text_size, "White")
+        canvas.draw_text("Pause", (x + 16, 23), text_size, "White", "sans-serif")
 
     def pause(self):
         self.window.hud = HUD(self.window)

@@ -19,6 +19,7 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
+<<<<<<< HEAD
         self.road = Road()
         self.road.initSlope()
         self.cam = LevelCamera(Vector(100, Values.canvas_HEIGHT / 2), Values.CAM_ZOOM_SENSITIVITY, Values.CAM_MOVE_SENSITIVITY, Vector(800, 600))
@@ -26,12 +27,19 @@ class GameInterface:
         self.car = Car(Vector(100, Values.canvas_HEIGHT / 2), 100, self.road,self.cam)
 
 
+=======
+>>>>>>> 428fe2567f453febc45851e3ed354384f120b7cc
     def draw_canvas(self, canvas):
-
-        #Check if window was just opened and display animation if true
+        # Increment the clock counter each time a frame is drawn to facilitate time-based functionality
         self.transition_clock.tick()
+
+        canvas.draw_line([0,400], [800,400], "10", 'white')
+
+        # Draw the covers and incrementally reveal the underlying content
+        # To cover all elements, the cover needs to be be drawn last
         if self.left_cover_x > - self.window.__class__.WIDTH / 2:
             self.reveal(canvas)
+<<<<<<< HEAD
         #Set keyup and down handlers
         self.road.draw(canvas, self.cam)
         self.window.frame.set_keydown_handler(self.keydown)
@@ -41,8 +49,12 @@ class GameInterface:
 
         self.updateKey()
 
+=======
 
-    #Curtain animation mathod
+        # Set key up and down handlers
+>>>>>>> 428fe2567f453febc45851e3ed354384f120b7cc
+
+    # Curtain animation mechanism
     def reveal(self, canvas):
         box_colour_left = "Black"
         box_colour_right = "Black"

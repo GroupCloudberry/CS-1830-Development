@@ -2,6 +2,7 @@ from death_menu import DeathMenu
 from game_interface import GameInterface
 from hud import HUD
 from main_menu import MainMenu
+from map import Map
 from pause_menu import PauseMenu
 from player_details_form import PlayerDetailsForm
 
@@ -24,6 +25,13 @@ class Game:
     HEIGHT = 600
 
     def __init__(self):
+        """
+        Create the frame and instance variables assigned to instances of classes that constitute the various
+        screens of the game.
+
+        An instance of this class will be passed onto the classes that require the ability to draw onto the canvas,
+        or change the draw, key down/up, and mouse click handlers.
+        """
         self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", Game.WIDTH, Game.HEIGHT)
 
         #Instantiating classes
@@ -35,9 +43,13 @@ class Game:
         self.options = None  # WIP
         self.hud = HUD(self)
         self.player_details_form = PlayerDetailsForm(self)
+        self.map = Map(self)
 
     #Start main_menu
     def start(self):
+        """
+        When starting the frame, set the draw handler to render the main menu first.
+        """
         self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
