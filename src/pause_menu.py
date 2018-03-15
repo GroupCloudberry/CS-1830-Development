@@ -7,7 +7,7 @@ try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-from values import Values
+
 
 class PauseMenuItems:
     RESUME = {"index": 0, "label": "Resume"}
@@ -22,7 +22,7 @@ class PauseMenu:
         self.selected_menu_item = 0
 
         self.box_reveal = 0.0  # Multiplier for incremental reveal
-        self.menu_reveal = -(Values.canvas_WIDTH * 2)
+        self.menu_reveal = -(self.window.__class__.WIDTH * 2)
 
     def draw_boxes(self, canvas):
         background_colour = "Teal"

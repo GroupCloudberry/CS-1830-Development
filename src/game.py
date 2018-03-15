@@ -4,7 +4,6 @@ from hud import HUD
 from main_menu import MainMenu
 from pause_menu import PauseMenu
 from player_details_form import PlayerDetailsForm
-from values import Values
 
 try:
     import simplegui
@@ -21,8 +20,11 @@ else:
 
 class Game:
 
+    WIDTH = 800
+    HEIGHT = 600
+
     def __init__(self):
-        self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", Values.canvas_WIDTH, Values.canvas_HEIGHT)
+        self.frame = simplegui.create_frame("BerryDrive (CS1830 Group Cloudberry)", Game.WIDTH, Game.HEIGHT)
 
         self.main_menu = MainMenu(self)
         self.pause_menu = PauseMenu(self)
