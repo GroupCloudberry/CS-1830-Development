@@ -20,8 +20,10 @@ class KeyboardGameInterface:
     def keyDown(self, key):
         if key == simplegui.KEY_MAP['right']:
             self.right = True
+            print("right")
         elif key == simplegui.KEY_MAP['left']:
             self.left = True
+            print("left")
         elif key == simplegui.KEY_MAP['space']:
             self.space = True
         elif key == simplegui.KEY_MAP['x']:

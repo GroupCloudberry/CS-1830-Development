@@ -1,4 +1,4 @@
-from Vector import Vector
+from vector import Vector
 
 
 class LevelCamera:
@@ -47,3 +47,7 @@ class LevelCamera:
 
     def get(self):
         return(self.origin, self.dim.x)
+
+    def setOrigin(self, carposition):
+        self.origin = carposition
+

@@ -3,12 +3,12 @@ from vector import Vector
 from values import Values
 from road import Road
 from car import Car
+from level_camera import LevelCamera
 from keyboard_game_interface import KeyboardGameInterface
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-#from SimpleGUICS2Pygame import simplegui_lib_fps
 
 
 class GameInterface:
@@ -18,17 +18,15 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
+        self.road = Road()
         self.keyboard = KeyboardGameInterface(window)
-        self.car = Car(Vector(50, 375),100)
+        self.car = Car(Vector(50, 375), 100, self.road)
+        self.cam = LevelCamera(self.car.position, Values.CAM_ZOOM_SENSITIVITY, Values.CAM_MOVE_SENSITIVITY,
+                          Vector(Values.canvas_WIDTH, Values.canvas_HEIGHT))
+        self.car.cam = self.cam
+        self.interaction = Interaction(self.car, self.keyboard, self.road, self.cam)
 
-        self.keyboard = KeyboardGameInterface(window)
-        self.car = Car(Vector(50, 375),100)
-
-        self.road = Road(0)
-        self.interaction = Interaction(self.car, self.keyboard, self.road)
-
-        # self.fps = simplegui_lib_fps.FPS()
-        # self.fps.start()
+        self.road.initSlope()
 
     def draw_canvas(self, canvas):
 
@@ -43,9 +41,7 @@ class GameInterface:
         self.interaction.update()
         self.car.update()
         self.car.drawcar(canvas)
-        self.road.drawRoad(canvas)
-
-        # self.fps.draw_fct(canvas)
+        self.road.draw(canvas,self.cam)
 
 
     #Curtain animation mathod
@@ -66,9 +62,11 @@ class GameInterface:
 
 
 class Interaction:
-    def __init__(self, car, keyboard, road):
+    def __init__(self, car, keyboard, road, cam):
         self.car = car
         self.keyboard = keyboard
+        self.cam = cam
+        self.road = road
 
     def update(self):
         if self.keyboard.right:
@@ -82,6 +80,6 @@ class Interaction:
 
         if not self.keyboard.left and not self.keyboard.right:
             self.car.brake()
-
+        self.cam.setOrigin(self.car.position)
 
 
