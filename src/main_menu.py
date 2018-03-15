@@ -1,11 +1,12 @@
 import collections
 from keyboard_compat import KeyboardCompat
+from values import Values
 
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-
+from values import Values
 
 class MainMenuItems:
     START = {"index": 0, "label": "Start"}
@@ -22,7 +23,7 @@ class MainMenu:
         self.kb_compat = KeyboardCompat()
 
         self.left_cover_x = 0
-        self.right_cover_x = self.window.__class__.WIDTH / 2
+        self.right_cover_x = Values.canvas_WIDTH / 2
         self.banner_reveal = 0.0
 
         self.exiting = False
@@ -51,28 +52,28 @@ class MainMenu:
 
     def draw_exit_covers(self, canvas):
         box_colour = "Black"
-        canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
-                                  (self.left_cover_x + self.window.__class__.WIDTH / 2,
-                                   self.window.__class__.HEIGHT),
-                                  (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
+        canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, Values.canvas_HEIGHT),
+                                  (self.left_cover_x + Values.canvas_WIDTH / 2,
+                                   Values.canvas_HEIGHT),
+                                  (self.left_cover_x + Values.canvas_WIDTH / 2, 0)],
                                  1, box_colour, box_colour)
         canvas.draw_polygon([(self.right_cover_x, 0),
-                                  (self.right_cover_x, self.window.__class__.HEIGHT),
-                                  (self.right_cover_x + self.window.__class__.WIDTH / 2,
+                                  (self.right_cover_x, Values.canvas_HEIGHT),
+                                  (self.right_cover_x + Values.canvas_WIDTH / 2,
                                    self.window.__class__.HEIGHT),
-                                  (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
+                                  (self.right_cover_x + Values.canvas_WIDTH / 2, 0)], 1,
                                  box_colour, box_colour)
 
     def draw_launch_covers(self, canvas):
         box_colour = "Teal"
-        canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
-                             (self.left_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
-                             (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
+        canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, Values.canvas_HEIGHT),
+                             (self.left_cover_x + Values.canvas_WIDTH / 2, Values.canvas_HEIGHT),
+                             (self.left_cover_x + Values.canvas_WIDTH / 2, 0)],
                             1, box_colour, box_colour)
         canvas.draw_polygon([(self.right_cover_x, 0),
-                             (self.right_cover_x, self.window.__class__.HEIGHT),
-                             (self.right_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
-                             (self.right_cover_x + self.window.__class__.WIDTH / 2, 0)], 1,
+                             (self.right_cover_x, Values.canvas_HEIGHT),
+                             (self.right_cover_x + Values.canvas_WIDTH / 2, Values.canvas_HEIGHT),
+                             (self.right_cover_x + Values.canvas_WIDTH / 2, 0)], 1,
                             box_colour, box_colour)
 
     # noinspection PyTypeChecker
@@ -92,7 +93,7 @@ class MainMenu:
 
     def reveal(self, canvas):
         self.draw_launch_covers(canvas)
-        if self.left_cover_x > -(self.window.__class__.WIDTH / 2):
+        if self.left_cover_x > -(Values.canvas_WIDTH / 2):
             self.left_cover_x -= 25
             self.right_cover_x += 25
         elif round(self.banner_reveal, 1) < 1.0:

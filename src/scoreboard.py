@@ -7,7 +7,7 @@ try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-
+from values import Values
 
 class ScoreBoardMenuItems:
     DELETE_ALL = {"index": 0, "label": "Delete all players"}
@@ -23,7 +23,7 @@ class ScoreBoard:
         self.selected_menu_item = 1
 
         self.box_reveal = 0.0  # Floating point for incremental reveal
-        self.menu_reveal = -(self.window.__class__.WIDTH * 2)
+        self.menu_reveal = -(Values.canvas_WIDTH * 2)
         self.players_reveal = False  # Instantaneous reveal when True
 
         self.page = 0
@@ -57,9 +57,9 @@ class ScoreBoard:
 
     def draw_page_number(self, canvas):
         hint_colour = "White" if self.menu_reveal == 0 else "Black"
-        canvas.draw_text("Page {}/{}".format(self.page+1, self.pages), (self.window.__class__.WIDTH - 75 -
+        canvas.draw_text("Page {}/{}".format(self.page+1, self.pages), (Values.canvas_WIDTH - 75 -
                             self.window.frame.get_canvas_textwidth("Page {}/{} ".format(self.page+1, self.pages), 20),
-                          self.window.__class__.HEIGHT - 75), 20, hint_colour, "sans-serif")
+                          Values.canvas_HEIGHT - 75), 20, hint_colour, "sans-serif")
 
     def draw_menu(self, canvas):
         menu_items = collections.OrderedDict([(item["index"], "White") for item in ScoreBoardMenuItems.ITEMS])
