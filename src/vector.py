@@ -9,14 +9,16 @@ class Vector:
 
     def __str__(self):
         return "(" + str(self.x) + "," + str(self.y) + ")"
-    def negate(self):
-        self.multiply(-1)
+
     def getP(self):
         return (self.x, self.y)
+
     def getX(self):
         return self.x
+
     def getY(self):
         return self.y
+
     def copy(self):
         v = Vector(self.x, self.y)
         return v

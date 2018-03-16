@@ -38,19 +38,8 @@ class Car:
 
         #Constants
         self.friction = Vector(-0.05,0)
-        self.maxAcceleration = 200
+        self.maxAcceleration = 50
         self.distancePerLitre = 100
-
-        #Defining tyre positions
-        self.tyre1x = position.getX() + 30
-        self.tyre1y = position.getY()
-        self.tyre2x = position.getX() - 30
-        self.tyre2y = position.getY()
-
-
-        #Defining tyre edges
-        self.tyre1_offset_bottom = self.tyre1y + self.tyre_radius
-        self.tyre2_offset_bottom = self.tyre2y + self.tyre_radius
 
 
         #Fuel (Get fuel in litres from the argument)
@@ -62,6 +51,17 @@ class Car:
 
         #Get the camera
         self.cam = cam#to be set everytime car is created
+
+        #Defining tyre positions
+        # Front tyre
+        self.tyre1p = self.position.copy().transformToCam(self.cam)
+
+        # Back tyre
+        self.tyre2p = self.position.copy().transformToCam(self.cam)
+
+        #Defining tyre edges
+        self.tyre1_offset_bottom = self.tyre1p.getY() + self.tyre_radius
+        self.tyre2_offset_bottom = self.tyre2p.getY() + self.tyre_radius
 
 
     # car mechanics
@@ -102,26 +102,19 @@ class Car:
     #Method to reduce fuel as car travels distance
     def useFuel(self):
         self.fuelDistance = self.fuelDistance - 1
-        print(self.fuelDistance)
         if self.fuelDistance % self.distancePerLitre == 0:
             self.fuel = self.fuel - 1
 
-
-    def updateCameraCanvasPosition(self):
-        self.position = self.position.copy().transformFromCam(self.cam)
-
     def updatePosition(self):
         # Front tyre
-        self.tyre1x = self.position.getX() + 40
-        self.tyre1y = self.position.getY()
+        self.tyre1p = self.position
 
         # Back tyre
-        self.tyre2x = self.position.getX() - 40
-        self.tyre2y = self.position.getY()
+        self.tyre2p = self.position
 
         #Updating offsets
-        self.tyre1_offset_bottom = self.tyre1y + self.tyre_radius
-        self.tyre2_offset_bottom = self.tyre2y + self.tyre_radius
+        self.tyre1_offset_bottom = self.tyre1p.getY() + self.tyre_radius
+        self.tyre2_offset_bottom = self.tyre2p.getY() + self.tyre_radius
 
 
     def update(self):
@@ -130,19 +123,32 @@ class Car:
 
         #Updating tyre position
         self.updatePosition()
+        self.applyGravity()
+
+    def applyGravity(self):
+        if self.tyre1p.getY() > self.road.getYcoord(self.position.copy().transformFromCam(self.cam).getX()+40)+self.tyre_radius:
+            self.tyre1p.add(Vector(0, -1))
+        if self.tyre1p.getY() < self.road.getYcoord(self.position.copy().transformFromCam(self.cam).getX()+40)+self.tyre_radius:
+            self.tyre1p.add(Vector(0, 1))
+        fetchedYforTyre2 = self.road.getYcoord(self.position.copy().transformFromCam(self.cam).getX()-40)
+        print("tyre2 Y :" + str(self.tyre1p.getY()) + "| Road Y: " + str(fetchedYforTyre2))
+        if self.tyre2p.getY() < fetchedYforTyre2 + self.tyre_radius:
+            self.tyre2p.add(Vector(0, 1))
+        if self.tyre2p.getY() > fetchedYforTyre2 + self.tyre_radius:
+            self.tyre2p.add(Vector(0, -1))
 
 
 
     #Displaying the updated car on canvas
     def drawcar(self, canvas):
         # Drawing Front tyre
+        self.applyGravity()
         canvas.draw_image(tyre_image, (tyre_image.get_width() / 2, tyre_image.get_height() / 2),
-                          (tyre_image.get_width(), tyre_image.get_height()), (self.tyre1x, self.tyre1y),
+                          (tyre_image.get_width(), tyre_image.get_height()), (self.tyre1p.copy().transformToCam(self.cam).getX()+40, self.tyre1p.copy().transformToCam(self.cam).getY()),
                           (self.tyre_radius*2.2, self.tyre_radius*2.2), self.rotation)
 
         # Drawing Back tyre
         canvas.draw_image(tyre_image, (tyre_image.get_width() / 2, tyre_image.get_height() / 2),
-                          (tyre_image.get_width(), tyre_image.get_height()), (self.tyre2x, self.tyre2y),
+                          (tyre_image.get_width(), tyre_image.get_height()), (self.tyre2p.copy().transformToCam(self.cam).getX()-40, self.tyre2p.copy().transformToCam(self.cam).getY()),
                           (self.tyre_radius * 2.2, self.tyre_radius * 2.2), self.rotation)
 
-        print("Fuel is " + str(self.fuel))

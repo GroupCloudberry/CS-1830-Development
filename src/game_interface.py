@@ -24,10 +24,9 @@ class GameInterface:
         self.cam = LevelCamera(Vector(100, Values.canvas_HEIGHT / 2), Values.CAM_ZOOM_SENSITIVITY, Values.CAM_MOVE_SENSITIVITY, Vector(800, 600))
         self.cam.origin = Vector(400,400)
         self.car = Car(Vector(100, Values.canvas_HEIGHT / 2), 100, self.road,self.cam)
-
+        self.initialised = False
 
     def draw_canvas(self, canvas):
-
         #Check if window was just opened and display animation if true
         self.transition_clock.tick()
         if self.left_cover_x > - self.window.__class__.WIDTH / 2:
@@ -38,8 +37,9 @@ class GameInterface:
         self.window.frame.set_keyup_handler(self.keyup)
         self.car.update()
         self.car.drawcar(canvas)
-
         self.updateKey()
+
+
 
 
     #Curtain animation mathod
@@ -89,7 +89,7 @@ class GameInterface:
             self.cam.moveDown = True
 
     def updateKey(self):
-        """"if self.cam.moveRight == True:
+        if self.cam.moveRight == True:
             self.car.accelerate()
             self.car.moveForward()
             print(self.car.vel)
@@ -98,6 +98,7 @@ class GameInterface:
             self.car.reverse()
             print(self.car.vel)
         if not self.cam.moveLeft and not self.cam.moveRight:
-            self.car.brake()"""
-        self.cam.zoom()
+            self.car.brake()
         self.cam.move()
+        self.cam.zoom()
+        self.cam.setOrigin(self.car.position)
