@@ -46,17 +46,17 @@ class LevelCamera:
     def move_right(self):
         self.origin.add(Vector(self.moveSensitivity, 0))
 
-    def move(self):
+    def move(self,leftEnd, rightEnd):
         if self.moveUp == True:
             self.move_up()
 
         if self.moveDown == True:
             self.move_down()
 
-        if self.moveLeft == True:
+        if self.moveLeft == True and not leftEnd:
             self.move_left()
 
-        if self.moveRight == True:
+        if self.moveRight == True and not rightEnd:
             self.move_right()
 
     def zoom(self):

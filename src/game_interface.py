@@ -1,7 +1,7 @@
 from transition_clock import TransitionClock
 from vector import Vector
 from values import Values
-from road import Road
+from gameplay import GamePlay
 from car import Car
 from level_camera import LevelCamera
 
@@ -19,27 +19,48 @@ class GameInterface:
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
-        self.road = Road()
-        self.road.initSlope()
-        self.cam = LevelCamera(Vector(100, Values.canvas_HEIGHT / 2), Values.CAM_ZOOM_SENSITIVITY, Values.CAM_MOVE_SENSITIVITY, Vector(800, 600))
-        self.cam.origin = Vector(400,400)
-        self.car = Car(Vector(100, Values.canvas_HEIGHT / 2), 100, self.road,self.cam)
-        self.initialised = False
+        self.initial_origin_vector = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2)
+
+        #Creating camera with origin (center point) set to center point of canvas
+        self.cam = LevelCamera(self.initial_origin_vector, Values.CAM_ZOOM_SENSITIVITY, Values.CAM_MOVE_SENSITIVITY,
+                               Vector(Values.canvas_WIDTH,Values.canvas_HEIGHT))
+
+        self.final_origin = self.initial_origin_vector.copy().transformToCam(self.cam)
+        self.cam.setOrigin(self.final_origin)
+
+        # Road bounds (Camera)
+        self.leftEnd = False
+        self.rightEnd = False
+
+        #self.car = Car(Vector(30, 100), 100, self.road,self.cam)
+
+        #Car control booleans
+        self.moveCarRight = False
+        self.moveCarLeft = False
+        self.moveCarUp = False
+        self.moveCarDown = False
+
+        #constants
+        self.movementDistance = 0
 
     def draw_canvas(self, canvas):
         #Check if window was just opened and display animation if true
         self.transition_clock.tick()
         if self.left_cover_x > - self.window.__class__.WIDTH / 2:
             self.reveal(canvas)
-        #Set keyup and down handlers
+
+
+
+        #Draw road
         self.road.draw(canvas, self.cam)
+
+        #Setting key up and down handlers and updating
         self.window.frame.set_keydown_handler(self.keydown)
         self.window.frame.set_keyup_handler(self.keyup)
-        self.car.update()
-        self.car.drawcar(canvas)
         self.updateKey()
 
-
+        #Car
+        #self.car.drawCar(canvas)
 
 
     #Curtain animation mathod
@@ -60,45 +81,54 @@ class GameInterface:
 
 
     def keyup(self,key):
-        if key == simplegui.KEY_MAP['r']:
-            self.cam.zoomOut = False
-        elif key ==  simplegui.KEY_MAP['e']:
-            self.cam.zoomIn = False
-        elif key ==  simplegui.KEY_MAP['right']:
+        if key == simplegui.KEY_MAP['right']:
             self.cam.moveRight = False
-
-        elif key ==  simplegui.KEY_MAP['left']:
+            self.moveCarRight = False
+        elif key == simplegui.KEY_MAP['left']:
             self.cam.moveLeft = False
-        elif key ==  simplegui.KEY_MAP['up']:
+            self.moveCarLeft = False
+        elif key == simplegui.KEY_MAP['up']:
             self.cam.moveUp = False
-        elif key ==  simplegui.KEY_MAP['down']:
+        elif key == simplegui.KEY_MAP['down']:
             self.cam.moveDown = False
 
     def keydown(self,key):
-        if key ==  simplegui.KEY_MAP['r']:
-            self.cam.zoomOut = True
-        elif key ==  simplegui.KEY_MAP['e']:
-            self.cam.zoomIn = True
-        elif key ==  simplegui.KEY_MAP['right']:
+        if key == simplegui.KEY_MAP['right']:
             self.cam.moveRight = True
-        elif key ==  simplegui.KEY_MAP['left']:
+            #Move car right
+            self.moveCarRight = True
+
+        elif key == simplegui.KEY_MAP['left']:
             self.cam.moveLeft = True
-        elif key ==  simplegui.KEY_MAP['up']:
+            #Move car left
+            self.moveCarLeft = True
+
+        elif key == simplegui.KEY_MAP['up']:
             self.cam.moveUp = True
-        elif key ==  simplegui.KEY_MAP['down']:
+        elif key == simplegui.KEY_MAP['down']:
             self.cam.moveDown = True
 
+    def checkRoadEnds(self):
+        if self.cam.origin.getX() < self.road.endOfRoad_Origin.getX():
+            self.leftEnd = True
+        else:
+            self.leftEnd = False
+        if self.cam.origin.getX() > self.road.endOfRoadRight_Origin.getX():
+            self.rightEnd = True
+        else:
+            self.rightEnd = False
+
+
     def updateKey(self):
-        if self.cam.moveRight == True:
-            self.car.accelerate()
-            self.car.moveForward()
-            print(self.car.vel)
-        if self.cam.moveLeft == True:
-            self.car.accelerate()
-            self.car.reverse()
-            print(self.car.vel)
-        if not self.cam.moveLeft and not self.cam.moveRight:
-            self.car.brake()
-        self.cam.move()
-        self.cam.zoom()
-        self.cam.setOrigin(self.car.position)
+        self.checkRoadEnds()
+        self.cam.move(self.leftEnd, self.rightEnd)
+
+        #Move car
+        """if self.moveCarRight == True:
+            self.car.moveRight()
+        elif self.moveCarLeft == True:
+            self.car.moveLeft()
+        else:
+            self.car.reduceHorizontalVelocity()
+"""
+        #self.cam.zoom() -- Zoom feature is disabled
