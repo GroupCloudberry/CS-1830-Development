@@ -17,6 +17,8 @@ class GamePlay:
 
         self.position = Vector(300,100)
 
+        self.tyre_radius = 15
+
 
     #Road for level 1
     def createLevel1(self):
@@ -45,7 +47,7 @@ class GamePlay:
         return self.pointsList
 
     def constructCar(self, canvas ,cam):
-        canvas.draw_circle(self.position.copy().transformToCam(cam).getP(), 15, 5, 'Green', 'Green')
+        canvas.draw_circle(self.position.copy().transformToCam(cam).getP(), self.tyre_radius, 5, 'Green', 'Green')
         self.applyGravity()
 
     def moveCarRight(self):
@@ -62,11 +64,26 @@ class GamePlay:
 
     def applyGravity(self):
         self.findRoadPoints(self.position.getX())
-        print("Car is between " + str(self.point1.getP()) + " and " + str(self.point2.getP()))
+        roadY = self.getRoadHeight(self.point1, self.point2, self.position.getX())
+        print("Road Y Co-ordinate is at " + str(roadY))
+
+        if self.position.getY()<= roadY - self.tyre_radius:
+            self.position.add(Vector(0,4))
+        elif self.position.getY()>roadY - self.tyre_radius:
+            self.position.subtract(Vector(0,4))
 
 
-    def getRoadHeight(self):
-        pass
+    def getRoadHeight(self, point1, point2, currentX):
+        x1 = point1.getX()
+        x2 = point2.getX()
+        y1 = point1.getY()
+        y2 = point2.getY()
+
+        #Gradient
+        m = (y2-y1)/(x2-x1)
+
+        roadHeight = (m*(currentX-x1)) + y1
+        return roadHeight
 
 
     def draw(self,canvas,cam):
@@ -76,6 +93,7 @@ class GamePlay:
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
 
         self.constructCar(canvas, cam)
+
 
 
 
