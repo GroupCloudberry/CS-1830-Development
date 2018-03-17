@@ -1,6 +1,5 @@
 import collections
 from keyboard_compat import KeyboardCompat
-from scoreboard import ScoreBoard
 
 try:
     import simplegui
