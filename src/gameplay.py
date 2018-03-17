@@ -12,6 +12,10 @@ class GamePlay:
         self.endOfRoad_Origin = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2).copy().transformToCam(cam)
         self.endOfRoadRight_Origin = Vector(1000-(Values.canvas_WIDTH/2), Values.canvas_HEIGHT/2).copy().transformToCam(cam)
 
+        self.point1 = Vector()
+        self.point2 = Vector()
+
+        self.position = Vector(300,100)
 
 
     #Road for level 1
@@ -40,25 +44,29 @@ class GamePlay:
     def getPointsList(self):
         return self.pointsList
 
-    def getRoadHeight(self, point1, point2, currentX):
-        #Defining variables
-        x1 = point1.getX()
-        x2 = point2.getX()
-        y1 = point1.getY()
-        y2 = point2.getY()
+    def constructCar(self, canvas ,cam):
+        canvas.draw_circle(self.position.copy().transformToCam(cam).getP(), 15, 5, 'Green', 'Green')
+        self.applyGravity()
 
-        #Graditent
-        m = (y2-y1)/(x2-x1)
+    def moveCarRight(self):
+        self.position.add(Vector(5, 0))
 
-        #Y co-ordinate of road
-        roadHeight = (m * (currentX-x1)) + y1
+    def moveCarLeft(self):
+        self.position.add(Vector(-5,0))
 
-        return roadHeight
+    def findRoadPoints(self, currentX):
+        for i in range(len(self.pointsList)-1):
+            if self.pointsList[i].getX() <= currentX:
+                self.point1 = self.pointsList[i]
+                self.point2 = self.pointsList[i+1]
+
+    def applyGravity(self):
+        self.findRoadPoints(self.position.getX())
+        print("Car is between " + str(self.point1.getP()) + " and " + str(self.point2.getP()))
 
 
-    def constructCar(self, canvas, position ,cam):
-        canvas.draw_circle(position.copy().transformToCam(cam).getP(), 15, 5, 'Green', 'Green')
-
+    def getRoadHeight(self):
+        pass
 
 
     def draw(self,canvas,cam):
@@ -67,9 +75,8 @@ class GamePlay:
             point2 = self.pointsList[i+1].copy().transformToCam(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
 
-            self.constructCar(canvas, Vector(100,200), cam)
+        self.constructCar(canvas, cam)
 
-            print(cam.origin)
 
 
 

@@ -34,14 +34,18 @@ class GameInterface:
 
         #self.car = Car(Vector(30, 100), 100, self.road,self.cam)
 
+        self.gameplay = GamePlay(self.cam)
+
         #Car control booleans
         self.moveCarRight = False
         self.moveCarLeft = False
         self.moveCarUp = False
         self.moveCarDown = False
 
-        #constants
-        self.movementDistance = 0
+        #Level creation
+        self.gameplay.createLevel1()
+
+
 
     def draw_canvas(self, canvas):
         #Check if window was just opened and display animation if true
@@ -49,10 +53,8 @@ class GameInterface:
         if self.left_cover_x > - self.window.__class__.WIDTH / 2:
             self.reveal(canvas)
 
-
-
         #Draw road
-        self.road.draw(canvas, self.cam)
+        self.gameplay.draw(canvas, self.cam)
 
         #Setting key up and down handlers and updating
         self.window.frame.set_keydown_handler(self.keydown)
@@ -109,11 +111,11 @@ class GameInterface:
             self.cam.moveDown = True
 
     def checkRoadEnds(self):
-        if self.cam.origin.getX() < self.road.endOfRoad_Origin.getX():
+        if self.cam.origin.getX() < self.gameplay.endOfRoad_Origin.getX():
             self.leftEnd = True
         else:
             self.leftEnd = False
-        if self.cam.origin.getX() > self.road.endOfRoadRight_Origin.getX():
+        if self.cam.origin.getX() > self.gameplay.endOfRoadRight_Origin.getX():
             self.rightEnd = True
         else:
             self.rightEnd = False
@@ -124,11 +126,8 @@ class GameInterface:
         self.cam.move(self.leftEnd, self.rightEnd)
 
         #Move car
-        """if self.moveCarRight == True:
-            self.car.moveRight()
+        if self.moveCarRight == True:
+            self.gameplay.moveCarRight()
         elif self.moveCarLeft == True:
-            self.car.moveLeft()
-        else:
-            self.car.reduceHorizontalVelocity()
-"""
+            self.gameplay.moveCarLeft()
         #self.cam.zoom() -- Zoom feature is disabled
