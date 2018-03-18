@@ -1,14 +1,20 @@
 from keyboard_compat import KeyboardCompat
+from values import Values
 
 try:
     import simplegui
 except ImportError:
     import simpleguitk as simplegui
-from values import Values
+
+if simplegui.__name__ == "simpleguitk":
+    from player_attributes_sqlite import PlayerAttributesSQLite as PlayerAttributes
+else:
+    from player_attributes import PlayerAttributes
+
 
 class PlayerDetailsForm:
 
-    def __init__(self, window):
+    def __init__(self, window, attributes_from_game=None):
         self.window = window
         self.kb_compat = KeyboardCompat()
 
@@ -16,6 +22,7 @@ class PlayerDetailsForm:
         self.menu_reveal = (Values.canvas_WIDTH * 2)
 
         self.player_name = ""
+        self.attributes_from_game = attributes_from_game if attributes_from_game is not None else None
 
     def draw_boxes(self, canvas):
         background_colour = "Yellow"
@@ -57,7 +64,8 @@ class PlayerDetailsForm:
 
     def key_down(self, key):
         if self.kb_compat.enter_key_pressed(key):
-            pass
+            self.store()
+            self.exit()
             # Save player
         elif self.kb_compat.backspace_key_pressed(key):
             self.player_name = self.player_name[:len(self.player_name) - 1] if len(self.player_name) >= 1 \
@@ -75,8 +83,30 @@ class PlayerDetailsForm:
             else:
                 self.player_name += chr(key)
 
+    def reveal(self):
+        if round(self.box_reveal, 1) < 1:
+            self.box_reveal += 0.1
+        elif self.menu_reveal < 0:
+            self.menu_reveal = 0
+
+    def store(self):
+        player_attributes = PlayerAttributes.create(self.player_name)
+        if self.attributes_from_game is not None:
+            attr = self.attributes_from_game
+            player_attributes.set_params(level=attr.level, high_score=attr.high_score,
+                                              currency=attr.currency, lives=attr.lives)
+        player_attributes.close()
+
+    def exit(self):
+        if self.attributes_from_game is None:
+            self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
+        else:
+            self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
+
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
         self.draw_boxes(canvas)
+        self.draw_box_covers(canvas)
         self.draw_text(canvas)
         self.draw_name(canvas)
+        self.reveal()

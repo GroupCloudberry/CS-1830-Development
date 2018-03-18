@@ -11,8 +11,9 @@ except ImportError:
 
 class PauseMenuItems:
     RESUME = {"index": 0, "label": "Resume"}
-    MAIN_MENU = {"index": 1, "label": "Exit to Main Menu"}
-    ITEMS = [RESUME, MAIN_MENU]
+    SAVE_PLAYER = {"index": 1, "label": "Save Player"}
+    MAIN_MENU = {"index": 2, "label": "Exit to Main Menu"}
+    ITEMS = [RESUME, SAVE_PLAYER, MAIN_MENU]
 
 
 class PauseMenu:
@@ -51,7 +52,7 @@ class PauseMenu:
         menu_items = collections.OrderedDict([(item["index"], "White") for item in PauseMenuItems.ITEMS])
         menu_items[list(menu_items.keys())[self.selected_menu_item]] = "Teal"
         for index, item in enumerate(PauseMenuItems.ITEMS):
-            canvas.draw_text(item["label"], (75 - self.menu_reveal, 480 + (42 * index)), 30,
+            canvas.draw_text(item["label"], (75 - self.menu_reveal, 450 + (42 * index)), 30,
                              menu_items[item["index"]], "sans-serif")
 
     def key_down(self, key):
@@ -62,6 +63,8 @@ class PauseMenu:
         elif self.kb_compat.enter_key_pressed(key):
             if self.selected_menu_item == PauseMenuItems.RESUME["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
+            elif self.selected_menu_item == PauseMenuItems.SAVE_PLAYER["index"]:
+                self.window.frame.set_draw_handler(self.window.player_details_form.draw_canvas)
             elif self.selected_menu_item == PauseMenuItems.MAIN_MENU["index"]:
                 self.exit()
         elif self.kb_compat.escape_key_pressed(key):

@@ -41,9 +41,11 @@ class PlayerAttributes:
         self.currency = currency
         self.lives = lives
 
-    @staticmethod
+    """
+    @staticmethod  
     def create(name):
         attr = PlayerAttributes()
         attr.set_params(name, PlayerAttributes.DEFAULT_LEVEL, PlayerAttributes.DEFAULT_SCORE,
                         PlayerAttributes.DEFAULT_CURRENCY, PlayerAttributes.DEFAULT_LIVES)
         return attr
+    """

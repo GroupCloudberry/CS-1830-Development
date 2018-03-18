@@ -6,6 +6,12 @@ try:
 except ImportError:
     import simpleguitk as simplegui
 
+if simplegui.__name__ == "simpleguitk":
+    print("SQLite3 database supported.")
+    from scoreboard_sqlite import ScoreBoardSQLite as ScoreBoard
+else:
+    print("SQLite3 database not supported on CodeSkulptor.")
+    from scoreboard import ScoreBoard as ScoreBoard
 
 class MainMenuItems:
     START = {"index": 0, "label": "Start"}
@@ -85,6 +91,7 @@ class MainMenu:
             if self.selected_menu_item == MainMenuItems.START["index"]:
                 self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == MainMenuItems.SCOREBOARD["index"]:
+                self.window.scoreboard = ScoreBoard(self.window)
                 self.window.frame.set_draw_handler(self.window.scoreboard.draw_canvas)
             elif self.selected_menu_item == MainMenuItems.EXIT["index"]:
                 print("Player exited game.")
