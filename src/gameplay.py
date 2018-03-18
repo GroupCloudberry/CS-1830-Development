@@ -5,6 +5,7 @@ from values import Values
 import math
 import simpleguitk as simplegui
 
+tyre_image = simplegui.load_image('https://i.imgur.com/MKMJWhc.jpg')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
 
@@ -33,9 +34,11 @@ class GamePlay:
 
         self.carTyreDistance = 80
 
-        self.berry1_pos = Vector(1000,385)
+        self.berry1_pos = Vector(1000,375)
         self.berry1_dim = Vector(40,30)
         self.berry1_draw_boolean = True
+
+        self.cam = cam
 
 #Road for level 1
     def createLevel1(self):
@@ -145,9 +148,10 @@ class GamePlay:
 
     def applyBackground(self, canvas, cam):
         canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214 / 2) - 10, 600 / 2).copy().transformToCam(cam).getP(), (3214, 600))
+
+    def drawBerries(self, canvas, cam):
         if self.berry1_draw_boolean:
             canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().transformToCam(cam).getP(), self.berry1_dim.getP())
-
 
     def getRoadHeight(self, point1, point2, currentX):
         x1 = point1.getX()
@@ -174,6 +178,7 @@ class GamePlay:
             point1 = self.pointsList[i].copy().transformToCam(cam)
             point2 = self.pointsList[i+1].copy().transformToCam(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
+        self.drawBerries(canvas, cam)
         self.constructCar(canvas, cam)
 
         #Collision detection
