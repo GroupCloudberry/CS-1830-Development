@@ -106,6 +106,38 @@ class GamePlay:
         self.pointsList.append(Vector(9400, 400))
         self.pointsList.append(Vector(10000, 400))
 
+    def createLevel3(self):
+        self.pointsList.append(Vector(-50, 400))
+        self.pointsList.append(Vector(0, 400))
+        self.pointsList.append(Vector(300, 300))
+        self.pointsList.append(Vector(600, 300))
+        self.pointsList.append(Vector(800, 200))
+        self.pointsList.append(Vector(1000, 350))
+        self.pointsList.append(Vector(1100, 400))
+        self.pointsList.append(Vector(1300, 400))
+        self.pointsList.append(Vector(1600, 200))
+        self.pointsList.append(Vector(2000, 400))
+        self.pointsList.append(Vector(2300, 400))
+        self.pointsList.append(Vector(2500, 400))
+        self.pointsList.append(Vector(2700, 300))
+        self.pointsList.append(Vector(3000, 500))
+        self.pointsList.append(Vector(3500, 500))
+        self.pointsList.append(Vector(3700, 300))
+        self.pointsList.append(Vector(4000, 400))
+        self.pointsList.append(Vector(5000, 400))
+        self.pointsList.append(Vector(5500, 500))
+        self.pointsList.append(Vector(6000, 500))
+        self.pointsList.append(Vector(6300, 400))
+        self.pointsList.append(Vector(7000, 200))
+        self.pointsList.append(Vector(7500, 400))
+        self.pointsList.append(Vector(8500, 400))
+        self.pointsList.append(Vector(9000, 200))
+        self.pointsList.append(Vector(9500, 400))
+        self.pointsList.append(Vector(11000, 400))
+        self.pointsList.append(Vector(13000, 300))
+        self.pointsList.append(Vector(14000, 400))
+        self.pointsList.append(Vector(15000, 400))
+
 
     #Returns point list
     def getPointsList(self):
