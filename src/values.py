@@ -5,10 +5,3 @@ class Values:
     canvas_WIDTH = 800
     canvas_HEIGHT = 600
 
-
-    #DEVELOPER OPTIONS
-    DEVELOPER_OPTIONS = False
-
-    #CAMERA
-    CAM_MOVE_SENSITIVITY=5
-    CAM_ZOOM_SENSITIVITY=0.1

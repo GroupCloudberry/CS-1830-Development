@@ -5,28 +5,34 @@ from values import Values
 import math
 import simpleguitk as simplegui
 
-tyre_image = simplegui.load_image('https://i.imgur.com/MKMJWhc.jpg')
+tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
+car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
+berry_merchant_image = simplegui.load_image("https://i.imgur.com/2wJC0d9.png")
 
 class GamePlay:
 
     def __init__(self, cam):
         #Road
         self.pointsList = list()
-        self.endOfRoad_Origin = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2).copy().transformToCam(cam)
-        self.endOfRoadRight_Origin = Vector(15000-(Values.canvas_WIDTH/2), Values.canvas_HEIGHT/2).copy().transformToCam(cam)
+        self.endOfRoad_Origin = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2).copy().toBackground(cam)
+        self.endOfRoadRight_Origin = Vector(15000-(Values.canvas_WIDTH/2), Values.canvas_HEIGHT/2).copy().toBackground(cam)
 
-        self.point1 = Vector()
-        self.point2 = Vector()
+        self.point1_pos = Vector()
+        self.point2_pos = Vector()
+
+        self.point1_front = Vector()
+        self.point2_front = Vector()
+        self.point1_t2 = Vector()
+        self.point2_t2 = Vector()
 
         self.position = Vector(300,100)
+        #Tyre Vectors
+        self.front_tyre = Vector(self.position.getX()+40, self.position.getY())
 
         self.tyre_radius = 15
 
-        #Tyre Vectors
-        self.tyre1p = Vector()
-        self.tyre2p = Vector()
 
         #constants
         self.gravity_vector = Vector(0,2)
@@ -39,6 +45,10 @@ class GamePlay:
         self.berry1_draw_boolean = True
 
         self.cam = cam
+
+        self.rotation = 0
+        self.car_rotation = 0
+
 
 #Road for level 1
     def createLevel1(self):
@@ -115,43 +125,68 @@ class GamePlay:
         return self.pointsList
 
     def constructCar(self, canvas ,cam):
-        canvas.draw_circle(self.position.copy().transformToCam(cam).getP(), self.tyre_radius, 5, 'Green', 'Green')
+        self.rotateCar()
+        canvas.draw_image(car_image, (521 / 2, 131 / 2), (521, 131), Vector((self.front_tyre.getX()-40),((self.front_tyre.getY() + self.position.getY())/2)-15).copy().toBackground(cam).getP(),(130, 50), self.car_rotation)
+        canvas.draw_image(tyre_image, (200 / 2, 200 / 2), (200, 200), self.position.copy().toBackground(cam).getP(), (self.tyre_radius*2, self.tyre_radius*2), self.rotation)
+        canvas.draw_image(tyre_image, (200 / 2, 200 / 2), (200, 200), self.front_tyre.copy().toBackground(cam).getP(),(self.tyre_radius * 2, self.tyre_radius * 2), self.rotation)
+
+        self.updateTyres()
         self.applyGravity()
+
+    def updateTyres(self):
+        self.front_tyre.setX(self.position.getX()+80)
 
     def moveCarRight(self):
         self.position.add(self.movement_vector)
+        self.rotation += 0.5
 
     def moveCarLeft(self):
         self.position.subtract(self.movement_vector)
+        self.rotation += -0.5
 
     def findRoadPoints(self, currentX):
         for i in range(len(self.pointsList)-1):
             if self.pointsList[i].getX() <= currentX:
-                self.point1 = self.pointsList[i]
-                self.point2 = self.pointsList[i+1]
+                self.point1_pos = self.pointsList[i]
+                self.point2_pos = self.pointsList[i + 1]
+            if self.pointsList[i].getX() <= self.front_tyre.getX():
+                self.point1_front = self.pointsList[i]
+                self.point2_front = self.pointsList[i + 1]
 
     def applyGravity(self):
         self.findRoadPoints(self.position.getX())
-        roadY = self.getRoadHeight(self.point1, self.point2, self.position.getX())
-        print("Road Y Co-ordinate is at " + str(roadY))
 
+        roadY = self.getRoadHeight(self.point1_pos, self.point2_pos, self.position.getX())
         if self.position.getY()<= roadY - self.tyre_radius:
             self.position.add(self.gravity_vector)
         elif self.position.getY()>roadY - self.tyre_radius:
             self.position.subtract(self.gravity_vector)
 
-    def rotateCar(self, m):
-        #top point
-        centerpoint = self.position
-        centerToTyre = self.carTyreDistance/2
+        #Front tyre
+        roadY_front = self.getRoadHeight(self.point1_front, self.point2_front, self.front_tyre.getX())
+        if self.front_tyre.getY() <= roadY_front - self.tyre_radius:
+            self.front_tyre.add(self.gravity_vector)
+        elif self.front_tyre.getY() > roadY_front - self.tyre_radius:
+            self.front_tyre.subtract(self.gravity_vector)
+
+        print(str(roadY) + " and " + str(roadY_front))
+
+    def rotateCar(self):
+        x1 = self.position.getX()
+        y1 = self.position.getY()
+        x2 = self.front_tyre.getX()
+        y2 = self.front_tyre.getY()
+        self.car_rotation = math.atan((y2 - y1) / (x2 - x1))
+        print(str(self.car_rotation) + " rotation")
 
 
     def applyBackground(self, canvas, cam):
-        canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214 / 2) - 10, 600 / 2).copy().transformToCam(cam).getP(), (3214, 600))
+        canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
+        canvas.draw_image(berry_merchant_image, (200 / 2, 200 / 2), (200, 200), (200 / 2, 200 / 2), (200, 200))
 
     def drawBerries(self, canvas, cam):
         if self.berry1_draw_boolean:
-            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().transformToCam(cam).getP(), self.berry1_dim.getP())
+            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().toBackground(cam).getP(), self.berry1_dim.getP())
 
     def getRoadHeight(self, point1, point2, currentX):
         x1 = point1.getX()
@@ -161,7 +196,6 @@ class GamePlay:
 
         #Gradient
         m = (y2-y1)/(x2-x1)
-        print("Slope is (m): " + str(m) + "and in degrees " + str(math.degrees((math.atan(m)))))
 
         roadHeight = (m*(currentX-x1)) + y1
         return roadHeight
@@ -171,15 +205,16 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_center.getY() - (berry_dim.getY()/2) and  car_pos.getY()<= berry_center.getY() + (berry_dim.getY()/2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
-
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
         for i in range(len(self.pointsList)-1):
-            point1 = self.pointsList[i].copy().transformToCam(cam)
-            point2 = self.pointsList[i+1].copy().transformToCam(cam)
+            point1 = self.pointsList[i].copy().toBackground(cam)
+            point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
         self.drawBerries(canvas, cam)
+
         self.constructCar(canvas, cam)
+
 
         #Collision detection
         if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
