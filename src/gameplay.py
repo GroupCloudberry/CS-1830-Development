@@ -182,7 +182,6 @@ class GamePlay:
 
     def applyBackground(self, canvas, cam):
         canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
-        canvas.draw_image(berry_merchant_image, (200 / 2, 200 / 2), (200, 200), (200 / 2, 200 / 2), (200, 200))
 
     def drawBerries(self, canvas, cam):
         if self.berry1_draw_boolean:
