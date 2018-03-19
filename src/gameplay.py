@@ -13,15 +13,19 @@ berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
+bear_image = simplegui.load_image('https://i.imgur.com/284X6gP.png')
+
+
 #Commented code for audio
 #sound = simplegui.load_sound('http://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg')
 
 timer_counter_bm = 0
 frame_bm = 0
+frame_bear = 0
 
 class GamePlay:
 
-    def __init__(self, cam):
+    def __init__(self, cam, game_interface):
         #Road
         self.pointsList = list()
         self.endOfRoad_Origin = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2).copy().toBackground(cam)
@@ -71,10 +75,15 @@ class GamePlay:
         self.rotation = 0
         self.car_rotation = 0
 
+        self.gameInterface = game_interface
         self.score = 0
+
 
         #Boolean
         self.car_in_motion = False
+
+        self.bear_pos = Vector(1800, 400)
+        self.bear_dim = Vector(bear_image.get_width()/7, bear_image.get_height())
 
 
 #Road for level 1
@@ -273,10 +282,8 @@ class GamePlay:
 
 
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
-        horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (
-                    berryMerchant1_dim.getX() / 2) and car_pos.getX() <= berry_merchant_center.getX() + (berryMerchant1_dim.getX() / 2)
-        verticalCollisionBoolean = car_pos.getY() >= berry_merchant_center.getY() - (
-                    berryMerchant1_dim.getY() / 2) and car_pos.getY() <= berry_merchant_center.getY() + (berryMerchant1_dim.getY() / 2)
+        horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (berryMerchant1_dim.getX() / 2) and car_pos.getX() <= berry_merchant_center.getX() + (berryMerchant1_dim.getX() / 2)
+        verticalCollisionBoolean = car_pos.getY() >= berry_merchant_center.getY() - (berryMerchant1_dim.getY() / 2) and car_pos.getY() <= berry_merchant_center.getY() + (berryMerchant1_dim.getY() / 2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
 
@@ -315,8 +322,10 @@ class GamePlay:
         if self.bm1_draw_boolean:
             canvas.draw_image(berry_merchant_image, (center[frame_bm], image_height / 2), (image_width / 3, image_height),
                           self.bm1_pos.copy().toBackground(cam).getP(), self.bm1_dim.getP())
-        timer_counter_bm += 1
 
+    def updateTimerCounter(self):
+        global timer_counter_bm
+        timer_counter_bm += 1
 
     def setCarInMotion(self):
         self.car_in_motion = True
@@ -327,6 +336,25 @@ class GamePlay:
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
 
+    def drawBear(self, canvas, cam):
+        global timer_counter_bm, frame_bear
+        image_width = bear_image.get_width()
+        image_height = bear_image.get_height()
+
+        center = [image_width / 14,
+                  image_width / 14 + image_width / 7,
+                  image_width / 14 + image_width / 7 * 2,
+                  image_width / 14 + image_width / 7 * 3,
+                  image_width / 14 + image_width / 7 * 4,
+                  image_width / 14 + image_width / 7 * 5,
+                  image_width / 14 + image_width / 7 * 6]
+        if timer_counter_bm % 10 == 0:
+            if frame_bear % 6 == 0:
+                frame_bear = 1
+            else:
+                frame_bear = frame_bear + 1
+        canvas.draw_image(bear_image, (center[frame_bear], image_height/2),(image_width / 7, image_height),
+                              self.bear_pos.copy().toBackground(cam).getP(), self.bear_dim.getP())
 
     def wrapBackground(self,canvas,cam):
         background_length = 3214
@@ -334,15 +362,19 @@ class GamePlay:
                           Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
 
 
+    def updateScore(self):
+        self.gameInterface.player.current_score = self.score
+
     def draw(self,canvas,cam):
+        self.updateScore()
         self.applyBackground(canvas, cam)
-        self.wrapBackground()
         for i in range(len(self.pointsList)-1):
             point1 = self.pointsList[i].copy().toBackground(cam)
             point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
         self.drawBerries(canvas, cam)
         self.drawBerryMerchant(canvas, cam)
+        self.drawBear(canvas, cam)
 
         self.constructCar(canvas, cam)
 
@@ -363,7 +395,8 @@ class GamePlay:
             self.bm1_draw_boolean = False
             print("Collision with BM")
 
-        canvas.draw_text(self.score, [750,50], 20, 'white')
 
         self.berryMerchant1_draw_boolean = True
+
+        self.updateTimerCounter()
 
