@@ -39,7 +39,7 @@ end_of_road_image = simplegui.load_image('https://i.imgur.com/eqboshP.png')
 
 
 bear_image = simplegui.load_image('https://i.imgur.com/6zrjwfO.png')
-end_of_road_image = simplegui.load_image('https://i.imgur.com/PRF2gZe.png')
+end_of_road_image = simplegui.load_image('https://i.imgur.com/eqboshP.png')
 
 # Commented code for audio
 # sound = simplegui.load_sound('http://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg')
