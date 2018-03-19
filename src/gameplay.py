@@ -3,6 +3,7 @@ import math
 from vector import Vector
 from values import Values
 import math
+import time
 import simpleguitk as simplegui
 
 
@@ -54,6 +55,11 @@ class GamePlay:
         self.point2_bear = Vector()
 
         self.position = Vector(500,100)
+        #Mechanics
+        self.acceleration = Vector()
+        self.prevTime = time.time()
+
+
         #Tyre Vectors
         self.front_tyre = Vector(self.position.getX()+90, self.position.getY())
 
@@ -386,13 +392,6 @@ class GamePlay:
             self.bear_pos.add(self.gravity_vector)
         elif self.bear_pos.getY() > roadY_bear - self.bear_dim.getX()/2:
             self.bear_pos.subtract(self.gravity_vector)
-
-    def wrapBackground(self,canvas,mover):
-
-        background_length = 3214
-        canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600),
-                          Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(mover).getP(), (3214, 600))
-
 
 
     def draw(self, canvas, mover):
