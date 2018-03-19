@@ -44,11 +44,11 @@ class GameInterface:
 
         # self.car = Car(Vector(30, 100), 100, self.road,self.mover)
 
-<<<<<<< HEAD
+
         self.gameplay = GamePlay(self.mover)
-=======
-        self.gameplay = GamePlay(self.cam, self)
->>>>>>> a7bb5607d26b99ba67c489ee8bf83cfdd7905d97
+
+        self.gameplay = GamePlay(self.mover, self)
+
 
         # Car control booleans
         self.moveCarRight = False
