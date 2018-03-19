@@ -64,7 +64,7 @@ class Vector:
 
     def toBackground(self, mover):
         self.subtract(mover.center)
-        ratio=mover.dimCanv.copy().divideVector(mover.dim)
+        ratio=mover.canvas_DIM.copy().divideVector(mover.DIM)
         self.multiplyVector(ratio)
-        self.add(mover.dimCanv.copy().divide(2))
+        self.add(mover.canvas_DIM.copy().divide(2))
         return self

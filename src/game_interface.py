@@ -44,9 +44,6 @@ class GameInterface:
 
         # self.car = Car(Vector(30, 100), 100, self.road,self.mover)
 
-
-        self.gameplay = GamePlay(self.mover)
-
         self.gameplay = GamePlay(self.mover, self)
 
 

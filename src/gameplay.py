@@ -33,9 +33,6 @@ frame_bear = 0
 
 class GamePlay:
 
-
-    def __init__(self, mover):
-
     def __init__(self, mover, game_interface):
 
         #Road
@@ -330,8 +327,6 @@ class GamePlay:
 
     def drawBerryMerchant(self, canvas, mover):
 
-    def drawBerryMerchant(self, canvas, mover):
-
         global timer_counter_bm, frame_bm
         image_height = berry_merchant_image.get_height()
         image_width = berry_merchant_image.get_width()
@@ -343,12 +338,8 @@ class GamePlay:
             else:
                 frame_bm = frame_bm + 1
         if self.bm1_draw_boolean:
-            canvas.draw_image(berry_merchant_image, (center[frame_bm], image_height / 2), (image_width / 3, image_height),
-
-                              self.bm1_pos.copy().toBackground(mover).getP(), self.bm1_dim.getP())
+            canvas.draw_image(berry_merchant_image, (center[frame_bm], image_height / 2), (image_width / 3, image_height),self.bm1_pos.copy().toBackground(mover).getP(), self.bm1_dim.getP())
         timer_counter_bm += 1
-
-                          self.bm1_pos.copy().toBackground(mover).getP(), self.bm1_dim.getP())
 
 
     def updateTimerCounter(self):
@@ -361,12 +352,8 @@ class GamePlay:
     def setCarStationary(self):
         self.car_in_motion = False
 
-<<<<<<< HEAD
-
     def draw(self, canvas, mover):
         self.applyBackground(canvas, mover)
-
-    def wrapBackground(self, canvas, mover):
 
     def draw(self,canvas,mover):
         self.applyBackground(canvas, mover)
@@ -393,15 +380,13 @@ class GamePlay:
 
         self.updateBearPosition()
 
-
-<<<<<<< HEAD
     def applyBearGravity(self):
         roadY_bear = self.getRoadHeight(self.point1_bear, self.point2_bear, self.position.getX()-120)
         if self.bear_pos.getY() <= roadY_bear - self.bear_dim.getX()/2:
             self.bear_pos.add(self.gravity_vector)
         elif self.bear_pos.getY() > roadY_bear - self.bear_dim.getX()/2:
             self.bear_pos.subtract(self.gravity_vector)
-=======
+
     def wrapBackground(self,canvas,mover):
 
         background_length = 3214
@@ -413,7 +398,7 @@ class GamePlay:
     def draw(self, canvas, mover):
         self.applyBackground(canvas, mover)
         self.wrapBackground(canvas, mover)
->>>>>>> cc6a3c6c94fca346fff42b97913c271366de54e6
+
 
     def updateBearPosition(self):
         self.findRoadPoints(self.position.getX())
@@ -423,12 +408,7 @@ class GamePlay:
     def updateScore(self):
         self.gameInterface.player.current_score = self.score
 
-<<<<<<< HEAD
-
-    def draw(self,canvas,cam):
-=======
     def draw(self,canvas,mover):
->>>>>>> cc6a3c6c94fca346fff42b97913c271366de54e6
         self.updateScore()
         self.applyBackground(canvas, mover)
 
@@ -436,16 +416,13 @@ class GamePlay:
             point1 = self.pointsList[i].copy().toBackground(mover)
             point2 = self.pointsList[i+1].copy().toBackground(mover)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
-<<<<<<< HEAD
 
             #Draw road Background
             canvas.draw_polygon([(point1.getX(), point1.getY()+3), (point2.getX(), point2.getY()+3), (point2.getX(), Values.canvas_HEIGHT), (point1.getX(), Values.canvas_HEIGHT)], 1, 'green', 'green')
 
-        self.drawBerries(canvas, cam)
-        self.drawBerryMerchant(canvas, cam)
-        self.drawBear(canvas, cam)
-=======
->>>>>>> cc6a3c6c94fca346fff42b97913c271366de54e6
+        self.drawBerries(canvas, mover)
+        self.drawBerryMerchant(canvas, mover)
+        self.drawBear(canvas, mover)
 
         self.drawBerries(canvas, mover)
 
