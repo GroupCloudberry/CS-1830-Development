@@ -44,6 +44,10 @@ class GameInterface:
 
         # self.car = Car(Vector(30, 100), 100, self.road,self.mover)
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> a4435c89be047212bec81f88da39147b685eedec
         self.gameplay = GamePlay(self.mover, self)
 
 
@@ -52,7 +56,7 @@ class GameInterface:
         self.moveCarLeft = False
 
         # Level creation
-        self.gameplay.createLevel3()
+        self.gameplay.createLevel1()
 
         # Player data
         self.player_attributes = PlayerAttributes() # Do not directly call methods on this one
