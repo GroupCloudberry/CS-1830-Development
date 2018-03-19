@@ -2,11 +2,11 @@ from vector import Vector
 
 
 class MoveObjects:
-    def __init__(self, center, dimCanv):
+    def __init__(self, center, canvas_DIM):
 
         self.center = center
-        self.dim = dimCanv
-        self.dimCanv=dimCanv.copy()
+        self.DIM = canvas_DIM
+        self.canvas_DIM=canvas_DIM.copy()
         self.moveLeft=False
         self.moveRight=False
         self.speed=5

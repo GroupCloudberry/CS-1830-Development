@@ -11,7 +11,7 @@ image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 
 berry_image_link = simplegui.load_image('https://i.imgur.com/erLYnGU.png')
 
-berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
+
 
 
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
@@ -28,13 +28,13 @@ frame_bm = 0
 
 class GamePlay:
 
-    def __init__(self, cam):
+    def __init__(self, mover):
         #Road
         self.pointsList = list()
-        self.endOfRoad_Origin = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2).copy().toBackground(cam)
+        self.endOfRoad_Origin = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2).copy().toBackground(mover)
 
         self.roadLength = 10000
-        self.endOfRoadRight_Origin = Vector(self.roadLength-(Values.canvas_WIDTH/2), Values.canvas_HEIGHT/2).copy().toBackground(cam)
+        self.endOfRoadRight_Origin = Vector(self.roadLength-(Values.canvas_WIDTH/2), Values.canvas_HEIGHT/2).copy().toBackground(mover)
 
         self.point1_pos = Vector()
         self.point2_pos = Vector()
@@ -75,7 +75,7 @@ class GamePlay:
         self.bm1_dim = Vector(260 / 3, 60)
         self.bm1_draw_boolean = True
 
-        self.cam = cam
+        self.mover = mover
 
         self.rotation = 0
         self.car_rotation = 0
@@ -189,11 +189,11 @@ class GamePlay:
     def getPointsList(self):
         return self.pointsList
 
-    def constructCar(self, canvas ,cam):
+    def constructCar(self, canvas, mover):
         self.rotateCar()
-        canvas.draw_image(car_image, (521 / 2, 131 / 2), (521, 131), Vector((self.front_tyre.getX()-43),((self.front_tyre.getY() + self.position.getY())/2)-15).copy().toBackground(cam).getP(),(150, 50), self.car_rotation)
-        canvas.draw_image(tyre_image, (200 / 2, 200 / 2), (200, 200), self.position.copy().toBackground(cam).getP(), (self.tyre_radius*2, self.tyre_radius*2), self.rotation)
-        canvas.draw_image(tyre_image, (200 / 2, 200 / 2), (200, 200), self.front_tyre.copy().toBackground(cam).getP(),(self.tyre_radius * 2, self.tyre_radius * 2), self.rotation)
+        canvas.draw_image(car_image, (521 / 2, 131 / 2), (521, 131), Vector((self.front_tyre.getX()-43),((self.front_tyre.getY() + self.position.getY())/2)-15).copy().toBackground(mover).getP(), (150, 50), self.car_rotation)
+        canvas.draw_image(tyre_image, (200 / 2, 200 / 2), (200, 200), self.position.copy().toBackground(mover).getP(), (self.tyre_radius * 2, self.tyre_radius * 2), self.rotation)
+        canvas.draw_image(tyre_image, (200 / 2, 200 / 2), (200, 200), self.front_tyre.copy().toBackground(mover).getP(), (self.tyre_radius * 2, self.tyre_radius * 2), self.rotation)
 
         self.updateTyres()
         self.applyGravity()
@@ -247,11 +247,11 @@ class GamePlay:
         print(str(self.car_rotation) + " rotation")
 
 
-    def applyBackground(self, canvas, cam):
+    def applyBackground(self, canvas, mover):
         canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600),
-                          Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
+                          Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(mover).getP(), (3214, 600))
         for i in range (1, self.roadLength%image_link.get_width()):
-            canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600),Vector((3214*i+(3214 / 2) - 10), 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
+            canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214*i+(3214 / 2) - 10), 600 / 2).copy().toBackground(mover).getP(), (3214, 600))
 
 
     def drawBerries(self, canvas, mover):
@@ -320,7 +320,7 @@ class GamePlay:
             self.fuel = self.fuel - 1
 
 
-    def drawBerryMerchant(self, canvas, cam):
+    def drawBerryMerchant(self, canvas, mover):
         global timer_counter_bm, frame_bm
         image_height = berry_merchant_image.get_height()
         image_width = berry_merchant_image.get_width()
@@ -333,7 +333,7 @@ class GamePlay:
                 frame_bm = frame_bm + 1
         if self.bm1_draw_boolean:
             canvas.draw_image(berry_merchant_image, (center[frame_bm], image_height / 2), (image_width / 3, image_height),
-                          self.bm1_pos.copy().toBackground(cam).getP(), self.bm1_dim.getP())
+                              self.bm1_pos.copy().toBackground(mover).getP(), self.bm1_dim.getP())
         timer_counter_bm += 1
 
 
@@ -344,33 +344,33 @@ class GamePlay:
         self.car_in_motion = False
 
 
-    def draw(self,canvas,cam):
-        self.applyBackground(canvas, cam)
+    def draw(self, canvas, mover):
+        self.applyBackground(canvas, mover)
 
-    def wrapBackground(self,canvas,cam):
+    def wrapBackground(self, canvas, mover):
         background_length = 3214
         canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600),
-                          Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
+                          Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(mover).getP(), (3214, 600))
 
 
-    def draw(self,canvas,cam):
-        self.applyBackground(canvas, cam)
-        self.wrapBackground(canvas, cam)
+    def draw(self, canvas, mover):
+        self.applyBackground(canvas, mover)
+        self.wrapBackground(canvas, mover)
 
         for i in range(len(self.pointsList)-1):
-            point1 = self.pointsList[i].copy().toBackground(cam)
-            point2 = self.pointsList[i+1].copy().toBackground(cam)
+            point1 = self.pointsList[i].copy().toBackground(mover)
+            point2 = self.pointsList[i+1].copy().toBackground(mover)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
-        self.drawBerries(canvas, cam)
+        self.drawBerries(canvas, mover)
 
 
 
-        self.drawBerryMerchant(canvas,cam)
+        self.drawBerryMerchant(canvas, mover)
 
-        self.drawBerryMerchant(canvas, cam)
+        self.drawBerryMerchant(canvas, mover)
 
 
-        self.constructCar(canvas, cam)
+        self.constructCar(canvas, mover)
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
 
         #Collision detection
