@@ -26,12 +26,12 @@ class Road:
     def draw(self,canvas,cam):
 
         for a in range(0, 50):
-            p1=self.p1.copy().transformToCam(cam)
-            p2=self.p2.copy().transformToCam(cam)
+            p1=self.p1.copy().toBackground(cam)
+            p2=self.p2.copy().toBackground(cam)
             print(p1,p2)
 
-            point1=self.pointsList[a].copy().transformToCam(cam)
-            point2 = self.pointsList[a+1].copy().transformToCam(cam)
+            point1=self.pointsList[a].copy().toBackground(cam)
+            point2 = self.pointsList[a+1].copy().toBackground(cam)
 
             canvas.draw_line(point1.getP(),point2.getP(), 1, 'Pink')
 

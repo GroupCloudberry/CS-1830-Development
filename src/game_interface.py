@@ -3,7 +3,7 @@ from vector import Vector
 from values import Values
 from gameplay import GamePlay
 from car import Car
-from level_camera import LevelCamera
+from move_objects import MoveObjects
 
 try:
     import simplegui
@@ -22,11 +22,11 @@ class GameInterface:
         self.initial_origin_vector = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2)
 
         #Creating camera with origin (center point) set to center point of canvas
-        self.cam = LevelCamera(self.initial_origin_vector, Values.CAM_ZOOM_SENSITIVITY, Values.CAM_MOVE_SENSITIVITY,
+        self.cam = MoveObjects(self.initial_origin_vector,
                                Vector(Values.canvas_WIDTH,Values.canvas_HEIGHT))
 
-        self.final_origin = self.initial_origin_vector.copy().transformToCam(self.cam)
-        self.cam.setOrigin(self.final_origin)
+        self.final_origin = self.initial_origin_vector.copy().toBackground(self.cam)
+        self.cam.setCenter(self.final_origin)
 
         # Road bounds (Camera)
         self.leftEnd = False
@@ -110,11 +110,12 @@ class GameInterface:
             self.cam.moveDown = True
 
     def checkRoadEnds(self):
-        if self.cam.origin.getX() < self.gameplay.endOfRoad_Origin.getX():
+        if self.cam.center.getX() < self.gameplay.endOfRoad_Origin.getX():
             self.leftEnd = True
+
         else:
             self.leftEnd = False
-        if self.cam.origin.getX() > self.gameplay.endOfRoadRight_Origin.getX():
+        if self.cam.center.getX() > self.gameplay.endOfRoadRight_Origin.getX():
             self.rightEnd = True
         else:
             self.rightEnd = False
