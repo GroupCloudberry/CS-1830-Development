@@ -36,11 +36,12 @@ class HUD:
     def draw_fuel(self, canvas):
         text_size = 15
         colour = "White"
-        width = self.window.frame.get_canvas_textwidth("Fuel: {}".format(self.fuel), text_size)
+        width = self.window.frame.get_canvas_textwidth("Fuel: {}".format(self.fuel), text_size) + 30
         height = 25
         box_y = self.window.__class__.HEIGHT - height
-        x, y = 75 + 25, self.window.__class__.HEIGHT - width
+        x, y = 75 + 15, self.window.__class__.HEIGHT
         canvas.draw_polygon([(75, box_y), (75, box_y + height), (75 + width, box_y + height), (75 + width, box_y)], 1, colour, colour)
+        canvas.draw_text("Fuel: {}".format(self.fuel), (x, y), text_size, "Teal", "sans-serif")
 
     def pause(self):
         self.window.hud = HUD(self.window)
@@ -51,7 +52,7 @@ class HUD:
         self.draw_pause_button(canvas)
         self.draw_fuel(canvas)
 
-    def update_attributes(self, score, lives):
+    def update_attributes(self, score, lives, fuel):
         self.score = score
         self.lives = lives
 
