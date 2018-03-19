@@ -26,6 +26,7 @@ berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
 
 bear_image = simplegui.load_image('https://i.imgur.com/284X6gP.png')
+end_of_road_image = simplegui.load_image('https://i.imgur.com/PRF2gZe.png')
 
 
 #Commented code for audio
@@ -116,6 +117,8 @@ class GamePlay:
         self.blockCar = False
 
         self.bear_distance = 200
+
+        self.level_completed = False
 
 
 #Road for level 1
@@ -521,11 +524,23 @@ class GamePlay:
         if self.bear_distance <= 10:
             if self.gameInterface.player.attributes.lives !=0:
                 self.gameInterface.player.attributes.lives -= 1
+                self.bear_distance = 200
 
     def handleLives(self):
         if self.gameInterface.player.attributes.lives == 0:
             self.gameInterface.window.frame.set_draw_handler(self.gameInterface.window.death_screen.draw_canvas)
 
+    def createEndofRoadSign(self, canvas):
+        image_height = end_of_road_image.get_height()
+        image_width = end_of_road_image.get_width()
+        canvas.draw_image(end_of_road_image, (image_width/2, image_height/2), (image_height, image_width), Vector(200, 200).copy().toBackground(self.mover).getP(), (image_width, image_width) )
+
+    def checkEndOfLevel(self):
+        print("X coord " + str(self.position.getX()))
+        if self.position.getX()>=self.roadLength - 200:
+            self.level_completed = True
+            print("Level end")
+        
 
     def draw(self,canvas,mover):
         self.updateScore()
@@ -571,7 +586,11 @@ class GamePlay:
             print("Collision with BM")
 
         self.handleBear()
+        self.handleLives()
 
+        self.createEndofRoadSign(canvas)
+
+        self.checkEndOfLevel()
 
         self.berryMerchant1_draw_boolean = True
         self.updateTimerCounter()
