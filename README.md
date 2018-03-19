@@ -7,7 +7,7 @@ This game can be run natively on any machine with a Python 3 install that suppor
 
 To use all features of this game, `simpleguitk` *must* be used. If not possible, however, fallbacks have been implemented to ensure compatibility with CodeSkulptor.
 
-## Running: `simpleguitk` ()
+## Running: `simpleguitk` (Windows/macOS/Linux)
 You need to determine whether the `python` or `python3` command is symbolically linked to your Python 3 installation. If `python --version` reports a version number that begins with 2, use `python3` in place of `python`.
 
 To launch the game, simply open a terminal and navigate to the `src` directory. Then run `python game.py`. The window should appear shortly.
