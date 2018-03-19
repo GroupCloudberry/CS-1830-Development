@@ -9,16 +9,11 @@ tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
-<<<<<<< HEAD
-berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
-berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
-=======
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
 timer_counter_bm = 0
 frame_bm = 0
->>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
 
 class GamePlay:
 
