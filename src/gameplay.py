@@ -320,6 +320,7 @@ class GamePlay:
         self.position.subtract(Vector(newspeed, self.movement_vector.getY()))
         self.rotation += -0.5
         self.useFuel()
+        self.bear_distance -= 5
         self.accelerate()
         self.mover.setSpeed(newspeed)
         self.updateTyres()
