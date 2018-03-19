@@ -41,7 +41,6 @@ class HUD:
         self.draw_pause_button(canvas)
 
     def update_attributes(self, score, lives):
-        print("score is updated to " + str(score))
         self.score = score
         self.lives = lives
 
