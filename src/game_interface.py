@@ -63,7 +63,7 @@ class GameInterface:
         # Draw road
         self.gameplay.draw(canvas, self.mover)
         self.hud.draw_hud(canvas)
-        self.hud.update_attributes(self.player.current_score, self.player.attributes.lives)
+        self.hud.update_attributes(self.player.current_score, self.player.attributes.lives, self.gameplay.fuel)
 
         # Setting key up and down handlers and updating
         self.window.frame.set_keydown_handler(self.keydown)
@@ -71,8 +71,6 @@ class GameInterface:
         self.window.frame.set_mouseclick_handler(self.mouse_down)
         self.updateKey()
 
-        # Car
-        # self.car.drawCar(canvas)
 
         # Opening transition
         self.transition_clock.tick()
