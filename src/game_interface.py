@@ -39,8 +39,7 @@ class GameInterface:
         #Car control booleans
         self.moveCarRight = False
         self.moveCarLeft = False
-        self.moveCarUp = False
-        self.moveCarDown = False
+
 
         #Level creation
         self.gameplay.createLevel1()
