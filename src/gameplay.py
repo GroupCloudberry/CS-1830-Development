@@ -5,19 +5,26 @@ from values import Values
 import math
 import simpleguitk as simplegui
 
-tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
+tyre_image = simplegui.load_image('https://i.imgur.com/8tgv4Im.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
+
+berry_image_link = simplegui.load_image('https://i.imgur.com/erLYnGU.png')
+
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
 
+
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
-berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
+
+
+
 
 bear_image = simplegui.load_image('https://i.imgur.com/284X6gP.png')
 
 
 #Commented code for audio
 #sound = simplegui.load_sound('http://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg')
+
 
 timer_counter_bm = 0
 frame_bm = 0
@@ -53,15 +60,17 @@ class GamePlay:
 
         self.berryMoney = 0
 
+        self.lives = 3
         #constants
         self.gravity_vector = Vector(0,2)
         self.movement_vector = Vector(5,0)
 
         self.carTyreDistance = 80
 
-        self.berry1_pos = Vector(1000,375)
+        self.berry1_pos = self.placeBerries(900, 2000, 0)
+        self.berry2_pos = self.placeBerries(8000, 10000, 0)
         self.berry1_dim = Vector(40,30)
-        self.berry1_draw_boolean = True
+        self.berry_draw_boolean = True
         self.berryMerchant1_draw_boolean = True
         self.berryMerchant1_pos = Vector(2000, 400)
         self.berryMerchant1_dim = Vector(151, 122)
@@ -255,11 +264,16 @@ class GamePlay:
 
 
     def drawBerries(self, canvas, mover):
-        if self.berry1_draw_boolean:
+        if self.berry_draw_boolean:
             canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().toBackground(mover).getP(), self.berry1_dim.getP())
+            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry2_pos.copy().toBackground(mover).getP(), self.berry1_dim.getP())
 
-    def placeBerries(self, noOfBerries):
-        pass
+    def placeBerries(self, startX, endX, slope):
+        xCoord = random.randint(startX, endX)
+        yCoord = slope*xCoord + 400 - 15
+        berry_pos = Vector(xCoord, yCoord)
+        return berry_pos
+
 
     def getRoadHeight(self, point1, point2, currentX):
         x1 = point1.getX()
@@ -279,22 +293,26 @@ class GamePlay:
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
 
-
-
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
         horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (berryMerchant1_dim.getX() / 2) and car_pos.getX() <= berry_merchant_center.getX() + (berryMerchant1_dim.getX() / 2)
         verticalCollisionBoolean = car_pos.getY() >= berry_merchant_center.getY() - (berryMerchant1_dim.getY() / 2) and car_pos.getY() <= berry_merchant_center.getY() + (berryMerchant1_dim.getY() / 2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
+
+    def minusLives(self):
+        self.lives = self.lives - 1
+        return self.lives
 
 
     def moneyCounter(self):
         if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
             self.berryMoney = self.berryMoney+2
             return self.berryMoney
+        if self.berryCollision(self.position, self.berry2_pos, self.berry1_dim):
+            self.berryMoney = self.berryMoney+2
+            return self.berryMoney
         elif self.berryMerchantCollision(self.position, self.berryMerchant1_pos, self.berryMerchant1_dim):
             self.berryMoney = self.berryMoney+15
             return self.berryMoney
-
 
 
     def bmCollision(self, car_pos, bm_center, bm_dim):
@@ -307,6 +325,7 @@ class GamePlay:
         self.fuelDistance = self.fuelDistance - 5
         if self.fuelDistance % self.distancePerLitre == 0:
             self.fuel = self.fuel - 1
+
 
     def drawBerryMerchant(self, canvas, cam):
         global timer_counter_bm, frame_bm
@@ -332,6 +351,7 @@ class GamePlay:
 
     def setCarStationary(self):
         self.car_in_motion = False
+<<<<<<< HEAD
 
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
@@ -355,6 +375,12 @@ class GamePlay:
                 frame_bear = frame_bear + 1
         canvas.draw_image(bear_image, (center[frame_bear], image_height/2),(image_width / 7, image_height),
                               self.bear_pos.copy().toBackground(cam).getP(), self.bear_dim.getP())
+=======
+
+
+    def draw(self,canvas,cam):
+        self.applyBackground(canvas, cam)
+>>>>>>> 1df90b399df3ff3c6dcec28da6f26763bdd06005
 
     def wrapBackground(self,canvas,cam):
         background_length = 3214
@@ -368,23 +394,33 @@ class GamePlay:
     def draw(self,canvas,cam):
         self.updateScore()
         self.applyBackground(canvas, cam)
+<<<<<<< HEAD
+=======
+        self.wrapBackground(canvas, cam)
+
+>>>>>>> 1df90b399df3ff3c6dcec28da6f26763bdd06005
         for i in range(len(self.pointsList)-1):
             point1 = self.pointsList[i].copy().toBackground(cam)
             point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
         self.drawBerries(canvas, cam)
+
+
+
+        self.drawBerryMerchant(canvas,cam)
+
         self.drawBerryMerchant(canvas, cam)
         self.drawBear(canvas, cam)
 
-        self.constructCar(canvas, cam)
 
+        self.constructCar(canvas, cam)
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
 
         #Collision detection
-        if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
-            if self.berry1_draw_boolean:
+        if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim) or self.berryCollision(self.position, self.berry2_pos, self.berry1_dim):
+            if self.berry_draw_boolean:
                 self.score += 2
-            self.berry1_draw_boolean = False
+            self.berry_draw_boolean = False
             print("Collision with Berry")
 
         #sound.play()

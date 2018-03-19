@@ -11,7 +11,7 @@ class StoryInitialiser:
             {
                 "text": "Sigh! Another day, another battle to survive! "
                         "Hey, but maybe you can help me out today :) Help me collect cloudberries?",
-                "image": None
+                "image": "https://i.imgur.com/V0Loqpm.png"
             },
             {
                 "text": "",
