@@ -1,6 +1,7 @@
 import collections
 from enum import Enum, unique
 
+from game_interface import GameInterface
 from keyboard_compat import KeyboardCompat
 from transition_clock import TransitionClock
 
@@ -64,7 +65,8 @@ class DeathMenu:
             self.selected_menu_item = (self.selected_menu_item - 1) % 2
         elif self.kb_compat.enter_key_pressed(key):
             if self.selected_menu_item == DeathMenuItems.RESTART:
-                pass
+                self.window.game_interface = GameInterface(self.window)
+                self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
             elif self.selected_menu_item == DeathMenuItems.MAIN_MENU:
                 self.window.frame.set_draw_handler(self.window.main_menu.draw_canvas)
 
