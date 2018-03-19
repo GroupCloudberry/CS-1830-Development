@@ -9,8 +9,11 @@ import simpleguitk as simplegui
 
 tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
-image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
-
+bg1_image_link = simplegui.load_image('https://i.imgur.com/02quXpq.png')
+bg2_image_link = simplegui.load_image('https://i.imgur.com/CGbXcf8.jpg')
+bg3_image_link = simplegui.load_image('https://i.imgur.com/QZAFquR.png')
+bg4_image_link = simplegui.load_image('https://i.imgur.com/TeCN6mB.png')
+bg5_image_link = simplegui.load_image('https://i.imgur.com/jHEfVJu.png')
 
 #berry_image_link = simplegui.load_image('https://i.imgur.com/erLYnGU.png')
 
@@ -364,10 +367,10 @@ class GamePlay:
 
 
     def applyBackground(self, canvas, mover):
-        canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600),
+        canvas.draw_image(bg1_image_link, (3214 / 2, 600 / 2), (3214, 600),
                           Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(mover).getP(), (3214, 600))
-        for i in range (1, self.roadLength%image_link.get_width()):
-            canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214*i+(3214 / 2) - 10), 600 / 2).copy().toBackground(mover).getP(), (3214, 600))
+        for i in range (1, self.roadLength % bg1_image_link.get_width()):
+            canvas.draw_image(bg1_image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214 * i + (3214 / 2) - 10), 600 / 2).copy().toBackground(mover).getP(), (3214, 600))
 
     def drawBerries2(self, canvas, mover):
         if self.berry2_draw_boolean:
