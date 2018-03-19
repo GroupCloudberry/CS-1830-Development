@@ -4,7 +4,7 @@ from vector import Vector
 from values import Values
 from gameplay import GamePlay
 from car import Car
-from level_camera import LevelCamera
+from move_objects import MoveObjects
 
 try:
     import simplegui
@@ -19,6 +19,7 @@ else:
     from player import Player
     from player_attributes import PlayerAttributes
 
+
 class GameInterface:
     def __init__(self, window):
         self.window = window
@@ -29,11 +30,11 @@ class GameInterface:
         self.initial_origin_vector = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2)
 
         # Creating camera with origin (center point) set to center point of canvas
-        self.cam = LevelCamera(self.initial_origin_vector, Values.CAM_ZOOM_SENSITIVITY, Values.CAM_MOVE_SENSITIVITY,
+        self.cam = MoveObjects(self.initial_origin_vector,
                                Vector(Values.canvas_WIDTH,Values.canvas_HEIGHT))
 
-        self.final_origin = self.initial_origin_vector.copy().transformToCam(self.cam)
-        self.cam.setOrigin(self.final_origin)
+        self.final_origin = self.initial_origin_vector.copy().toBackground(self.cam)
+        self.cam.setCenter(self.final_origin)
 
         # Road bounds (Camera)
         self.leftEnd = False
@@ -46,8 +47,6 @@ class GameInterface:
         # Car control booleans
         self.moveCarRight = False
         self.moveCarLeft = False
-        self.moveCarUp = False
-        self.moveCarDown = False
 
         # Level creation
         self.gameplay.createLevel1()
@@ -56,7 +55,6 @@ class GameInterface:
         self.player_attributes = PlayerAttributes() # Do not directly call methods on this one
         self.player = Player(self.player_attributes) # Call methods on self.player.attributes instead
         self.hud = HUD(self.window, self.player.current_score,  self.player.attributes.lives)
-
 
     def draw_canvas(self, canvas):
         # Draw road
@@ -76,8 +74,7 @@ class GameInterface:
         if self.left_cover_x > - self.window.__class__.WIDTH / 2:
             self.reveal(canvas)
 
-
-    #Curtain animation mathod
+    # Curtain animation mathod
     def reveal(self, canvas):
         box_colour_left = "Teal"
         box_colour_right = "Teal"
@@ -92,7 +89,6 @@ class GameInterface:
                             1, box_colour_right, box_colour_right)
         self.left_cover_x -= 25
         self.right_cover_x += 25
-
 
     def keyup(self,key):
         if key == simplegui.KEY_MAP['right']:
@@ -123,21 +119,21 @@ class GameInterface:
             self.cam.moveDown = True
 
     def checkRoadEnds(self):
-        if self.cam.origin.getX() < self.gameplay.endOfRoad_Origin.getX():
+        if self.cam.center.getX() < self.gameplay.endOfRoad_Origin.getX():
             self.leftEnd = True
+
         else:
             self.leftEnd = False
-        if self.cam.origin.getX() > self.gameplay.endOfRoadRight_Origin.getX():
+        if self.cam.center.getX() > self.gameplay.endOfRoadRight_Origin.getX():
             self.rightEnd = True
         else:
             self.rightEnd = False
-
 
     def updateKey(self):
         self.checkRoadEnds()
         self.cam.move(self.leftEnd, self.rightEnd)
 
-        #Move car
+        # Move car
         if self.moveCarRight == True:
             self.gameplay.moveCarRight()
         elif self.moveCarLeft == True:
