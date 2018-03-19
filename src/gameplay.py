@@ -239,7 +239,11 @@ class GamePlay:
 
 
     def applyBackground(self, canvas, cam):
-        canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
+        canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600),
+                          Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
+        for i in range (1, self.roadLength%image_link.get_width()):
+            canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600),Vector((3214*i+(3214 / 2) - 10), 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
+
 
     def drawBerries(self, canvas, mover):
         if self.berry1_draw_boolean:
@@ -319,6 +323,11 @@ class GamePlay:
 
     def setCarStationary(self):
         self.car_in_motion = False
+<<<<<<< HEAD
+
+    def draw(self,canvas,cam):
+        self.applyBackground(canvas, cam)
+=======
 
 
     def wrapBackground(self,canvas,cam):
@@ -330,6 +339,7 @@ class GamePlay:
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
         self.wrapBackground()
+>>>>>>> 4dd945a03ea08e53b0ee9f4a1a7bc17a55ed29da
         for i in range(len(self.pointsList)-1):
             point1 = self.pointsList[i].copy().toBackground(cam)
             point2 = self.pointsList[i+1].copy().toBackground(cam)
