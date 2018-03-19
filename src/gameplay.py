@@ -104,6 +104,10 @@ class GamePlay:
         self.bear_pos = Vector(1800, 400)
         self.bear_dim = Vector(70, 70)
 
+        self.blockCar = False
+
+        self.bear_distance = 200
+
 
 #Road for level 1
     def createLevel1(self):
@@ -235,6 +239,7 @@ class GamePlay:
         self.useFuel()
         self.accelerate()
         self.mover.setSpeed(newspeed)
+        self.updateTyres()
 
     def moveCarLeft(self):
         newspeed = self.movement_vector.getX() + self.acceleration.getX() / 10
@@ -243,6 +248,8 @@ class GamePlay:
         self.useFuel()
         self.accelerate()
         self.mover.setSpeed(newspeed)
+        self.updateTyres()
+
 
     def findRoadPoints(self, currentX):
         for i in range(len(self.pointsList)-1):
@@ -395,7 +402,7 @@ class GamePlay:
         self.updateBearPosition()
 
     def applyBearGravity(self):
-        roadY_bear = self.getRoadHeight(self.point1_bear, self.point2_bear, self.position.getX()-120)
+        roadY_bear = self.getRoadHeight(self.point1_bear, self.point2_bear, self.position.getX()-self.bear_distance)
         if self.bear_pos.getY() <= roadY_bear - self.bear_dim.getX()/2:
             self.bear_pos.add(self.gravity_vector)
         elif self.bear_pos.getY() > roadY_bear - self.bear_dim.getX()/2:
@@ -404,11 +411,29 @@ class GamePlay:
 
     def updateBearPosition(self):
         self.findRoadPoints(self.position.getX())
-        self.bear_pos.setX(self.position.getX() - 120)
+        self.bear_pos.setX(self.position.getX() - self.bear_distance)
         self.applyBearGravity()
 
     def updateScore(self):
         self.gameInterface.player.current_score = self.score
+
+    def handleBear(self):
+        if self.acceleration.getX() <=10:
+            if self.bear_distance>=10:
+                self.bear_distance -= 2
+
+        if self.acceleration.getX() >=90:
+            if self.bear_distance <= 200:
+                self.bear_distance += 2
+
+        if self.bear_distance <= 10:
+            if self.gameInterface.player.attributes.lives !=0:
+                self.gameInterface.player.attributes.lives -= 1
+
+    def handleLives(self):
+        if self.gameInterface.player.attributes.lives == 0:
+            self.gameInterface.window.frame.set_draw_handler(self.gameInterface.window.death_screen.draw_canvas)
+
 
     def draw(self,canvas,mover):
         self.updateScore()
@@ -441,7 +466,8 @@ class GamePlay:
             self.bm1_draw_boolean = False
             print("Collision with BM")
 
+        self.handleBear()
+
 
         self.berryMerchant1_draw_boolean = True
-
         self.updateTimerCounter()
