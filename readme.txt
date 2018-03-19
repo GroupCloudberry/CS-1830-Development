@@ -21,9 +21,9 @@ To launch the game, simply open a terminal and navigate to the src directory.
 Then run python game.py. The window should appear shortly.
 
 => Running: simplegui (CodeSkulptor)
-In the src directory, there is a subdirectory called cs. Navigate into that 
-folder, and findgame.py. Copy the contents of that file into CodeSkulptor, 
-and you should be able to run this.
+In the src directory, find a file called unified.py.
+Copy the contents of that file into CodeSkulptor, and you should be able
+to run this.
 
 Bear in mind that under CodeSkulptor, certain functionality (e.g. the database) 
 will not be present due to its incomplete support for the Python 3 standard library.
