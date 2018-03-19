@@ -29,10 +29,10 @@ class PlayerAttributes:
 
     def __init__(self):
         self.name = None
-        self.level = None
-        self.high_score = None
-        self.currency = None
-        self.lives = None
+        self.level = __class__.DEFAULT_LEVEL
+        self.high_score = __class__.DEFAULT_SCORE
+        self.currency = __class__.DEFAULT_CURRENCY
+        self.lives = __class__.DEFAULT_LIVES
 
     def set_params(self, name=None, level=None, high_score=None, currency=None, lives=None):
         self.name = name

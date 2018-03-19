@@ -1,3 +1,5 @@
+from keyboard_compat import KeyboardCompat
+
 try:
     import simplegui
 except ImportError:
@@ -23,6 +25,7 @@ class StoryScreen:
     def __init__(self, window, pages):
         self.window = window
         self.box_reveal = 0.0
+        self.kb_compat = KeyboardCompat()
 
         # Testing variables to be removed after completion
         self.page = 0
@@ -104,15 +107,12 @@ class StoryScreen:
                          "Grey", "sans-serif")
 
     def key_down(self, key):
-        if key == simplegui.KEY_MAP["right"] or key == simplegui.KEY_MAP["down"]:
+        if self.kb_compat.enter_key_pressed(key) or key == simplegui.KEY_MAP["down"]:
             self.page_down()
         elif key == simplegui.KEY_MAP["left"] or key == simplegui.KEY_MAP["up"]:
             self.page_up()
-        elif key == simplegui.KEY_MAP["space"]:
+        elif self.kb_compat.escape_key_pressed(key) or key == simplegui.KEY_MAP["space"]:
             self.dismiss()
-        elif key == simplegui.KEY_MAP["up"]:
-            if not self.page == 0:
-                self.page -= 1
 
     def reveal(self):
         if round(self.box_reveal, 1) < 1.0:
@@ -132,7 +132,7 @@ class StoryScreen:
             self.preload_images()
 
     def dismiss(self):
-        pass
+        self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
 
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)
