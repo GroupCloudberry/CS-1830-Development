@@ -21,12 +21,12 @@ class StoryInitialiser:
         ))
         self.pages.append(StoryPage(
             {
-                "text": "Each berry collected is worth 2 coins while the berry merchants "
+                "text": "Berries: Each berry collected is worth 2 coins while the berry merchants "
                         "carry at at least 10 berries each.",
                 "image": "https://i.imgur.com/wmvmRww.jpg"
             },
             {
-                "text": "Be careful not to let the bear get too close. If the bear catches you, you lose one life!",
+                "text": "The Bear: Be careful not to let the bear get too close. If the bear catches you, you lose one life!",
                 "image": "https://i.imgur.com/MYcG4Nm.jpg"
             }
         ))
