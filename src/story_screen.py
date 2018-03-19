@@ -80,14 +80,14 @@ class StoryScreen:
             for line_index, line in enumerate(self.text[index]):
                 margin_left = self.image_size if (index + 1) % 2 == 0 and container["image"] is not None else 0
                 x_offset = 15 if (index + 1) % 2 == 0 and container["image"] is not None else 0
-                container_spacing = 30 + ((self.text_size + 2) * len(self.text[index - 1])) if index > 0 else 0
+                container_spacing = 90 + ((self.text_size + 2) * len(self.text[index - 1])) if index > 0 else 0
                 canvas.draw_text(line, (75 + margin_left + x_offset, 165 + ((self.text_size + 2) * line_index)
                                         + container_spacing), self.text_size, "White", "sans-serif")
 
     def draw_images(self, canvas):
         for index, container in enumerate([self.pages[self.page].container1, self.pages[self.page].container2]):
             if self.images[index] is not None:
-                container_spacing = 45 + ((self.text_size + 2) * len(self.text[index - 1])) if index > 0 else 0
+                container_spacing = 105 + ((self.text_size + 2) * len(self.text[index - 1])) if index > 0 else 0
                 x = self.image_size if (index + 1) % 2 == 0 else self.window.__class__.WIDTH - self.image_size
                 canvas.draw_image(self.images[index], (self.image_size / 2, self.image_size /2), (self.image_size, self.image_size),
                                   (x, 200 + container_spacing), (self.image_size, self.image_size))

@@ -18,6 +18,8 @@ class Game:
     WIDTH = 800
     HEIGHT = 600
 
+    # Image resource links
+
     def __init__(self):
         """
         Create the frame and instance variables assigned to instances of classes that constitute the various
@@ -45,7 +47,7 @@ class Game:
         """
         When starting the frame, set the draw handler to render the main menu first.
         """
-        self.frame.set_draw_handler(self.story_screen.draw_canvas)
+        self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
 #The main funciton
