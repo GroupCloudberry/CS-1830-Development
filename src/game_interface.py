@@ -1,4 +1,5 @@
 from hud import HUD
+from keyboard_compat import KeyboardCompat
 from transition_clock import TransitionClock
 from vector import Vector
 from values import Values
@@ -23,6 +24,7 @@ else:
 class GameInterface:
     def __init__(self, window):
         self.window = window
+        self.kb_compat = KeyboardCompat()
         self.transition_clock = TransitionClock()
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
@@ -117,6 +119,8 @@ class GameInterface:
             self.cam.moveUp = True
         elif key == simplegui.KEY_MAP['down']:
             self.cam.moveDown = True
+        elif self.kb_compat.escape_key_pressed(key):
+            self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
 
     def checkRoadEnds(self):
         if self.cam.center.getX() < self.gameplay.endOfRoad_Origin.getX():
