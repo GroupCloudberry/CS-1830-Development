@@ -12,15 +12,15 @@ car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 
 
-berry_image_link = simplegui.load_image('https://i.imgur.com/erLYnGU.png')
-
-
+#berry_image_link = simplegui.load_image('https://i.imgur.com/erLYnGU.png')
 
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
 
 
-berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
+#berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
+
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
+
 
 bear_image = simplegui.load_image('https://i.imgur.com/284X6gP.png')
 
@@ -33,7 +33,10 @@ frame_bm = 0
 frame_bear = 0
 
 class GamePlay:
+<<<<<<< HEAD
+=======
 
+>>>>>>> 46344a1e49329c3f21b7f7e1d80e2e38bad91830
     def __init__(self, mover, game_interface):
 
         #Road
@@ -78,9 +81,15 @@ class GamePlay:
 
         self.carTyreDistance = 80
 
-        self.berry1_pos = Vector(1000,375)
+        self.berry1_pos = self.placeBerries(900, 2000, 0)
         self.berry1_dim = Vector(40,30)
         self.berry1_draw_boolean = True
+        self.berry2_pos = self.placeBerries(8000, 10000, 0)
+        self.berry2_dim = Vector(40, 30)
+        self.berry2_draw_boolean = True
+
+
+
         self.berryMerchant1_draw_boolean = True
         self.berryMerchant1_pos = Vector(2000, 400)
         self.berryMerchant1_dim = Vector(151, 122)
@@ -206,6 +215,73 @@ class GamePlay:
         self.pointsList.append(Vector(14000, 400))
         self.pointsList.append(Vector(15000, 400))
 
+    def createLevel4(self):
+        self.pointsList.append(Vector(-50, 400))
+        self.pointsList.append(Vector(0, 400))
+        self.pointsList.append(Vector(600, 400))
+        self.pointsList.append(Vector(800, 300))
+        self.pointsList.append(Vector(1100, 500))
+        self.pointsList.append(Vector(1400, 400))
+        self.pointsList.append(Vector(2000, 400))
+        self.pointsList.append(Vector(2300, 200))
+        self.pointsList.append(Vector(2600, 400))
+        self.pointsList.append(Vector(3000, 400))
+        self.pointsList.append(Vector(3200, 200))
+        self.pointsList.append(Vector(3500, 400))
+        self.pointsList.append(Vector(4000, 500))
+        self.pointsList.append(Vector(4300, 300))
+        self.pointsList.append(Vector(4500, 400))
+        self.pointsList.append(Vector(5000, 400))
+        self.pointsList.append(Vector(5400, 200))
+        self.pointsList.append(Vector(5700, 400))
+        self.pointsList.append(Vector(6400, 400))
+        self.pointsList.append(Vector(6500, 300))
+        self.pointsList.append(Vector(6700, 400))
+        self.pointsList.append(Vector(7000, 400))
+        self.pointsList.append(Vector(7700, 200))
+        self.pointsList.append(Vector(8100, 500))
+        self.pointsList.append(Vector(8200, 400))
+        self.pointsList.append(Vector(8700, 400))
+        self.pointsList.append(Vector(9100, 400))
+        self.pointsList.append(Vector(9300, 300))
+        self.pointsList.append(Vector(9600, 400))
+        self.pointsList.append(Vector(10000, 400))
+
+    def createLevl5(self):
+        self.pointsList.append(Vector(-50, 400))
+        self.pointsList.append(Vector(0, 400))
+        self.pointsList.append(Vector(600, 400))
+        self.pointsList.append(Vector(700, 200))
+        self.pointsList.append(Vector(900, 400))
+        self.pointsList.append(Vector(1200, 300))
+        self.pointsList.append(Vector(1400, 400))
+        self.pointsList.append(Vector(2000, 400))
+        self.pointsList.append(Vector(2200, 200))
+        self.pointsList.append(Vector(2600, 500))
+        self.pointsList.append(Vector(2800, 400))
+        self.pointsList.append(Vector(3000, 400))
+        self.pointsList.append(Vector(3500, 300))
+        self.pointsList.append(Vector(3900, 500))
+        self.pointsList.append(Vector(4200, 400))
+        self.pointsList.append(Vector(4500, 400))
+        self.pointsList.append(Vector(5000, 400))
+        self.pointsList.append(Vector(5400, 200))
+        self.pointsList.append(Vector(5700, 400))
+        self.pointsList.append(Vector(6400, 400))
+        self.pointsList.append(Vector(6500, 300))
+        self.pointsList.append(Vector(6700, 400))
+        self.pointsList.append(Vector(7000, 300))
+        self.pointsList.append(Vector(7500, 500))
+        self.pointsList.append(Vector(7700, 400))
+        self.pointsList.append(Vector(7900, 300))
+        self.pointsList.append(Vector(8200, 400))
+        self.pointsList.append(Vector(8500, 400))
+        self.pointsList.append(Vector(9000, 200))
+        self.pointsList.append(Vector(9300, 400))
+        self.pointsList.append(Vector(9500, 500))
+        self.pointsList.append(Vector(9700, 400))
+        self.pointsList.append(Vector(10000, 400))
+
 
 
     #Returns point list
@@ -298,13 +374,23 @@ class GamePlay:
         for i in range (1, self.roadLength%image_link.get_width()):
             canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214*i+(3214 / 2) - 10), 600 / 2).copy().toBackground(mover).getP(), (3214, 600))
 
-
+    def drawBerries2(self, canvas, mover):
+        if self.berry2_draw_boolean:
+            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230),
+                              self.berry2_pos.copy().toBackground(mover).getP(), self.berry2_dim.getP())
     def drawBerries(self, canvas, mover):
         if self.berry1_draw_boolean:
-            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().toBackground(mover).getP(), self.berry1_dim.getP())
+            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230),
+                              self.berry1_pos.copy().toBackground(mover).getP(), self.berry1_dim.getP())
 
-    def placeBerries(self, noOfBerries):
-        pass
+
+
+    def placeBerries(self, startX, endX, slope):
+        xCoord = random.randint(startX, endX)
+        yCoord = slope*xCoord + 400 -15
+        berry_pos = Vector(xCoord, yCoord)
+        return berry_pos
+
 
     def getRoadHeight(self, point1, point2, currentX):
         x1 = point1.getX()
@@ -324,7 +410,10 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_center.getY() - (berry_dim.getY()/2) and  car_pos.getY()<= berry_center.getY() + (berry_dim.getY()/2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 46344a1e49329c3f21b7f7e1d80e2e38bad91830
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
         horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (berryMerchant1_dim.getX() / 2) and car_pos.getX() <= berry_merchant_center.getX() + (berryMerchant1_dim.getX() / 2)
         verticalCollisionBoolean = car_pos.getY() >= berry_merchant_center.getY() - (berryMerchant1_dim.getY() / 2) and car_pos.getY() <= berry_merchant_center.getY() + (berryMerchant1_dim.getY() / 2)
@@ -333,6 +422,9 @@ class GamePlay:
 
     def moneyCounter(self):
         if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
+            self.berryMoney = self.berryMoney+2
+            return self.berryMoney
+        if self.berryCollision(self.position, self.berry2_pos, self.berry2_dim):
             self.berryMoney = self.berryMoney+2
             return self.berryMoney
         elif self.berryMerchantCollision(self.position, self.berryMerchant1_pos, self.berryMerchant1_dim):
@@ -422,6 +514,10 @@ class GamePlay:
             if self.bear_distance>=10:
                 self.bear_distance -= 2
 
+<<<<<<< HEAD
+    def updateScore(self):
+        self.gameInterface.player.current_score = self.score
+=======
         if self.acceleration.getX() >=90:
             if self.bear_distance <= 200:
                 self.bear_distance += 2
@@ -434,6 +530,7 @@ class GamePlay:
         if self.gameInterface.player.attributes.lives == 0:
             self.gameInterface.window.frame.set_draw_handler(self.gameInterface.window.death_screen.draw_canvas)
 
+>>>>>>> 46344a1e49329c3f21b7f7e1d80e2e38bad91830
 
     def draw(self,canvas,mover):
         self.updateScore()
@@ -444,7 +541,19 @@ class GamePlay:
             point2 = self.pointsList[i+1].copy().toBackground(mover)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
 
+        self.drawBerries2(canvas, mover)
         self.drawBerries(canvas, mover)
+<<<<<<< HEAD
+
+
+        self.drawBerryMerchant(canvas, mover)
+
+        self.drawBerryMerchant(canvas, mover)
+        self.constructCar(canvas, mover)
+
+        self.drawBerries(canvas, mover)
+=======
+>>>>>>> 46344a1e49329c3f21b7f7e1d80e2e38bad91830
         self.drawBerryMerchant(canvas, mover)
         self.drawBear(canvas, mover)
         self.constructCar(canvas, mover)
@@ -452,10 +561,11 @@ class GamePlay:
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20, 20], 15, 'white')
 
         #Collision detection
-        if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
-            if self.berry1_draw_boolean:
+        if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim) or self.berryCollision(self.position, self.berry2_pos, self.berry2_dim):
+            if self.berry1_draw_boolean or self.berry2_draw_boolean:
                 self.score += 2
             self.berry1_draw_boolean = False
+            self.berry2_draw_boolean = False
             print("Collision with Berry")
 
         #sound.play()
