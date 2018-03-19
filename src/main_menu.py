@@ -89,7 +89,7 @@ class MainMenu:
             self.selected_menu_item = (self.selected_menu_item - 1) % len(MainMenuItems.ITEMS)
         elif self.kb_compat.enter_key_pressed(key):
             if self.selected_menu_item == MainMenuItems.START["index"]:
-                self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
+                self.window.frame.set_draw_handler(self.window.story_screen.draw_canvas)
             elif self.selected_menu_item == MainMenuItems.SCOREBOARD["index"]:
                 self.window.scoreboard = ScoreBoard(self.window)
                 self.window.frame.set_draw_handler(self.window.scoreboard.draw_canvas)
