@@ -31,10 +31,13 @@ class GamePlay:
 
         self.position = Vector(300,100)
         #Tyre Vectors
-        self.front_tyre = Vector(self.position.getX()+40, self.position.getY())
+        self.front_tyre = Vector(self.position.getX()+90, self.position.getY())
 
         self.tyre_radius = 15
 
+        self.fuel = 100
+        self.distancePerLitre = 100
+        self.fuelDistance = self.fuel * self.distancePerLitre
 
         #constants
         self.gravity_vector = Vector(0,2)
@@ -163,7 +166,7 @@ class GamePlay:
 
     def constructCar(self, canvas ,cam):
         self.rotateCar()
-        canvas.draw_image(car_image, (521 / 2, 131 / 2), (521, 131), Vector((self.front_tyre.getX()-40),((self.front_tyre.getY() + self.position.getY())/2)-15).copy().toBackground(cam).getP(),(130, 50), self.car_rotation)
+        canvas.draw_image(car_image, (521 / 2, 131 / 2), (521, 131), Vector((self.front_tyre.getX()-43),((self.front_tyre.getY() + self.position.getY())/2)-15).copy().toBackground(cam).getP(),(150, 50), self.car_rotation)
         canvas.draw_image(tyre_image, (200 / 2, 200 / 2), (200, 200), self.position.copy().toBackground(cam).getP(), (self.tyre_radius*2, self.tyre_radius*2), self.rotation)
         canvas.draw_image(tyre_image, (200 / 2, 200 / 2), (200, 200), self.front_tyre.copy().toBackground(cam).getP(),(self.tyre_radius * 2, self.tyre_radius * 2), self.rotation)
 
@@ -171,15 +174,17 @@ class GamePlay:
         self.applyGravity()
 
     def updateTyres(self):
-        self.front_tyre.setX(self.position.getX()+80)
+        self.front_tyre.setX(self.position.getX()+90)
 
     def moveCarRight(self):
         self.position.add(self.movement_vector)
         self.rotation += 0.5
+        self.useFuel()
 
     def moveCarLeft(self):
         self.position.subtract(self.movement_vector)
         self.rotation += -0.5
+        self.useFuel()
 
     def findRoadPoints(self, currentX):
         for i in range(len(self.pointsList)-1):
@@ -275,6 +280,7 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_center.getY() - (berry_dim.getY()/2) and  car_pos.getY()<= berry_center.getY() + (berry_dim.getY()/2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
+<<<<<<< HEAD
 
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
         horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (
@@ -293,6 +299,12 @@ class GamePlay:
             money = money+15
             return money
 
+=======
+    def useFuel(self):
+        self.fuelDistance = self.fuelDistance - 5
+        if self.fuelDistance % self.distancePerLitre == 0:
+            self.fuel = self.fuel - 1
+>>>>>>> c9db57db42d0c2cb8d59bceccedde1899351b4a1
 
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
@@ -305,6 +317,7 @@ class GamePlay:
         self.drawBerryMerchant(canvas, cam)
         self.constructCar(canvas, cam)
 
+        canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
 
         #Collision detection
         if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
