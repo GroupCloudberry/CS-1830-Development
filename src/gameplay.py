@@ -9,11 +9,9 @@ tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
-<<<<<<< HEAD
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
-=======
 berry_merchant_image = simplegui.load_image("https://i.imgur.com/2wJC0d9.png")
->>>>>>> f3fd2b373eeaaac53a28b5e363da22a636a52f51
+
 
 class GamePlay:
 
@@ -224,7 +222,6 @@ class GamePlay:
 
     def drawBerries(self, canvas, mover):
         if self.berry1_draw_boolean:
-<<<<<<< HEAD
             canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().transformToCam(mover).getP(), self.berry1_dim.getP())
 
     def nextFrame(self, frameIndex, columns, rows):
@@ -259,9 +256,7 @@ class GamePlay:
             #timer = simplegui.create_timer(200, self.nextFrame(frameIndex, columns, rows))
             #timer.start()
 
-=======
             canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().toBackground(cam).getP(), self.berry1_dim.getP())
->>>>>>> f3fd2b373eeaaac53a28b5e363da22a636a52f51
 
     def getRoadHeight(self, point1, point2, currentX):
         x1 = point1.getX()
@@ -280,7 +275,7 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_center.getY() - (berry_dim.getY()/2) and  car_pos.getY()<= berry_center.getY() + (berry_dim.getY()/2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
-<<<<<<< HEAD
+
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
         horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (
                     berryMerchant1_dim.getX() / 2) and car_pos.getX() <= berry_merchant_center.getX() + (berryMerchant1_dim.getX() / 2)
@@ -299,8 +294,6 @@ class GamePlay:
             return money
 
 
-=======
->>>>>>> f3fd2b373eeaaac53a28b5e363da22a636a52f51
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
 
@@ -309,11 +302,7 @@ class GamePlay:
             point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
         self.drawBerries(canvas, cam)
-<<<<<<< HEAD
         self.drawBerryMerchant(canvas, cam)
-=======
-
->>>>>>> f3fd2b373eeaaac53a28b5e363da22a636a52f51
         self.constructCar(canvas, cam)
 
 
