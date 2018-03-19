@@ -10,7 +10,7 @@ car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
-berry_merchant_image = simplegui.load_image("https://i.imgur.com/2wJC0d9.png")
+berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
 
 class GamePlay:
@@ -19,7 +19,7 @@ class GamePlay:
         #Road
         self.pointsList = list()
         self.endOfRoad_Origin = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2).copy().toBackground(cam)
-        self.endOfRoadRight_Origin = Vector(15000-(Values.canvas_WIDTH/2), Values.canvas_HEIGHT/2).copy().toBackground(cam)
+        self.endOfRoadRight_Origin = Vector(10000-(Values.canvas_WIDTH/2), Values.canvas_HEIGHT/2).copy().toBackground(cam)
 
         self.point1_pos = Vector()
         self.point2_pos = Vector()
@@ -39,6 +39,8 @@ class GamePlay:
         self.distancePerLitre = 100
         self.fuelDistance = self.fuel * self.distancePerLitre
 
+        self.berryMoney = 0
+
         #constants
         self.gravity_vector = Vector(0,2)
         self.movement_vector = Vector(5,0)
@@ -50,7 +52,7 @@ class GamePlay:
         self.berry1_draw_boolean = True
         self.berryMerchant1_draw_boolean = True
         self.berryMerchant1_pos = Vector(2000, 400)
-        self.berryMerchant1_dim = Vector(300, 235)
+        self.berryMerchant1_dim = Vector(151, 122)
 
         self.cam = cam
 
@@ -75,10 +77,8 @@ class GamePlay:
         slope9end = Vector(6500, 200)
         slope10end = Vector(7000, 400)
         straight11end = Vector(8000, 400)
-        slope12end = Vector(10000, 300)
-        slope13end = Vector(12000, 300)
-        slope14end = Vector(13000, 400)
-        straight15end = Vector(15000, 400)
+        slope12end = Vector(10000, 400)
+
 
         self.pointsList.append(negativeRoad)
         self.pointsList.append(startingPoint)
@@ -95,9 +95,6 @@ class GamePlay:
         self.pointsList.append(slope10end)
         self.pointsList.append(straight11end)
         self.pointsList.append(slope12end)
-        self.pointsList.append(slope13end)
-        self.pointsList.append(slope14end)
-        self.pointsList.append(straight15end)
 
         print(len(self.pointsList))
 
@@ -126,6 +123,7 @@ class GamePlay:
         self.pointsList.append(Vector(9000, 200))
         self.pointsList.append(Vector(9400, 400))
         self.pointsList.append(Vector(10000, 400))
+        self.pointsList.append(Vector(12000, 400))
 
     def createLevel3(self):
         self.pointsList.append(Vector(-50, 400))
@@ -158,6 +156,7 @@ class GamePlay:
         self.pointsList.append(Vector(13000, 300))
         self.pointsList.append(Vector(14000, 400))
         self.pointsList.append(Vector(15000, 400))
+
 
 
     #Returns point list
@@ -227,41 +226,10 @@ class GamePlay:
 
     def drawBerries(self, canvas, mover):
         if self.berry1_draw_boolean:
-            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().transformToCam(mover).getP(), self.berry1_dim.getP())
+            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().toBackground(mover).getP(), self.berry1_dim.getP())
 
-    def nextFrame(self, frameIndex, columns, rows):
-        i = (frameIndex[0] + 1) % columns
-        if i == 0:
-            j = (frameIndex[1] + 1) % rows
-        else:
-            j = frameIndex[1]
-        frameIndex = (i, j)
-
-    def drawBerryMerchant(self, canvas, mover):
-        if self.berryMerchant1_draw_boolean:
-            width = 900
-            height = 234
-            columns = 3
-            rows = 1
-
-            frameWidth = width // columns
-            frameHeight = height // rows
-
-            frameCentreX = frameWidth // 2
-            frameCentreY = frameHeight // 2
-            frameIndex = (2, 1)
-
-            x = frameWidth * frameIndex[0] + frameCentreX
-            y = frameHeight * frameIndex[1] + frameCentreY
-            center_source = Vector(x, y)
-            width_height_source = Vector(frameWidth, frameHeight)
-            center_dest = Vector(frameWidth / 2, frameHeight / 2)
-            width_height_dest = Vector(frameWidth, frameHeight)
-            canvas.draw_image(berry_merchant_image, center_source.copy().transformToCam(mover).getP(), width_height_source.copy().transformToCam(mover).getP(), center_dest.copy().transformToCam(mover).getP(), width_height_dest.getP())
-            #timer = simplegui.create_timer(200, self.nextFrame(frameIndex, columns, rows))
-            #timer.start()
-
-            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().toBackground(cam).getP(), self.berry1_dim.getP())
+    def placeBerries(self, noOfBerries):
+        pass
 
     def getRoadHeight(self, point1, point2, currentX):
         x1 = point1.getX()
@@ -280,7 +248,7 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_center.getY() - (berry_dim.getY()/2) and  car_pos.getY()<= berry_center.getY() + (berry_dim.getY()/2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
-<<<<<<< HEAD
+
 
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
         horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (
@@ -291,20 +259,19 @@ class GamePlay:
 
 
     def moneyCounter(self):
-        money = 0
         if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
-            money = money+2
-            return money
+            self.berryMoney = self.berryMoney+2
+            return self.berryMoney
         elif self.berryMerchantCollision(self.position, self.berryMerchant1_pos, self.berryMerchant1_dim):
-            money = money+15
-            return money
+            self.berryMoney = self.berryMoney+15
+            return self.berryMoney
 
-=======
+
     def useFuel(self):
         self.fuelDistance = self.fuelDistance - 5
         if self.fuelDistance % self.distancePerLitre == 0:
             self.fuel = self.fuel - 1
->>>>>>> c9db57db42d0c2cb8d59bceccedde1899351b4a1
+
 
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
@@ -314,7 +281,7 @@ class GamePlay:
             point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
         self.drawBerries(canvas, cam)
-        self.drawBerryMerchant(canvas, cam)
+        
         self.constructCar(canvas, cam)
 
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
@@ -325,12 +292,7 @@ class GamePlay:
             print("Collision")
 
         self.berryMerchant1_draw_boolean = True
-        self.drawBerryMerchant(canvas, cam)
-        print(self.moneyCounter())
-        canvas.draw_polygon([(50, 50), (50, 100), (100, 100), (100, 50)], 5, 'Green')
-        canvas.draw_text(self.moneyCounter(),(75, 75), 25, 'Green')
-        #timer = simplegui.create_timer(200, self.nextFrame(self.drawBerryMerchant.frameIndex, self.drawBerryMerchant.columns, self.drawBerryMerchant.rows))
-        #timer.start()
+
 
 
 
