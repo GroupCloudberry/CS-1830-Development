@@ -53,7 +53,7 @@ class GamePlay:
         self.carTyreDistance = 80
 
         self.berry1_pos = self.placeBerries(900, 2000, 0)
-        self.berry2_pos = self.placeBerries(2000, 2400, -0.218)
+        self.berry2_pos = self.placeBerries(8000, 10000, 0)
         self.berry1_dim = Vector(40,30)
         self.berry_draw_boolean = True
         self.berryMerchant1_draw_boolean = True
