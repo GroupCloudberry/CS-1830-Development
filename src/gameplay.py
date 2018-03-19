@@ -9,9 +9,16 @@ tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
+<<<<<<< HEAD
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
+=======
+berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
+
+timer_counter_bm = 0
+frame_bm = 0
+>>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
 
 class GamePlay:
 
@@ -54,10 +61,16 @@ class GamePlay:
         self.berryMerchant1_pos = Vector(2000, 400)
         self.berryMerchant1_dim = Vector(151, 122)
 
+        self.bm1_pos = Vector(1400, 375)
+        self.bm1_dim = Vector(260 / 3, 60)
+        self.bm1_draw_boolean = True
+
         self.cam = cam
 
         self.rotation = 0
         self.car_rotation = 0
+
+        self.score = 0
 
 
 #Road for level 1
@@ -248,6 +261,7 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_center.getY() - (berry_dim.getY()/2) and  car_pos.getY()<= berry_center.getY() + (berry_dim.getY()/2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
+<<<<<<< HEAD
 
 
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
@@ -267,11 +281,36 @@ class GamePlay:
             return self.berryMoney
 
 
+=======
+    def bmCollision(self, car_pos, bm_center, bm_dim):
+        horizontalCollisionBoolean = car_pos.getX() >= bm_center.getX() - (bm_dim.getX() / 2) and car_pos.getX() <= bm_center.getX() + (bm_dim.getX() / 2)
+        verticalCollisionBoolean = car_pos.getY() >= bm_center.getY() - (bm_dim.getY() / 2) and car_pos.getY() <= bm_center.getY() + (bm_dim.getY() / 2)
+        return horizontalCollisionBoolean and verticalCollisionBoolean
+
+>>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
     def useFuel(self):
         self.fuelDistance = self.fuelDistance - 5
         if self.fuelDistance % self.distancePerLitre == 0:
             self.fuel = self.fuel - 1
 
+<<<<<<< HEAD
+=======
+    def drawBerryMerchant(self, canvas, cam):
+        global timer_counter_bm, frame_bm
+        image_height = berry_merchant_image.get_height()
+        image_width = berry_merchant_image.get_width()
+
+        center = [image_width/6, image_width/2, 5/6*image_width]
+        if timer_counter_bm % 10 == 0:
+            if frame_bm %2 == 0:
+                frame_bm = 1
+            else:
+                frame_bm = frame_bm + 1
+        if self.bm1_draw_boolean:
+            canvas.draw_image(berry_merchant_image, (center[frame_bm], image_height / 2), (image_width / 3, image_height),
+                          self.bm1_pos.copy().toBackground(cam).getP(), self.bm1_dim.getP())
+        timer_counter_bm += 1
+>>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
 
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
@@ -281,15 +320,30 @@ class GamePlay:
             point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
         self.drawBerries(canvas, cam)
+<<<<<<< HEAD
         
+=======
+        self.drawBerryMerchant(canvas,cam)
+
+>>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
         self.constructCar(canvas, cam)
 
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
 
         #Collision detection
         if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
+            if self.berry1_draw_boolean:
+                self.score += 2
             self.berry1_draw_boolean = False
-            print("Collision")
+            print("Collision with Berry")
+
+        if self.bmCollision(self.position, self.bm1_pos, self.bm1_dim):
+            if self.bm1_draw_boolean:
+                self.score += 15
+            self.bm1_draw_boolean = False
+            print("Collision with BM")
+
+        canvas.draw_text(self.score, [750,50], 20, 'white')
 
         self.berryMerchant1_draw_boolean = True
 
