@@ -73,6 +73,7 @@ class GamePlay:
 
         #constants
         self.gravity_vector = Vector(0,2)
+        self.gravity_vector_up = Vector(0, 3)
         self.movement_vector = Vector(5,0)
 
         self.carTyreDistance = 80
@@ -219,15 +220,29 @@ class GamePlay:
     def updateTyres(self):
         self.front_tyre.setX(self.position.getX()+90)
 
+    def accelerate(self):
+        if self.acceleration.getX()<100:
+            self.acceleration.add(Vector(3,0))
+
+    def decelerate(self):
+        if self.acceleration.getX() >0:
+            self.acceleration.subtract(Vector(10,0))
+
     def moveCarRight(self):
-        self.position.add(self.movement_vector)
+        newspeed = self.movement_vector.getX() + self.acceleration.getX()/10
+        self.position.add(Vector(newspeed, self.movement_vector.getY()))
         self.rotation += 0.5
         self.useFuel()
+        self.accelerate()
+        self.mover.setSpeed(newspeed)
 
     def moveCarLeft(self):
-        self.position.subtract(self.movement_vector)
+        newspeed = self.movement_vector.getX() + self.acceleration.getX() / 10
+        self.position.subtract(Vector(newspeed, self.movement_vector.getY()))
         self.rotation += -0.5
         self.useFuel()
+        self.accelerate()
+        self.mover.setSpeed(newspeed)
 
     def findRoadPoints(self, currentX):
         for i in range(len(self.pointsList)-1):
@@ -246,16 +261,18 @@ class GamePlay:
 
         roadY = self.getRoadHeight(self.point1_pos, self.point2_pos, self.position.getX())
         if self.position.getY()<= roadY - self.tyre_radius:
+            gravityVec = Vector()
+            difference = roadY - self.tyre_radius - self.position.getY()
             self.position.add(self.gravity_vector)
         elif self.position.getY()>roadY - self.tyre_radius:
-            self.position.subtract(self.gravity_vector)
+            self.position.subtract(self.gravity_vector_up)
 
         #Front tyre
         roadY_front = self.getRoadHeight(self.point1_front, self.point2_front, self.front_tyre.getX())
         if self.front_tyre.getY() <= roadY_front - self.tyre_radius:
             self.front_tyre.add(self.gravity_vector)
         elif self.front_tyre.getY() > roadY_front - self.tyre_radius:
-            self.front_tyre.subtract(self.gravity_vector)
+            self.front_tyre.subtract(self.gravity_vector_up)
 
         print(str(roadY) + " and " + str(roadY_front))
 
@@ -301,8 +318,6 @@ class GamePlay:
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
 
-
-
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
         horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (berryMerchant1_dim.getX() / 2) and car_pos.getX() <= berry_merchant_center.getX() + (berryMerchant1_dim.getX() / 2)
         verticalCollisionBoolean = car_pos.getY() >= berry_merchant_center.getY() - (berryMerchant1_dim.getY() / 2) and car_pos.getY() <= berry_merchant_center.getY() + (berryMerchant1_dim.getY() / 2)
@@ -316,7 +331,6 @@ class GamePlay:
         elif self.berryMerchantCollision(self.position, self.berryMerchant1_pos, self.berryMerchant1_dim):
             self.berryMoney = self.berryMoney+15
             return self.berryMoney
-
 
 
     def bmCollision(self, car_pos, bm_center, bm_dim):
@@ -385,7 +399,7 @@ class GamePlay:
         if self.bear_pos.getY() <= roadY_bear - self.bear_dim.getX()/2:
             self.bear_pos.add(self.gravity_vector)
         elif self.bear_pos.getY() > roadY_bear - self.bear_dim.getX()/2:
-            self.bear_pos.subtract(self.gravity_vector)
+            self.bear_pos.subtract(self.gravity_vector_up)
 
 
     def updateBearPosition(self):
@@ -405,15 +419,12 @@ class GamePlay:
             point2 = self.pointsList[i+1].copy().toBackground(mover)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
 
-            #Draw road Background
-            canvas.draw_polygon([(point1.getX(), point1.getY()+3), (point2.getX(), point2.getY()+3), (point2.getX(), Values.canvas_HEIGHT), (point1.getX(), Values.canvas_HEIGHT)], 1, 'green', 'green')
-
         self.drawBerries(canvas, mover)
         self.drawBerryMerchant(canvas, mover)
         self.drawBear(canvas, mover)
         self.constructCar(canvas, mover)
-        
-        canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
+
+        canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20, 20], 15, 'white')
 
         #Collision detection
         if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):

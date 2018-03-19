@@ -154,4 +154,7 @@ class GameInterface:
             self.gameplay.moveCarRight()
         elif self.moveCarLeft == True:
             self.gameplay.moveCarLeft()
+        elif self.moveCarLeft == False and self.moveCarRight == False:
+            self.gameplay.decelerate()
         #self.mover.zoom() -- Zoom feature is disabled
+        print(self.gameplay.acceleration.getP())
