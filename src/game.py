@@ -5,6 +5,7 @@ from main_menu import MainMenu
 from map import Map
 from pause_menu import PauseMenu
 from player_details_form import PlayerDetailsForm
+from story_initialiser import StoryInitialiser
 
 try:
     import simplegui
@@ -37,13 +38,14 @@ class Game:
         self.hud = HUD(self)
         self.player_details_form = PlayerDetailsForm(self)
         self.map = Map(self)
+        self.story_screen = StoryInitialiser(self).story_screen
 
     #Start main_menu
     def start(self):
         """
         When starting the frame, set the draw handler to render the main menu first.
         """
-        self.frame.set_draw_handler(self.pause_menu.draw_canvas)
+        self.frame.set_draw_handler(self.main_menu.draw_canvas)
         self.frame.start()
 
 #The main funciton

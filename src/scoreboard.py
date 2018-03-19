@@ -51,8 +51,8 @@ class ScoreBoard:
         players_not_yet_shown = len(self.players) - players_already_shown
         for i in range(min(players_not_yet_shown, players_per_page)):
             index = i + players_already_shown
-            canvas.draw_text("{}. {} (score: {})".format(self.players[index].id, self.players[index].name,
-                                self.players[index].high_score), (125, 212 + (35 * i)), 25,
+            canvas.draw_text("{}. {} (high score: {}, lives: {})".format(self.players[index].id, self.players[index].name,
+                                self.players[index].high_score, self.players[index].lives),  (125, 212 + (35 * i)), 25,
                              "White" if self.players_reveal else "Black", "sans-serif")
 
     def draw_page_number(self, canvas):

@@ -1,3 +1,5 @@
+from hud import HUD
+from keyboard_compat import KeyboardCompat
 from transition_clock import TransitionClock
 from vector import Vector
 from values import Values
@@ -11,17 +13,25 @@ except ImportError:
     import simpleguitk as simplegui
 from values import Values
 
+if simplegui.__name__ == "simpleguitk":
+    from player_sqlite import PlayerSQLite as Player
+    from player_attributes_sqlite import PlayerAttributesSQLite as PlayerAttributes
+else:
+    from player import Player
+    from player_attributes import PlayerAttributes
+
 
 class GameInterface:
     def __init__(self, window):
         self.window = window
+        self.kb_compat = KeyboardCompat()
         self.transition_clock = TransitionClock()
         self.left_cover_x = 0
         self.right_cover_x = self.window.__class__.WIDTH / 2
 
         self.initial_origin_vector = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2)
 
-        #Creating camera with origin (center point) set to center point of canvas
+        # Creating camera with origin (center point) set to center point of canvas
         self.cam = MoveObjects(self.initial_origin_vector,
                                Vector(Values.canvas_WIDTH,Values.canvas_HEIGHT))
 
@@ -32,42 +42,44 @@ class GameInterface:
         self.leftEnd = False
         self.rightEnd = False
 
-        #self.car = Car(Vector(30, 100), 100, self.road,self.cam)
+        # self.car = Car(Vector(30, 100), 100, self.road,self.cam)
 
         self.gameplay = GamePlay(self.cam)
 
-        #Car control booleans
+        # Car control booleans
         self.moveCarRight = False
         self.moveCarLeft = False
 
-
-        #Level creation
+        # Level creation
         self.gameplay.createLevel1()
 
-
+        # Player data
+        self.player_attributes = PlayerAttributes() # Do not directly call methods on this one
+        self.player = Player(self.player_attributes) # Call methods on self.player.attributes instead
+        self.hud = HUD(self.window, self.player.current_score,  self.player.attributes.lives)
 
     def draw_canvas(self, canvas):
-        #Check if window was just opened and display animation if true
-        self.transition_clock.tick()
-        if self.left_cover_x > - self.window.__class__.WIDTH / 2:
-            self.reveal(canvas)
-
-        #Draw road
+        # Draw road
         self.gameplay.draw(canvas, self.cam)
+        self.hud.draw_hud(canvas)
 
-        #Setting key up and down handlers and updating
+        # Setting key up and down handlers and updating
         self.window.frame.set_keydown_handler(self.keydown)
         self.window.frame.set_keyup_handler(self.keyup)
         self.updateKey()
 
-        #Car
-        #self.car.drawCar(canvas)
+        # Car
+        # self.car.drawCar(canvas)
 
+        # Opening transition
+        self.transition_clock.tick()
+        if self.left_cover_x > - self.window.__class__.WIDTH / 2:
+            self.reveal(canvas)
 
-    #Curtain animation mathod
+    # Curtain animation mathod
     def reveal(self, canvas):
-        box_colour_left = "Black"
-        box_colour_right = "Black"
+        box_colour_left = "Teal"
+        box_colour_right = "Teal"
         canvas.draw_polygon([(self.left_cover_x, 0), (self.left_cover_x, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, self.window.__class__.HEIGHT),
                              (self.left_cover_x + self.window.__class__.WIDTH / 2, 0)],
@@ -79,7 +91,6 @@ class GameInterface:
                             1, box_colour_right, box_colour_right)
         self.left_cover_x -= 25
         self.right_cover_x += 25
-
 
     def keyup(self,key):
         if key == simplegui.KEY_MAP['right']:
@@ -108,6 +119,8 @@ class GameInterface:
             self.cam.moveUp = True
         elif key == simplegui.KEY_MAP['down']:
             self.cam.moveDown = True
+        elif self.kb_compat.escape_key_pressed(key):
+            self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
 
     def checkRoadEnds(self):
         if self.cam.center.getX() < self.gameplay.endOfRoad_Origin.getX():
@@ -120,12 +133,11 @@ class GameInterface:
         else:
             self.rightEnd = False
 
-
     def updateKey(self):
         self.checkRoadEnds()
         self.cam.move(self.leftEnd, self.rightEnd)
 
-        #Move car
+        # Move car
         if self.moveCarRight == True:
             self.gameplay.moveCarRight()
         elif self.moveCarLeft == True:
