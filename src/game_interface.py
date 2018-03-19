@@ -31,20 +31,24 @@ class GameInterface:
 
         self.initial_origin_vector = Vector(Values.canvas_WIDTH/2, Values.canvas_HEIGHT/2)
 
-        # Creating camera with origin (center point) set to center point of canvas
-        self.cam = MoveObjects(self.initial_origin_vector,
-                               Vector(Values.canvas_WIDTH,Values.canvas_HEIGHT))
+        # Creating mover with the center set to center point of the canvas
+        self.mover = MoveObjects(self.initial_origin_vector,
+                                 Vector(Values.canvas_WIDTH,Values.canvas_HEIGHT))
 
-        self.final_origin = self.initial_origin_vector.copy().toBackground(self.cam)
-        self.cam.setCenter(self.final_origin)
+        self.final_origin = self.initial_origin_vector.copy().toBackground(self.mover)
+        self.mover.setCenter(self.final_origin)
 
-        # Road bounds (Camera)
+        # Road bounds (For the mover)
         self.leftEnd = False
         self.rightEnd = False
 
-        # self.car = Car(Vector(30, 100), 100, self.road,self.cam)
+        # self.car = Car(Vector(30, 100), 100, self.road,self.mover)
 
-        self.gameplay = GamePlay(self.cam, self)
+
+        self.gameplay = GamePlay(self.mover)
+
+        self.gameplay = GamePlay(self.mover, self)
+
 
         # Car control booleans
         self.moveCarRight = False
@@ -60,7 +64,7 @@ class GameInterface:
 
     def draw_canvas(self, canvas):
         # Draw road
-        self.gameplay.draw(canvas, self.cam)
+        self.gameplay.draw(canvas, self.mover)
         self.hud.draw_hud(canvas)
         self.hud.update_attributes(self.player.current_score, self.player.attributes.lives)
 
@@ -95,52 +99,52 @@ class GameInterface:
 
     def keyup(self,key):
         if key == simplegui.KEY_MAP['right']:
-            self.cam.moveRight = False
+            self.mover.moveRight = False
             self.moveCarRight = False
         elif key == simplegui.KEY_MAP['left']:
-            self.cam.moveLeft = False
+            self.mover.moveLeft = False
             self.moveCarLeft = False
         elif key == simplegui.KEY_MAP['up']:
-            self.cam.moveUp = False
+            self.mover.moveUp = False
         elif key == simplegui.KEY_MAP['down']:
-            self.cam.moveDown = False
+            self.mover.moveDown = False
 
     def keydown(self,key):
         if key == simplegui.KEY_MAP['right']:
-            self.cam.moveRight = True
+            self.mover.moveRight = True
             #Move car right
             self.moveCarRight = True
 
         elif key == simplegui.KEY_MAP['left']:
-            self.cam.moveLeft = True
+            self.mover.moveLeft = True
             #Move car left
             self.moveCarLeft = True
 
         elif key == simplegui.KEY_MAP['up']:
-            self.cam.moveUp = True
+            self.mover.moveUp = True
         elif key == simplegui.KEY_MAP['down']:
-            self.cam.moveDown = True
+            self.mover.moveDown = True
         elif self.kb_compat.escape_key_pressed(key):
             self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
 
     def checkRoadEnds(self):
-        if self.cam.center.getX() < self.gameplay.endOfRoad_Origin.getX():
+        if self.mover.center.getX() < self.gameplay.endOfRoad_Origin.getX():
             self.leftEnd = True
 
         else:
             self.leftEnd = False
-        if self.cam.center.getX() > self.gameplay.endOfRoadRight_Origin.getX():
+        if self.mover.center.getX() > self.gameplay.endOfRoadRight_Origin.getX():
             self.rightEnd = True
         else:
             self.rightEnd = False
 
     def updateKey(self):
         self.checkRoadEnds()
-        self.cam.move(self.leftEnd, self.rightEnd)
+        self.mover.move(self.leftEnd, self.rightEnd)
 
         # Move car
         if self.moveCarRight == True:
             self.gameplay.moveCarRight()
         elif self.moveCarLeft == True:
             self.gameplay.moveCarLeft()
-        #self.cam.zoom() -- Zoom feature is disabled
+        #self.mover.zoom() -- Zoom feature is disabled
