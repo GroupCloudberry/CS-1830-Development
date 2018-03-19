@@ -1,19 +1,21 @@
-# CS1830 Development
-This repository houses the code for the game.
+# BerryDrive
 
-## Runnning
-The source code for this project is written around the `simplegui` module in Python 3 and can be run on the Codeskulptor website. Alternatively, it can also be run on any platform with Tkinter installed.
+## Prerequisites
+This project is developed around the `simplegui` framework, using `simpleguitk` to streamline development, as well as introduce additional functionality not supported by CodeSkulptor. 
 
-Using the following block rather than `import simplegui` alone ensures that the `simpleguitk` module will be imported if `simplegui` is absent on the system. This will allow the code to be easily tested during development by running `python filename.py` (or `python3`).
+This game can be run natively on any machine with a Python 3 install that supports Tkinter, after installing the `simpleguitk` Python 3 module.
 
-```
-try:
-    import simplegui
-except ImportError:
-    import simpleguitk as simplegui
-``` 
+To use all features of this game, `simpleguitk` *must* be used. If not possible, however, fallbacks have been implemented to ensure compatibility with CodeSkulptor.
 
-By installing `simpleguitk` using `pip install simpleguitk` (or `pip3` if `pip --version` reports that Python 2.x is being used), this allows the project code to be run natively (Tkinter required).
+## Running: `simpleguitk` (Windows/macOS/Linux)
+You need to determine whether the `python` or `python3` command is symbolically linked to your Python 3 installation. If `python --version` reports a version number that begins with 2, use `python3` in place of `python`.
+
+To launch the game, simply open a terminal and navigate to the `src` directory. Then run `python game.py`. The window should appear shortly.
+
+## Running: `simplegui` (CodeSkulptor)
+In the `src` directory, there is a subdirectory called `cs`. Navigate into that folder, and find`game.py`. Copy the contents of that file into CodeSkulptor, and you should be able to run this.
+
+Bear in mind that under CodeSkulptor, certain functionality (e.g. the database) will not be present due to its incomplete support for the Python 3 standard library.
 
 
 

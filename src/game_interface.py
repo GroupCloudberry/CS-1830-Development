@@ -44,7 +44,11 @@ class GameInterface:
 
         # self.car = Car(Vector(30, 100), 100, self.road,self.mover)
 
+<<<<<<< HEAD
         self.gameplay = GamePlay(self.mover)
+=======
+        self.gameplay = GamePlay(self.cam, self)
+>>>>>>> a7bb5607d26b99ba67c489ee8bf83cfdd7905d97
 
         # Car control booleans
         self.moveCarRight = False
@@ -62,6 +66,7 @@ class GameInterface:
         # Draw road
         self.gameplay.draw(canvas, self.mover)
         self.hud.draw_hud(canvas)
+        self.hud.update_attributes(self.player.current_score, self.player.attributes.lives)
 
         # Setting key up and down handlers and updating
         self.window.frame.set_keydown_handler(self.keydown)

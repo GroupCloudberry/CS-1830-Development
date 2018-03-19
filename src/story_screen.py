@@ -59,6 +59,8 @@ class StoryScreen:
         for index, container in enumerate([self.pages[self.page].container1, self.pages[self.page].container2]):
             if container["image"] is not None:
                 self.images[index] = simplegui.load_image(container["image"])
+            else:
+                self.images[index] = None
 
     def draw_boxes(self, canvas):
         bg_colour = "Teal"

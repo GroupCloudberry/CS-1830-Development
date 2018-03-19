@@ -22,6 +22,9 @@ class Vector:
     def setX(self, x):
         self.x = x
 
+    def setY(self, y):
+        self.y = y
+
     def copy(self):
         v = Vector(self.x, self.y)
         return v
