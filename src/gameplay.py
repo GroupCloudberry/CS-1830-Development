@@ -5,15 +5,15 @@ from values import Values
 import math
 import simpleguitk as simplegui
 
-tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
+tyre_image = simplegui.load_image('https://i.imgur.com/8tgv4Im.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
-berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
+berry_image_link = simplegui.load_image('https://i.imgur.com/erLYnGU.png')
 
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
-berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
-berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
+
+
 
 timer_counter_bm = 0
 frame_bm = 0
@@ -52,9 +52,10 @@ class GamePlay:
 
         self.carTyreDistance = 80
 
-        self.berry1_pos = Vector(1000,375)
+        self.berry1_pos = self.placeBerries(900, 2000, 0)
+        self.berry2_pos = self.placeBerries(2000, 2400, -0.218)
         self.berry1_dim = Vector(40,30)
-        self.berry1_draw_boolean = True
+        self.berry_draw_boolean = True
         self.berryMerchant1_draw_boolean = True
         self.berryMerchant1_pos = Vector(2000, 400)
         self.berryMerchant1_dim = Vector(151, 122)
@@ -236,12 +237,13 @@ class GamePlay:
         canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600), Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
 
     def drawBerries(self, canvas, mover):
-        if self.berry1_draw_boolean:
+        if self.berry_draw_boolean:
             canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().toBackground(mover).getP(), self.berry1_dim.getP())
+            canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry2_pos.copy().toBackground(mover).getP(), self.berry1_dim.getP())
 
     def placeBerries(self, startX, endX, slope):
         xCoord = random.randint(startX, endX)
-        yCoord = slope*xCoord + 400
+        yCoord = slope*xCoord + 400 - 15
         berry_pos = Vector(xCoord, yCoord)
         return berry_pos
 
@@ -274,6 +276,9 @@ class GamePlay:
 
     def moneyCounter(self):
         if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
+            self.berryMoney = self.berryMoney+2
+            return self.berryMoney
+        if self.berryCollision(self.position, self.berry2_pos, self.berry1_dim):
             self.berryMoney = self.berryMoney+2
             return self.berryMoney
         elif self.berryMerchantCollision(self.position, self.berryMerchant1_pos, self.berryMerchant1_dim):
@@ -325,10 +330,10 @@ class GamePlay:
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
 
         #Collision detection
-        if self.berryCollision(self.position, self.placeBerries(900, 2000, 0), self.berry1_dim):
-            if self.berry1_draw_boolean:
+        if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim) or self.berryCollision(self.position, self.berry2_pos, self.berry1_dim):
+            if self.berry_draw_boolean:
                 self.score += 2
-            self.berry1_draw_boolean = False
+            self.berry_draw_boolean = False
             print("Collision with Berry")
 
         if self.bmCollision(self.position, self.bm1_pos, self.bm1_dim):
