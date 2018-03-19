@@ -5,6 +5,7 @@ from values import Values
 import math
 import simpleguitk as simplegui
 
+
 tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
@@ -41,7 +42,10 @@ class GamePlay:
         self.point1_t2 = Vector()
         self.point2_t2 = Vector()
 
-        self.position = Vector(300,100)
+        self.point1_bear = Vector()
+        self.point2_bear = Vector()
+
+        self.position = Vector(500,100)
         #Tyre Vectors
         self.front_tyre = Vector(self.position.getX()+90, self.position.getY())
 
@@ -219,6 +223,9 @@ class GamePlay:
             if self.pointsList[i].getX() <= self.front_tyre.getX():
                 self.point1_front = self.pointsList[i]
                 self.point2_front = self.pointsList[i + 1]
+            if self.pointsList[i].getX() <= self.bear_pos.getX():
+                self.point1_bear = self.pointsList[i]
+                self.point2_bear = self.pointsList[i + 1]
 
     def applyGravity(self):
         self.findRoadPoints(self.position.getX())
@@ -266,6 +273,7 @@ class GamePlay:
         x2 = point2.getX()
         y1 = point1.getY()
         y2 = point2.getY()
+        print(str(x1) + " " + str(x2) + " " + str(y1) + " " + str(y2))
 
         #Gradient
         m = (y2-y1)/(x2-x1)
@@ -356,19 +364,24 @@ class GamePlay:
         canvas.draw_image(bear_image, (center[frame_bear], image_height/2),(image_width / 7, image_height),
                               self.bear_pos.copy().toBackground(cam).getP(), self.bear_dim.getP())
 
+        self.updateBearPosition()
+
+
+    def applyBearGravity(self):
+        roadY_bear = self.getRoadHeight(self.point1_bear, self.point2_bear, self.position.getX()-120)
+        if self.bear_pos.getY() <= roadY_bear - self.bear_dim.getX()/2:
+            self.bear_pos.add(self.gravity_vector)
+        elif self.bear_pos.getY() > roadY_bear - self.bear_dim.getX()/2:
+            self.bear_pos.subtract(self.gravity_vector)
+
     def updateBearPosition(self):
+        self.findRoadPoints(self.position.getX())
         self.bear_pos.setX(self.position.getX() - 120)
-        self.bear_pos.setY(self.position.getY())
-
-
-    def wrapBackground(self,canvas,cam):
-        background_length = 3214
-        canvas.draw_image(image_link, (3214 / 2, 600 / 2), (3214, 600),
-                          Vector((3214 / 2) - 10, 600 / 2).copy().toBackground(cam).getP(), (3214, 600))
-
+        self.applyBearGravity()
 
     def updateScore(self):
         self.gameInterface.player.current_score = self.score
+
 
     def draw(self,canvas,cam):
         self.updateScore()
@@ -377,6 +390,10 @@ class GamePlay:
             point1 = self.pointsList[i].copy().toBackground(cam)
             point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
+
+            #Draw road Background
+            canvas.draw_polygon([(point1.getX(), point1.getY()+3), (point2.getX(), point2.getY()+3), (point2.getX(), Values.canvas_HEIGHT), (point1.getX(), Values.canvas_HEIGHT)], 1, 'green', 'green')
+
         self.drawBerries(canvas, cam)
         self.drawBerryMerchant(canvas, cam)
         self.drawBear(canvas, cam)
@@ -404,5 +421,3 @@ class GamePlay:
         self.berryMerchant1_draw_boolean = True
 
         self.updateTimerCounter()
-
-        self.updateBearPosition()
