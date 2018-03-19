@@ -8,21 +8,20 @@ import simpleguitk as simplegui
 tyre_image = simplegui.load_image('https://i.imgur.com/8tgv4Im.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
-<<<<<<< HEAD
+
 berry_image_link = simplegui.load_image('https://i.imgur.com/erLYnGU.png')
-=======
+
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
->>>>>>> b61495105f2dabe4c88010f475b69dde19a3596a
+
 
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
 
-<<<<<<< HEAD
 
 
-=======
+
 #Commented code for audio
 #sound = simplegui.load_sound('http://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg')
->>>>>>> b61495105f2dabe4c88010f475b69dde19a3596a
+
 
 timer_counter_bm = 0
 frame_bm = 0
@@ -57,6 +56,7 @@ class GamePlay:
 
         self.berryMoney = 0
 
+        self.lives = 3
         #constants
         self.gravity_vector = Vector(0,2)
         self.movement_vector = Vector(5,0)
@@ -283,11 +283,6 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_center.getY() - (berry_dim.getY()/2) and  car_pos.getY()<= berry_center.getY() + (berry_dim.getY()/2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> b61495105f2dabe4c88010f475b69dde19a3596a
 
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
         horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (
@@ -295,6 +290,10 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_merchant_center.getY() - (
                     berryMerchant1_dim.getY() / 2) and car_pos.getY() <= berry_merchant_center.getY() + (berryMerchant1_dim.getY() / 2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
+
+    def minusLives(self):
+        self.lives = self.lives - 1
+        return self.lives
 
 
     def moneyCounter(self):
@@ -308,29 +307,19 @@ class GamePlay:
             self.berryMoney = self.berryMoney+15
             return self.berryMoney
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> b61495105f2dabe4c88010f475b69dde19a3596a
     def bmCollision(self, car_pos, bm_center, bm_dim):
         horizontalCollisionBoolean = car_pos.getX() >= bm_center.getX() - (bm_dim.getX() / 2) and car_pos.getX() <= bm_center.getX() + (bm_dim.getX() / 2)
         verticalCollisionBoolean = car_pos.getY() >= bm_center.getY() - (bm_dim.getY() / 2) and car_pos.getY() <= bm_center.getY() + (bm_dim.getY() / 2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
-<<<<<<< HEAD
-=======
 
->>>>>>> b61495105f2dabe4c88010f475b69dde19a3596a
     def useFuel(self):
         self.fuelDistance = self.fuelDistance - 5
         if self.fuelDistance % self.distancePerLitre == 0:
             self.fuel = self.fuel - 1
 
-<<<<<<< HEAD
 
-=======
->>>>>>> b61495105f2dabe4c88010f475b69dde19a3596a
     def drawBerryMerchant(self, canvas, cam):
         global timer_counter_bm, frame_bm
         image_height = berry_merchant_image.get_height()
@@ -347,21 +336,16 @@ class GamePlay:
                           self.bm1_pos.copy().toBackground(cam).getP(), self.bm1_dim.getP())
         timer_counter_bm += 1
 
-<<<<<<< HEAD
-=======
 
     def setCarInMotion(self):
         self.car_in_motion = True
 
     def setCarStationary(self):
         self.car_in_motion = False
-<<<<<<< HEAD
->>>>>>> b61495105f2dabe4c88010f475b69dde19a3596a
+
 
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
-=======
-
 
     def wrapBackground(self,canvas,cam):
         background_length = 3214
@@ -371,23 +355,22 @@ class GamePlay:
 
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
-        self.wrapBackground()
->>>>>>> 4dd945a03ea08e53b0ee9f4a1a7bc17a55ed29da
+        self.wrapBackground(canvas, cam)
+
         for i in range(len(self.pointsList)-1):
             point1 = self.pointsList[i].copy().toBackground(cam)
             point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
         self.drawBerries(canvas, cam)
-<<<<<<< HEAD
+
 
 
         self.drawBerryMerchant(canvas,cam)
-=======
+
         self.drawBerryMerchant(canvas, cam)
->>>>>>> b61495105f2dabe4c88010f475b69dde19a3596a
+
 
         self.constructCar(canvas, cam)
-
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
 
         #Collision detection
