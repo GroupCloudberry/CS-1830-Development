@@ -239,8 +239,12 @@ class GamePlay:
         if self.berry1_draw_boolean:
             canvas.draw_image(berry_image_link, (287 / 2, 230 / 2), (287, 230), self.berry1_pos.copy().toBackground(mover).getP(), self.berry1_dim.getP())
 
-    def placeBerries(self, noOfBerries):
-        pass
+    def placeBerries(self, startX, endX, slope):
+        xCoord = random.randint(startX, endX)
+        yCoord = slope*xCoord + 400
+        berry_pos = Vector(xCoord, yCoord)
+        return berry_pos
+
 
     def getRoadHeight(self, point1, point2, currentX):
         x1 = point1.getX()
@@ -321,7 +325,7 @@ class GamePlay:
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
 
         #Collision detection
-        if self.berryCollision(self.position, self.berry1_pos, self.berry1_dim):
+        if self.berryCollision(self.position, self.placeBerries(900, 2000, 0), self.berry1_dim):
             if self.berry1_draw_boolean:
                 self.score += 2
             self.berry1_draw_boolean = False
