@@ -358,12 +358,6 @@ class GamePlay:
     def setCarStationary(self):
         self.car_in_motion = False
 
-    def draw(self, canvas, mover):
-        self.applyBackground(canvas, mover)
-
-    def draw(self,canvas,mover):
-        self.applyBackground(canvas, mover)
-
     def drawBear(self, canvas, mover):
         global timer_counter_bm, frame_bear
         image_width = bear_image.get_width()
@@ -394,11 +388,6 @@ class GamePlay:
             self.bear_pos.subtract(self.gravity_vector)
 
 
-    def draw(self, canvas, mover):
-        self.applyBackground(canvas, mover)
-        self.wrapBackground(canvas, mover)
-
-
     def updateBearPosition(self):
         self.findRoadPoints(self.position.getX())
         self.bear_pos.setX(self.position.getX() - 120)
@@ -422,24 +411,8 @@ class GamePlay:
         self.drawBerries(canvas, mover)
         self.drawBerryMerchant(canvas, mover)
         self.drawBear(canvas, mover)
-
-        self.drawBerries(canvas, mover)
-
-
-
-        self.drawBerryMerchant(canvas, mover)
-
-        self.drawBerryMerchant(canvas, mover)
-
-
         self.constructCar(canvas, mover)
-
-        self.drawBerries(canvas, mover)
-        self.drawBerryMerchant(canvas, mover)
-        self.drawBear(canvas, mover)
-
-        self.constructCar(canvas, mover)
-
+        
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
 
         #Collision detection
