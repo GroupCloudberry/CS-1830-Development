@@ -52,7 +52,7 @@ class GameInterface:
         self.moveCarLeft = False
 
         # Level creation
-        self.gameplay.createLevel1()
+        self.gameplay.createLevel4()
 
         # Player data
         self.player_attributes = PlayerAttributes() # Do not directly call methods on this one
