@@ -9,16 +9,14 @@ tyre_image = simplegui.load_image('https://i.imgur.com/m7e5j6O.png')
 car_image = simplegui.load_image('https://i.imgur.com/dtyG7HO.png')
 image_link = simplegui.load_image('https://i.imgur.com/ZhPTrBH.jpg')
 berry_image_link = simplegui.load_image('https://i.imgur.com/IPlsY2L.png')
-<<<<<<< HEAD
+
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/iQIBDHX.png')
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
-=======
 berry_merchant_image = simplegui.load_image('https://i.imgur.com/78r4LwF.png')
 
 timer_counter_bm = 0
 frame_bm = 0
->>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
 
 class GamePlay:
 
@@ -261,8 +259,6 @@ class GamePlay:
         verticalCollisionBoolean = car_pos.getY() >= berry_center.getY() - (berry_dim.getY()/2) and  car_pos.getY()<= berry_center.getY() + (berry_dim.getY()/2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
-<<<<<<< HEAD
-
 
     def berryMerchantCollision(self, car_pos, berry_merchant_center, berryMerchant1_dim):
         horizontalCollisionBoolean = car_pos.getX() >= berry_merchant_center.getX() - (
@@ -280,21 +276,17 @@ class GamePlay:
             self.berryMoney = self.berryMoney+15
             return self.berryMoney
 
-
-=======
     def bmCollision(self, car_pos, bm_center, bm_dim):
         horizontalCollisionBoolean = car_pos.getX() >= bm_center.getX() - (bm_dim.getX() / 2) and car_pos.getX() <= bm_center.getX() + (bm_dim.getX() / 2)
         verticalCollisionBoolean = car_pos.getY() >= bm_center.getY() - (bm_dim.getY() / 2) and car_pos.getY() <= bm_center.getY() + (bm_dim.getY() / 2)
         return horizontalCollisionBoolean and verticalCollisionBoolean
 
->>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
     def useFuel(self):
         self.fuelDistance = self.fuelDistance - 5
         if self.fuelDistance % self.distancePerLitre == 0:
             self.fuel = self.fuel - 1
 
-<<<<<<< HEAD
-=======
+
     def drawBerryMerchant(self, canvas, cam):
         global timer_counter_bm, frame_bm
         image_height = berry_merchant_image.get_height()
@@ -310,7 +302,7 @@ class GamePlay:
             canvas.draw_image(berry_merchant_image, (center[frame_bm], image_height / 2), (image_width / 3, image_height),
                           self.bm1_pos.copy().toBackground(cam).getP(), self.bm1_dim.getP())
         timer_counter_bm += 1
->>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
+
 
     def draw(self,canvas,cam):
         self.applyBackground(canvas, cam)
@@ -320,12 +312,10 @@ class GamePlay:
             point2 = self.pointsList[i+1].copy().toBackground(cam)
             canvas.draw_line(point1.getP(), point2.getP(), 5, 'white')
         self.drawBerries(canvas, cam)
-<<<<<<< HEAD
-        
-=======
+
+
         self.drawBerryMerchant(canvas,cam)
 
->>>>>>> 40ff7dd799e21907db1a7d3f82c255d5f1ed778d
         self.constructCar(canvas, cam)
 
         canvas.draw_text("Fuel (litres): " + str(self.fuel) + " Distance: " + str(self.fuelDistance), [20,20], 15, 'white')
