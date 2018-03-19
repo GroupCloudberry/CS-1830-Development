@@ -44,8 +44,11 @@ class GameInterface:
 
         # self.car = Car(Vector(30, 100), 100, self.road,self.mover)
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 46344a1e49329c3f21b7f7e1d80e2e38bad91830
         self.gameplay = GamePlay(self.mover, self)
 
 
@@ -70,6 +73,7 @@ class GameInterface:
         # Setting key up and down handlers and updating
         self.window.frame.set_keydown_handler(self.keydown)
         self.window.frame.set_keyup_handler(self.keyup)
+        self.window.frame.set_mouseclick_handler(self.mouse_down)
         self.updateKey()
 
         # Car
@@ -95,6 +99,10 @@ class GameInterface:
                             1, box_colour_right, box_colour_right)
         self.left_cover_x -= 25
         self.right_cover_x += 25
+
+    def mouse_down(self, position):
+        if 180 > position[0] > 75 and 25 > position[1] > 0:
+            self.hud.pause()
 
     def keyup(self,key):
         if key == simplegui.KEY_MAP['right']:
@@ -124,7 +132,12 @@ class GameInterface:
         elif key == simplegui.KEY_MAP['down']:
             self.mover.moveDown = True
         elif self.kb_compat.escape_key_pressed(key):
-            self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
+            self.pause()
+
+    def pause(self):
+        self.left_cover_x = 0
+        self.right_cover_x = self.window.__class__.WIDTH / 2
+        self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
 
     def checkRoadEnds(self):
         if self.mover.center.getX() < self.gameplay.endOfRoad_Origin.getX():
@@ -146,4 +159,7 @@ class GameInterface:
             self.gameplay.moveCarRight()
         elif self.moveCarLeft == True:
             self.gameplay.moveCarLeft()
+        elif self.moveCarLeft == False and self.moveCarRight == False:
+            self.gameplay.decelerate()
         #self.mover.zoom() -- Zoom feature is disabled
+        print(self.gameplay.acceleration.getP())

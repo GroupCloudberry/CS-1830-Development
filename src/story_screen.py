@@ -134,7 +134,11 @@ class StoryScreen:
             self.preload_images()
 
     def dismiss(self):
+        self.page = 0
+        self.reflow_text()
+        self.preload_images()
         self.window.frame.set_draw_handler(self.window.game_interface.draw_canvas)
+        self.box_reveal = 0.0
 
     def draw_canvas(self, canvas):
         self.window.frame.set_keydown_handler(self.key_down)

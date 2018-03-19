@@ -26,3 +26,6 @@ class MoveObjects:
 
         if self.moveRight == True and not rightEnd:
             self.move_right()
+
+    def setSpeed(self, speed):
+        self.speed = speed

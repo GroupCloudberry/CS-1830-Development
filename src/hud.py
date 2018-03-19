@@ -3,12 +3,13 @@ class HUD:
     To implement the HUD, create a new instance of it in GameInterface using hud = HUD(), and then draw it in
     the draw_canvas(self, canvas) method of GameInterface by calling hud.draw_hud(canvas).
     """
-    def __init__(self, window, score=0, lives=3):
+    def __init__(self, window, score=0, lives=3, fuel=100):
         self.window = window
 
         # To update lives and score, assign a new value to the following instance variables
         self.lives = lives
         self.score = score
+        self.fuel = fuel
 
     def draw_score_lives(self, canvas):
         text_size = 15
@@ -32,6 +33,15 @@ class HUD:
         canvas.draw_polygon([(x, 0), (x + width, 0 ), (x + width, height), (x, height)], 1, colour, colour)
         canvas.draw_text("Pause", (x + 16, 23), text_size, "White", "sans-serif")
 
+    def draw_fuel(self, canvas):
+        text_size = 15
+        colour = "White"
+        width = self.window.frame.get_canvas_textwidth("Fuel: {}".format(self.fuel), text_size)
+        height = 25
+        box_y = self.window.__class__.HEIGHT - height
+        x, y = 75 + 25, self.window.__class__.HEIGHT - width
+        canvas.draw_polygon([(75, box_y), (75, box_y + height), (75 + width, box_y + height), (75 + width, box_y)], 1, colour, colour)
+
     def pause(self):
         self.window.hud = HUD(self.window)
         self.window.frame.set_draw_handler(self.window.pause_menu.draw_canvas)
@@ -39,9 +49,9 @@ class HUD:
     def draw_hud(self, canvas):
         self.draw_score_lives(canvas)
         self.draw_pause_button(canvas)
+        self.draw_fuel(canvas)
 
     def update_attributes(self, score, lives):
-        print("score is updated to " + str(score))
         self.score = score
         self.lives = lives
 
